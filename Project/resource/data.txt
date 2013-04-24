@@ -1,0 +1,6 @@
+HTML_FORM jmi 13231 www.login.intra.aarhus.tech.dk
+HTML_FORM jmi 13231 www.login.extra.aarhus.tech.dk
+HTML_FORM wee 12233 www.login.vuc.dk
+HTML_FORM idiot password www.login.df.dk
+WIFI_LOGIN jmi x_ad2'a 198.168.1.0
+HTML_FORM idiot password www.login.sf.dk
