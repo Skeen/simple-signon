@@ -54,16 +54,23 @@ import javax.swing.table.*;
 
 public class LoginSSO implements Runnable
 {
-    private static JPanel input;
-    private static JTextField username_field;
-    private static JPasswordField password_field;
+    private LoginSSO this_ptr;
+    private JFrame frame;
+    private JPanel input;
+    private JTextField username_field;
+    private JPasswordField password_field;
+
+    public LoginSSO()
+    {
+        this_ptr = this;
+    }
 
     /**
      * Create the GUI.
      * For thread safety, this method should be invoked from the
      * event-dispatching thread.
      */
-    private static JFrame createLoginGUI()
+    private JFrame createLoginGUI()
     {
         //Create and set up the window.
         JFrame frame = new JFrame("SSO");
@@ -103,7 +110,7 @@ public class LoginSSO implements Runnable
                         System.out.println("Connect clicked");
                         String username = username_field.getText();
                         String password = new String(password_field.getPassword());
-                        LoginSSOConnectionHandler handler = new LoginSSOConnectionHandler();
+                        LoginSSOConnectionHandler handler = new LoginSSOConnectionHandler(this_ptr);
                         handler.connect(username, password);
                     }
                 });
@@ -124,11 +131,21 @@ public class LoginSSO implements Runnable
         return frame;
     }
 
+    public void showGUI()
+    {
+        frame.setVisible(true);
+    }
+
+    public void hideGUI()
+    {
+        frame.setVisible(false);
+    }
+
     public void run() 
     {
         // Create the gui frame
-        JFrame frame = createLoginGUI();
+        frame = createLoginGUI();
         // And make it visible
-        frame.setVisible(true);
+        showGUI();
     }
 }

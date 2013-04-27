@@ -1,6 +1,7 @@
 import java.lang.*;
 
 import java.awt.*;
+import java.awt.image.*;
 import java.awt.event.*;
 
 import java.io.*;
@@ -13,20 +14,27 @@ import javax.swing.table.*;
 
 class LoginSSOConnectionHandler
 {
+    private LoginSSO login;
+    private SSOTray tray;
+    //private SSOWindow window;
+
+    public LoginSSOConnectionHandler(LoginSSO login)
+    {
+        this.login = login;
+        login.hideGUI();
+    }
+
     void connect(String username, String password)
     {
+        //SwingUtilities.invokeLater(new SSOTray());
+
         System.out.println("Connect using; " + username + " : " + password);
 
         JFrame frame = new JFrame("Connection Frame");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        String[] columnNames = {"SERVICE_TYPE",
-                                "USERNAME",
-                                "PASSWORD",
-                                "WEBPAGE",
-                                "LOGGED-IN"};
 
+        /*
         // Make the table uneditable
-        DefaultTableModel model = new DefaultTableModel(null, columnNames)
+        DefaultTableModel model = new DefaultTableModel()
         {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -42,14 +50,16 @@ class LoginSSOConnectionHandler
             for(String line = br.readLine(); line != null; line = br.readLine()) 
             {
                 // Add a line to the table
-                java.util.List<Object> data = new ArrayList<Object>();
                 for(Object o : line.split(" "))
                 {
+                    java.util.List<Object> data = new ArrayList<Object>();
                     data.add(o);
+                    model.insertRow(model.getRowCount(), data.toArray());
+                    //data.add(o);
                 }
-                data.add("NOT_CONNECTED");
+                //data.add("NOT_CONNECTED");
 
-                model.insertRow(model.getRowCount(), data.toArray());
+                //model.insertRow(model.getRowCount(), data.toArray());
 
                 /*
                 // Start the connector thread
@@ -65,8 +75,11 @@ class LoginSSOConnectionHandler
                                    input_webpage);
                 */
                 // Start a worker thread, to process the request
+                /*
                 ConnectorThread connector = new ConnectorThread(model, model.getRowCount() - 1);
                 new Thread(connector).start();
+                */
+        /*
             }
         }
         catch(Exception e)
@@ -80,9 +93,63 @@ class LoginSSOConnectionHandler
         table.setFillsViewportHeight(true);
 
         frame.add(scrollPane);
+        */
 
+        Image busIcon = SSOTray.createImage("resource/Bus.png");
+        ImageIcon busImg = new ImageIcon(resize(busIcon, 64, 64));
+        Image carIcon = SSOTray.createImage("resource/Car.png");
+        ImageIcon carImg = new ImageIcon(resize(carIcon, 64, 64));
+        Image clockIcon = SSOTray.createImage("resource/Clock.png");
+        ImageIcon clockImg = new ImageIcon(resize(clockIcon, 64, 64));
+
+        String[] columnNames = {null, null};
+        Object[][] data =
+        {
+            {busImg, "Bus"},
+            {carImg, "Car"},
+            {clockImg, "Clock"},
+        };
+        
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        JTable table = new JTable( model )
+        {
+            //  Returning the Class of each column will allow different
+            //  renderers to be used based on Class
+            public Class getColumnClass(int column)
+            {
+                return getValueAt(0, column).getClass();
+            }
+        };
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+        // Select one cell at a time
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setColumnSelectionAllowed(true);
+
+
+        for(int x=0; x<table.getRowCount(); x++)
+        {
+            table.setRowHeight(x, 64);
+        }
+        
+        frame.add(new JScrollPane(table));
+        //updateRowHeights(table);
+        
         // Display the window.
-        frame.pack();
+        frame.setSize(64*3,64*3);
+        frame.setResizable( false );
         frame.setVisible(true);
     }
+
+    public static BufferedImage resize(Image srcImg, int w, int h)
+    {
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+        return resizedImg;
+    }
+    
 }

@@ -111,8 +111,13 @@ class SSOTray implements Runnable
         });
     }
 
+    public static Image createImage(String path)
+    {
+        return createImage(path, "");
+    }
+
     //Obtain the image URL
-    protected static Image createImage(String path, String description) 
+    public static Image createImage(String path, String description) 
     {
         URL imageURL = SSOTray.class.getResource(path);
 
