@@ -98,10 +98,10 @@ class SSOWindow implements Runnable
 
         private Image getOverlay(Service.Status status)
         {
-            final String not_connected_image = "resource/Pictogram/nothing.png";
-            final String disconnected_image = "resource/Pictogram/Kryds/x_28x28.png";
-            final String connecting_image = "resource/Pictogram/Tandhjul/cog_alt_32x32.png";
-            final String connected_image = "resource/Pictogram/Flueben/check_32x26.png";
+            final String not_connected_image = "resource/Pictogram/nothing_placeholder.png";
+            final String disconnected_image = "resource/Pictogram/Kryds.png";
+            final String connecting_image = "resource/Pictogram/Tandhjul.png";
+            final String connected_image = "resource/Pictogram/Flueben.png";
 
             try
             {
