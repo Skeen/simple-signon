@@ -3,22 +3,31 @@ import java.awt.event.*;
 import java.net.URL;
 import javax.swing.*;
 
-
-class SSOTray implements Runnable
+class SSOTray
 {
-    private static final String SystemTrayPath = "resource/SystemTray.png";
-
-    public void run()
+    private static SSOTray singleton;
+    public static SSOTray getSingleton()
     {
-        createAndShowGUI();
+        if(singleton == null)
+        {
+            singleton = new SSOTray();
+        }
+        return singleton;
     }
 
-    private void createAndShowGUI() 
+    private static final String SystemTrayPath = "resource/SystemTray.png";
+
+    private SSOTray()
+    {
+        create();
+    }
+
+    private void create() 
     {
         // Check the SystemTray support
         if (!SystemTray.isSupported()) 
         {
-            System.out.println("SystemTray is not supported");
+            System.err.println("SystemTray is not supported");
             return;
         }
         final PopupMenu popup = new PopupMenu();
