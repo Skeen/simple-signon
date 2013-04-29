@@ -7,17 +7,19 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.table.*;
 
 class SSOWindow implements Runnable
 {
-    private class SSOGUI
+    private class SSOGrid
     {
+        private JTable table;
         private DefaultTableModel model;
 
-        public SSOGUI()
+        public SSOGrid()
         {
         }
 
@@ -65,6 +67,7 @@ class SSOWindow implements Runnable
                     return false;
                 }
             };
+
             // Add all our services
             for(Service s : services)
             {
@@ -79,7 +82,7 @@ class SSOWindow implements Runnable
                 addToTable(s);
             }
 
-            JTable table = new JTable(model)
+            table = new JTable(model)
             {
                 //  Returning the Class of each column will allow different
                 //  renderers to be used based on Class
@@ -105,6 +108,7 @@ class SSOWindow implements Runnable
                                 setIcon(scaledLogo);
 
                                 setText(((Service) value).getName());
+                                setText("");
                                 /*
                                 setText("!");
                                 */
@@ -135,20 +139,131 @@ class SSOWindow implements Runnable
             return grid;
         }
 
+        public void addSelectionCallback(ListSelectionListener sl)
+        {
+            table.getColumnModel().getSelectionModel().addListSelectionListener(sl);
+            table.getSelectionModel().addListSelectionListener(sl);
+        }
+
         // Returns the Service corresponding to the GUI selection (if any)
         // Returns null when no selection is made
         public Service getSelection()
         {
-            return null;
+            int column = table.getSelectedColumn();
+            int row = table.getSelectedRow();
+            System.out.println("Selection at (x,y)=(" + column + " , " + row + ");");
+            if(column == -1 || row == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return (Service) table.getValueAt(row, column);
+            }
         }
     }
 
+    class SSOButtons
+    {
+        private SSOGrid grid;
 
+        private JButton add;
+        private JButton remove;
+        private JButton reconnect;
+        private JButton edit;
+
+        private JButton refresh;
+        private JButton logout;
+
+        private void updateButtons(boolean hasSelection)
+        {
+            if(hasSelection) 
+            {
+                remove.setEnabled(true); 
+                reconnect.setEnabled(true); 
+                edit.setEnabled(true); 
+            }
+            else 
+            {
+                remove.setEnabled(false); 
+                reconnect.setEnabled(false); 
+                edit.setEnabled(false);
+            }
+        }
+
+        public SSOButtons(SSOGrid s)
+        {
+            grid = s;
+
+            grid.addSelectionCallback(new ListSelectionListener()
+                    {
+                        private boolean isValidSelection() {
+                            Service s = grid.getSelection();
+                            return s != null;
+                        }
+
+                        public void valueChanged(ListSelectionEvent e) {
+                            updateButtons(isValidSelection());
+                        }
+                    });
+        }
+
+        private JPanel createBorderButton(JButton button)
+        {
+            JPanel button_panel = new JPanel();
+            button_panel.setLayout(new GridLayout(1, 1));
+            button_panel.add(button);
+            return button_panel;
+        }
+
+        public JPanel createGUI()
+        {
+            JPanel buttons = new JPanel();
+            buttons.setLayout(new GridLayout(2, 1));
+
+            JPanel buttons_top = new JPanel();
+            buttons_top.setLayout(new GridLayout(1, 4));
+            JPanel buttons_bot = new JPanel();
+            buttons_bot.setLayout(new GridLayout(1, 2));
+            buttons.add(buttons_top);
+            buttons.add(buttons_bot);
+
+            add = new JButton("Add");
+            remove = new JButton("Remove");
+            reconnect = new JButton("(Re)Connect");
+            edit = new JButton("Edit");
+            refresh = new JButton("Refresh");
+            logout = new JButton("Logout");
+            logout.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e) {
+                        login.showGUI();
+                        hideGUI();
+                    }
+                });
+
+            updateButtons(false);
+
+            buttons_top.add(createBorderButton(add));
+            buttons_top.add(createBorderButton(remove));
+            buttons_top.add(createBorderButton(reconnect));
+            buttons_top.add(createBorderButton(edit));
+
+            buttons_bot.add(createBorderButton(refresh));
+            buttons_bot.add(createBorderButton(logout));
+
+            return buttons;
+        }
+    }
+
+    private LoginSSO login;
     java.util.List<Service> services;
 
     // TODO: Test constructor, remove this
-    public SSOWindow()
+    public SSOWindow(LoginSSO login_prompt)
     {
+        login = login_prompt;
+
         this.services = new ArrayList<Service>();
         services.add(new Service(null, "WIFI", "resource/Wifi.png", null));
         services.add(new Service(null, "VPN", "resource/vpn.png", null));
@@ -171,45 +286,6 @@ class SSOWindow implements Runnable
 
     private JFrame frame;
 
-    private JPanel createBorderButton(String str)
-    {
-        JPanel button_panel = new JPanel();
-        button_panel.setLayout(new GridLayout(1, 1));
-        button_panel.add(new JButton(str));
-        return button_panel;
-    }
-
-    private JPanel createBorderButton(ImageIcon icon)
-    {
-        JPanel button_panel = new JPanel();
-        button_panel.setLayout(new GridLayout(1, 1));
-        button_panel.add(new JButton(icon));
-        return button_panel;
-    }
-
-    private JPanel createButtons()
-    {
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(2, 1));
-
-        JPanel buttons_top = new JPanel();
-        buttons_top.setLayout(new GridLayout(1, 4));
-        JPanel buttons_bot = new JPanel();
-        buttons_bot.setLayout(new GridLayout(1, 2));
-        buttons.add(buttons_top);
-        buttons.add(buttons_bot);
-
-        buttons_top.add(createBorderButton("Add"));
-        buttons_top.add(createBorderButton("Remove"));
-        buttons_top.add(createBorderButton("(Re)Connect"));
-        buttons_top.add(createBorderButton("Edit"));
-
-        buttons_bot.add(createBorderButton("Refresh"));
-        buttons_bot.add(createBorderButton("Logout"));
-
-        return buttons;
-    }
-
     private void createLoginGUI()
     {
         //Create and set up the window.
@@ -219,10 +295,11 @@ class SSOWindow implements Runnable
         JPanel overview = new JPanel();
         overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
 
-        SSOGUI grid = new SSOGUI();
-
+        SSOGrid grid = new SSOGrid();
         overview.add(grid.createGUI(services));
-        overview.add(createButtons());
+
+        SSOButtons buttons = new SSOButtons(grid);
+        overview.add(buttons.createGUI());
 
         frame.add(overview);
 
