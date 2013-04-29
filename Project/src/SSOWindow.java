@@ -54,6 +54,28 @@ class SSOWindow implements Runnable
             }
         }
 
+        private Image getOverlay(Service.Status status)
+        {
+            final String not_connected_image = "";
+            final String disconnected_image = "";
+            final String connecting_image = "";
+            final String connected_image = "";
+
+            switch(status)
+            {
+                case NOTCONNECTED:
+                    return SSOTray.createImage(not_connected_image);
+                case DISCONNECTED:
+                    return SSOTray.createImage(disconnected_image);
+                case CONNECTING:
+                    return SSOTray.createImage(connecting_image);
+                case CONNECTED:
+                    return SSOTray.createImage(connected_image);
+                default:
+                    return null;
+            }
+        }
+
         public JPanel createGUI(java.util.List<Service> services)
         {
             JPanel grid = new JPanel();
@@ -104,6 +126,8 @@ class SSOWindow implements Runnable
                                 Image logo = s.getLogo();
                                 // Scale it to 64x64
                                 ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
+                                // Add the overlay
+                                Image overlay = getOverlay(s.getStatus());
                                 // Render it
                                 setIcon(scaledLogo);
 
