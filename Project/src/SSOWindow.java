@@ -20,8 +20,72 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
-class SSOWindow implements Runnable
+class SSOWindow
 {
+    private static SSOWindow singleton;
+    public static SSOWindow getSingleton()
+    {
+        if(singleton == null)
+        {
+            singleton = new SSOWindow();
+        }
+        return singleton;
+    }
+
+    private SSOGrid grid;
+    private JFrame frame;
+
+    // TODO: Test constructor, remove this
+    private SSOWindow()
+    {
+        create();
+    }
+
+    private void create()
+    {
+        //Create and set up the window.
+        frame = new JFrame("SSO");
+
+        // Overview holder panel
+        JPanel overview = new JPanel();
+        overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
+
+        grid = new SSOGrid();
+        overview.add(grid.createGUI());
+
+        SSOButtons buttons = new SSOButtons(grid);
+        overview.add(buttons.createGUI());
+
+        frame.add(overview);
+
+        frame.pack();
+        frame.setResizable( false );
+    }
+
+    public void loadServices(java.util.List<Service> services)
+    {
+        grid.clearServices();
+        grid.addServices(services);
+        /*
+        // TODO: Start connecting
+        for(Service s : services)
+        {
+            s.seed(table);
+            new Thread(s).start();
+        }
+        */
+    }
+
+    public void showGUI()
+    {
+        frame.setVisible(true);
+    }
+
+    public void hideGUI()
+    {
+        frame.setVisible(false);
+    }
+
     private class SSOGrid
     {
         private JTable table;
@@ -29,6 +93,31 @@ class SSOWindow implements Runnable
 
         public SSOGrid()
         {
+        }
+
+        public void clearServices()
+        {
+        }
+
+        public void addServices(java.util.List<Service> services)
+        {
+            for(Service s : services)
+            {
+                addService(s);
+            }
+        }
+
+        public void addService(Service s)
+        {
+            addToTable(s);
+        }
+
+        private void updateTableHeight()
+        {
+            for(int x=0; x<table.getRowCount(); x++)
+            {
+                table.setRowHeight(x, 64);
+            }
         }
 
         private void addToTable(Object o)
@@ -52,6 +141,7 @@ class SSOWindow implements Runnable
                     if(value == null)
                     {
                         model.setValueAt(o, last_row, x);
+                        updateTableHeight();
                         return;
                     }
                 }
@@ -126,7 +216,7 @@ class SSOWindow implements Runnable
             }
         }
 
-        public JPanel createGUI(java.util.List<Service> services)
+        public JPanel createGUI()
         {
             JPanel grid = new JPanel();
             grid.setLayout(new GridLayout(1, 1));
@@ -140,20 +230,6 @@ class SSOWindow implements Runnable
                 }
             };
 
-            // Add all our services
-            for(Service s : services)
-            {
-                /*
-                // Get the logo
-                Image logo = s.getLogo();
-                // Scale it to 64x64
-                ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
-                // Add it to the table
-                addToTable(scaledLogo);
-                */
-                addToTable(s);
-            }
-
             table = new JTable(model)
             {
                 //  Returning the Class of each column will allow different
@@ -163,12 +239,6 @@ class SSOWindow implements Runnable
                     return getValueAt(0, column).getClass();
                 }
             };
-
-            for(Service s : services)
-            {
-                s.seed(table);
-                new Thread(s).start();
-            }
 
             table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
                     {
@@ -205,11 +275,6 @@ class SSOWindow implements Runnable
             // Select one cell at a time
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setColumnSelectionAllowed(true);
-
-            for(int x=0; x<table.getRowCount(); x++)
-            {
-                table.setRowHeight(x, 64);
-            }
 
             grid.add(new JScrollPane(table));
 
@@ -315,6 +380,7 @@ class SSOWindow implements Runnable
             logout.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e) {
+                        SSOLogin login = SSOLogin.getSingleton();
                         login.showGUI();
                         hideGUI();
                     }
@@ -332,74 +398,5 @@ class SSOWindow implements Runnable
 
             return buttons;
         }
-    }
-
-    private LoginSSO login;
-    java.util.List<Service> services;
-
-    // TODO: Test constructor, remove this
-    public SSOWindow(LoginSSO login_prompt)
-    {
-        login = login_prompt;
-
-        this.services = new ArrayList<Service>();
-        services.add(new Service(null, "WIFI", "resource/Wifi.png", null));
-        services.add(new Service(null, "VPN", "resource/vpn.png", null));
-        services.add(new Service(null, "It's learning", "resource/its_learning.png", null));
-        services.add(new Service(null, "Bulb", "resource/Bulb.gif", null));
-        services.add(new Service(null, "Bus", "resource/Bus.png", null));
-        services.add(new Service(null, "Car", "resource/Car.png", null));
-        services.add(new Service(null, "Clock", "resource/Clock.png", null));
-
-        services.add(new Service(null, "akis", "resource/akis.png", null));
-        services.add(new Service(null, "akis_green", "resource/akis_green.png", null));
-        services.add(new Service(null, "bug", "resource/bug.png", null));
-        services.add(new Service(null, "Dragon", "resource/Dragon.png", null));
-    }
-
-    public SSOWindow(java.util.List<Service> services)
-    {
-        this.services = services;
-    }
-
-    private JFrame frame;
-
-    private void createLoginGUI()
-    {
-        //Create and set up the window.
-        frame = new JFrame("SSO");
-
-        // Overview holder panel
-        JPanel overview = new JPanel();
-        overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
-
-        SSOGrid grid = new SSOGrid();
-        overview.add(grid.createGUI(services));
-
-        SSOButtons buttons = new SSOButtons(grid);
-        overview.add(buttons.createGUI());
-
-        frame.add(overview);
-
-        frame.pack();
-        frame.setResizable( false );
-    }
-
-    public void showGUI()
-    {
-        frame.setVisible(true);
-    }
-
-    public void hideGUI()
-    {
-        frame.setVisible(false);
-    }
-
-    public void run()
-    {
-        // Create the gui frame
-        createLoginGUI();
-        // And make it visible
-        showGUI();
     }
 }
