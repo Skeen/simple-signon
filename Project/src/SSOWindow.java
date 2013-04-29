@@ -368,7 +368,11 @@ class SSOWindow implements Runnable
     {
         //Create and set up the window.
         frame = new JFrame("SSO");
-
+        
+        // TEMP. until tray icon is made
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
         // Overview holder panel
         JPanel overview = new JPanel();
         overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
