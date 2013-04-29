@@ -2,6 +2,14 @@ import java.awt.*;
 
 class Service
 {
+    public enum Status {
+        NOTCONNECTED, // Not going to
+        DISCONNECTED, // Was connected, lost connection
+        CONNECTING,   // (re)connecting
+        CONNECTED     // Connected
+    }
+    
+
     public Service(Service dependency, String name, String logo_path, String service_type)
     {
         this.dependency = dependency;
@@ -20,6 +28,13 @@ class Service
         return name;
     }
 
+    public Status getStatus()
+    {
+        return status;
+    }
+
+    // The Status of the service
+    private Status status;
     // The service (if any) that this one depends on
     private Service dependency;
     // The name of this service
