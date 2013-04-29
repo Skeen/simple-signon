@@ -13,6 +13,137 @@ import javax.swing.table.*;
 
 class SSOWindow implements Runnable
 {
+    private class SSOGUI
+    {
+        private DefaultTableModel model;
+
+        public SSOGUI()
+        {
+        }
+
+        private void addToTable(Object o)
+        {
+            while(true)
+            {
+                // If the model is empty
+                if (model.getRowCount() == 0)
+                {
+                    model.setRowCount(1);
+                    // Go from the top again
+                    continue;
+                }
+
+                // Find next null in current row, and insert there
+                int last_row = model.getRowCount() - 1;
+                int column_count = model.getColumnCount();
+                for(int x=0; x<column_count; x++)
+                {
+                    Object value = model.getValueAt(last_row, x);
+                    if(value == null)
+                    {
+                        model.setValueAt(o, last_row, x);
+                        return;
+                    }
+                }
+                // The row is full, make a new one
+                model.setRowCount(model.getRowCount()+1);
+                // And go from the top again
+                continue;
+            }
+        }
+
+        public JPanel createGUI(java.util.List<Service> services)
+        {
+            JPanel grid = new JPanel();
+            grid.setLayout(new GridLayout(1, 1));
+
+            // Make an immutable table
+            model = new DefaultTableModel(0,3)
+            {
+                public boolean isCellEditable(int row, int column)
+                {
+                    return false;
+                }
+            };
+            // Add all our services
+            for(Service s : services)
+            {
+                /*
+                // Get the logo
+                Image logo = s.getLogo();
+                // Scale it to 64x64
+                ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
+                // Add it to the table
+                addToTable(scaledLogo);
+                */
+                addToTable(s);
+            }
+
+            JTable table = new JTable(model)
+            {
+                //  Returning the Class of each column will allow different
+                //  renderers to be used based on Class
+                public Class getColumnClass(int column)
+                {
+                    return getValueAt(0, column).getClass();
+                }
+            };
+
+            table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
+                    {
+                        // TODO: Figure out why it renders the entire row out,
+                        // using the last icon, but it doesn't do this with
+                        // setText(...)
+                        public void setValue(Object value) {
+                            if(value != null) {
+                                Service s = (Service) value;
+                                // Get the logo
+                                Image logo = s.getLogo();
+                                // Scale it to 64x64
+                                ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
+                                // Render it
+                                setIcon(scaledLogo);
+
+                                setText(((Service) value).getName());
+                                /*
+                                setText("!");
+                                */
+                            }
+                            else {
+                                setText("");
+                            }
+                        }
+                    }); 
+
+            table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+            // No header
+            table.setTableHeader(null);
+
+            // Select one cell at a time
+            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            table.setColumnSelectionAllowed(true);
+
+            for(int x=0; x<table.getRowCount(); x++)
+            {
+                table.setRowHeight(x, 64);
+            }
+
+            grid.add(new JScrollPane(table));
+
+            grid.setPreferredSize(new Dimension(0,64*3));
+            return grid;
+        }
+
+        // Returns the Service corresponding to the GUI selection (if any)
+        // Returns null when no selection is made
+        public Service getSelection()
+        {
+            return null;
+        }
+    }
+
+
     java.util.List<Service> services;
 
     // TODO: Test constructor, remove this
@@ -26,7 +157,7 @@ class SSOWindow implements Runnable
         services.add(new Service(null, "Bus", "resource/Bus.png", null));
         services.add(new Service(null, "Car", "resource/Car.png", null));
         services.add(new Service(null, "Clock", "resource/Clock.png", null));
-        
+
         services.add(new Service(null, "akis", "resource/akis.png", null));
         services.add(new Service(null, "akis_green", "resource/akis_green.png", null));
         services.add(new Service(null, "bug", "resource/bug.png", null));
@@ -72,107 +203,25 @@ class SSOWindow implements Runnable
         buttons_top.add(createBorderButton("Remove"));
         buttons_top.add(createBorderButton("(Re)Connect"));
         buttons_top.add(createBorderButton("Edit"));
-        
+
         buttons_bot.add(createBorderButton("Refresh"));
         buttons_bot.add(createBorderButton("Logout"));
 
         return buttons;
     }
 
-    private void addToTable(DefaultTableModel model, Object o)
-    {
-        while(true)
-        {
-            // If the model is empty
-            if (model.getRowCount() == 0)
-            {
-                model.setRowCount(1);
-                // Go from the top again
-                continue;
-            }
-
-            // Find next null in current row, and insert there
-            int last_row = model.getRowCount() - 1;
-            int column_count = model.getColumnCount();
-            for(int x=0; x<column_count; x++)
-            {
-                Object value = model.getValueAt(last_row, x);
-                if(value == null)
-                {
-                    model.setValueAt(o, last_row, x);
-                    return;
-                }
-            }
-            // The row is full, make a new one
-            model.setRowCount(model.getRowCount()+1);
-            // And go from the top again
-            continue;
-        }
-    }
-
-    private JPanel createGRID()
-    {
-        JPanel grid = new JPanel();
-        grid.setLayout(new GridLayout(1, 1));
-
-        // Make an immutable table
-        DefaultTableModel model = new DefaultTableModel(0,3)
-        {
-            public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }
-        };
-        // Add all our services
-        for(Service s : services)
-        {
-            // Get the logo
-            Image logo = s.getLogo();
-            // Scale it to 64x64
-            ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
-            // Add it to the table
-            addToTable(model, scaledLogo);
-        }
-
-        JTable table = new JTable(model)
-        {
-            //  Returning the Class of each column will allow different
-            //  renderers to be used based on Class
-            public Class getColumnClass(int column)
-            {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-
-        // No header
-        table.setTableHeader(null);
-
-        // Select one cell at a time
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setColumnSelectionAllowed(true);
-
-        for(int x=0; x<table.getRowCount(); x++)
-        {
-            table.setRowHeight(x, 64);
-        }
-        
-        grid.add(new JScrollPane(table));
-
-        grid.setPreferredSize(new Dimension(0,64*3));
-        return grid;
-    }
-
     private void createLoginGUI()
     {
         //Create and set up the window.
         frame = new JFrame("SSO");
-        
+
         // Overview holder panel
         JPanel overview = new JPanel();
         overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
 
-        overview.add(createGRID());
+        SSOGUI grid = new SSOGUI();
+
+        overview.add(grid.createGUI(services));
         overview.add(createButtons());
 
         frame.add(overview);

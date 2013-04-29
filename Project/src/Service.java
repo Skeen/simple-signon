@@ -15,6 +15,11 @@ class Service
         return logo;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     // The service (if any) that this one depends on
     private Service dependency;
     // The name of this service
