@@ -123,6 +123,8 @@ public class LoginSSO implements Runnable
 
         // Add the overview to the frame
         frame.getContentPane().add(overview);
+        // Enter maps to Connect
+        frame.getRootPane().setDefaultButton(botton);
 
         // Display the window.
         frame.pack();
