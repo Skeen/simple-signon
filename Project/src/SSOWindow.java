@@ -1,5 +1,7 @@
 import java.lang.*;
 
+import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -11,6 +13,12 @@ import javax.swing.event.*;
 import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.table.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.font.*;
+import java.awt.geom.*;
+import java.awt.image.*;
 
 class SSOWindow implements Runnable
 {
@@ -54,25 +62,67 @@ class SSOWindow implements Runnable
             }
         }
 
+        private Image overlayImage(Image background, Image overlay)
+        {
+            Dimension d = new Dimension(background.getHeight(null), background.getWidth(null));
+            int w = d.width;
+            int h = d.height; 
+
+            // Creates the buffered image.
+            BufferedImage buffImg1 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = buffImg1.createGraphics();
+
+            // Creates the buffered image.
+            BufferedImage buffImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D gbi = buffImg.createGraphics();
+
+            // Clears the previously drawn image.
+            g2.setColor(Color.white);
+            g2.fillRect(0, 0, d.width, d.height);
+
+            int rectx = w/4;
+            int recty = h/4;
+
+            // Draws the rectangle and ellipse into the buffered image.
+            gbi.drawImage(background, null, null);
+
+            AffineTransform transform = new AffineTransform();
+            transform.setToTranslation(h-overlay.getHeight(null), w-overlay.getWidth(null));
+            gbi.drawImage(overlay, transform, null);
+
+            // Draws the buffered image.
+            g2.drawImage(buffImg, null, 0, 0);
+            
+            return buffImg;
+        }
+
         private Image getOverlay(Service.Status status)
         {
-            final String not_connected_image = "";
-            final String disconnected_image = "";
-            final String connecting_image = "";
-            final String connected_image = "";
+            final String not_connected_image = "resource/Pictogram/nothing.png";
+            final String disconnected_image = "resource/Pictogram/Kryds/x_28x28.png";
+            final String connecting_image = "resource/Pictogram/Tandhjul/cog_alt_32x32.png";
+            final String connected_image = "resource/Pictogram/Flueben/check_32x26.png";
 
-            switch(status)
+            try
             {
-                case NOTCONNECTED:
-                    return SSOTray.createImage(not_connected_image);
-                case DISCONNECTED:
-                    return SSOTray.createImage(disconnected_image);
-                case CONNECTING:
-                    return SSOTray.createImage(connecting_image);
-                case CONNECTED:
-                    return SSOTray.createImage(connected_image);
-                default:
-                    return null;
+                switch(status)
+                {
+                    case NOTCONNECTED:
+                        return ImageIO.read(new File(not_connected_image));
+                    case DISCONNECTED:
+                        return ImageIO.read(new File(disconnected_image));
+                    case CONNECTING:
+                        return ImageIO.read(new File(connecting_image));
+                    case CONNECTED:
+                        return ImageIO.read(new File(connected_image));
+                    default:
+                        return null;
+                }
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                return null;
             }
         }
 
@@ -114,6 +164,12 @@ class SSOWindow implements Runnable
                 }
             };
 
+            for(Service s : services)
+            {
+                s.seed(table);
+                new Thread(s).start();
+            }
+
             table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
                     {
                         // TODO: Figure out why it renders the entire row out,
@@ -123,13 +179,11 @@ class SSOWindow implements Runnable
                             if(value != null) {
                                 Service s = (Service) value;
                                 // Get the logo
-                                Image logo = s.getLogo();
-                                // Scale it to 64x64
-                                ImageIcon scaledLogo = new ImageIcon(LoginSSOConnectionHandler.resize(logo, 64, 64));
+                                Image logo = LoginSSOConnectionHandler.resize(s.getLogo(), 64, 64);
                                 // Add the overlay
-                                Image overlay = getOverlay(s.getStatus());
+                                Image overlay = LoginSSOConnectionHandler.resize(getOverlay(s.getStatus()),24,24);
                                 // Render it
-                                setIcon(scaledLogo);
+                                setIcon(new ImageIcon(overlayImage(logo,overlay)));
 
                                 setText(((Service) value).getName());
                                 setText("");
