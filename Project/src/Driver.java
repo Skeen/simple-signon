@@ -8,7 +8,8 @@ class Driver
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable()
                 {
-                    public void run() {
+                    public void run() 
+                    {
                         SSOLogin login = SSOLogin.getSingleton();
                         login.showGUI();
                     }
