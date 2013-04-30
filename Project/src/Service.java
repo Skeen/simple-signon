@@ -11,6 +11,21 @@ class Service implements Runnable
         CONNECTING,   // (re)connecting
         CONNECTED     // Connected
     }
+
+    interface ServiceType
+    {
+        public Status getStatus()
+        {
+        }
+
+        public boolean connect()
+        {
+        }
+
+        public boolean disconnect()
+        {
+        }
+    }
     
     public Service(Service dependency, String name, String logo_path, String service_type)
     {
