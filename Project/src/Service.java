@@ -16,7 +16,7 @@ class Service implements Runnable
     {
         this.dependency = dependency;
         this.name = name;
-        this.logo = SSOTray.createImage(logo_path);
+        this.logo = Utilities.loadImage(logo_path);
         this.type = service_type;
         this.status = Status.DISCONNECTED;
     }

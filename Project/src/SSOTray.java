@@ -31,7 +31,7 @@ class SSOTray
             return;
         }
         final PopupMenu popup = new PopupMenu();
-        final TrayIcon trayIcon = new TrayIcon(createImage(SystemTrayPath, "Tray Icon"));
+        final TrayIcon trayIcon = new TrayIcon(Utilities.loadImage(SystemTrayPath));// "Tray Icon"));
         trayIcon.setImageAutoSize(true);
         trayIcon.setToolTip("Simple-Signon SystemTray");
 
@@ -61,7 +61,7 @@ class SSOTray
         try {
             tray.add(trayIcon);
         } catch (AWTException e) {
-            System.out.println("TrayIcon could not be added.");
+            System.err.println("TrayIcon could not be added.");
             return;
         }
 
@@ -118,23 +118,5 @@ class SSOTray
                 System.exit(0);
             }
         });
-    }
-
-    public static Image createImage(String path)
-    {
-        return createImage(path, "");
-    }
-
-    //Obtain the image URL
-    public static Image createImage(String path, String description) 
-    {
-        URL imageURL = SSOTray.class.getResource(path);
-
-        if (imageURL == null) {
-            System.err.println("Resource not found: " + path);
-            return null;
-        } else {
-            return (new ImageIcon(imageURL, description)).getImage();
-        }
     }
 }
