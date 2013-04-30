@@ -22,8 +22,8 @@ class SSOConnectionHandler
 
     void connect(String username, String password)
     {
-        services.add(new Service(null, "WIFI", "resource/Wifi.png", null));
-        services.add(new Service(null, "VPN", "resource/vpn.png", null));
+        services.add(new Service(null, "WIFI", "resource/Wifi.png", new WifiServiceType()));
+        services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType()));
         services.add(new Service(null, "It's learning", "resource/its_learning.png", null));
         services.add(new Service(null, "Bulb", "resource/Bulb.gif", null));
         services.add(new Service(null, "Bus", "resource/Bus.png", null));

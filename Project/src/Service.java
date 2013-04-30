@@ -5,6 +5,17 @@ import javax.swing.JPanel;
 
 class Service implements Runnable
 {
+    // The Status of the service
+    private Status status;
+    // The service (if any) that this one depends on
+    private Service dependency;
+    // The name of this service
+    private String name;
+    // The logo for this service
+    private Image logo;
+    // The type of this service
+    private ServiceType type;
+
     public enum Status {
         NOTCONNECTED, // Not going to
         DISCONNECTED, // Was connected, lost connection
@@ -12,34 +23,20 @@ class Service implements Runnable
         CONNECTED     // Connected
     }
 
-    interface ServiceType
-    {
-        public Status getStatus()
-        {
-        }
-
-        public boolean connect()
-        {
-        }
-
-        public boolean disconnect()
-        {
-        }
-    }
-    
-    public Service(Service dependency, String name, String logo_path, String service_type)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type)
     {
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
-        this.type = service_type;
+        if(service_type == null)
+        {
+            type = new DefaultServiceType();
+        }
+        else
+        {
+            type = service_type;
+        }
         this.status = Status.DISCONNECTED;
-    }
-
-    private int getRandomBetween(int min, int max)
-    {
-        Random rand = new Random();
-        return min + rand.nextInt(max - min + 1);
     }
 
     private void delay()
@@ -49,7 +46,7 @@ class Service implements Runnable
             int min = 100;
             int max = 1000;
             // Just sleep
-            Thread.sleep(getRandomBetween(min, max));
+            Thread.sleep(Utilities.getRandomBetween(min, max));
         }
         catch(Exception e)
         {
@@ -69,24 +66,33 @@ class Service implements Runnable
         while(true)
         {
             delay();
-            int id = getRandomBetween(0,3);
-            switch(id)
+            // Check if the service is connected
+            boolean isConnected = type.isConnected();
+            if(isConnected)
             {
-                case 0:
-                    status = Status.NOTCONNECTED;
-                    break;
-                case 1:
-                    status = Status.DISCONNECTED;
-                    break;
-                case 2:
-                    status = Status.CONNECTING;
-                    break;
-                case 3:
-                    status = Status.CONNECTED;
-                    break;
-                default:
-                    System.out.println("WOW");
-                    break;
+                status = Status.CONNECTED;
+            }
+            else
+            {
+                int id = Utilities.getRandomBetween(0,3);
+                switch(id)
+                {
+                    case 0:
+                        status = Status.NOTCONNECTED;
+                        break;
+                    case 1:
+                        status = Status.DISCONNECTED;
+                        break;
+                    case 2:
+                        status = Status.CONNECTING;
+                        break;
+                    case 3:
+                        status = Status.CONNECTED;
+                        break;
+                    default:
+                        System.err.println("WHAT");
+                        break;
+                }
             }
             t.updateUI();
         }
@@ -106,15 +112,4 @@ class Service implements Runnable
     {
         return status;
     }
-
-    // The Status of the service
-    private Status status;
-    // The service (if any) that this one depends on
-    private Service dependency;
-    // The name of this service
-    private String name;
-    // The logo for this service
-    private Image logo;
-    // The type of this service
-    private String type;
 }

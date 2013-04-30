@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import javax.imageio.ImageIO;
 
 class Utilities
@@ -83,5 +84,11 @@ class Utilities
         g1.drawImage(buffImg2, null, 0, 0);
 
         return buffImg2;
+    }
+
+    public static int getRandomBetween(int min, int max)
+    {
+        Random rand = new Random();
+        return min + rand.nextInt(max - min + 1);
     }
 }
