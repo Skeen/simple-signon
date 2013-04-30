@@ -1,3 +1,4 @@
+/*
 import javax.swing.table.*;
 
 import java.io.*;
@@ -62,4 +63,4 @@ public class CiscoConnectorThread extends ConnectorThread
         model.setValueAt("CONNECTED", row_id, 4);
     }
 }
-
+*/

@@ -1,3 +1,4 @@
+/*
 import javax.swing.table.*;
 
 import java.io.*;
@@ -36,6 +37,14 @@ public class CiscoConnectorThread extends ConnectorThread
                 {
                     out.write('\n');
                 }
+                else if(line.equals("Username: [skeen]\n"))
+                {
+                    out.write('\n');
+                }
+                else if(line.equals("Password:\n"))
+                {
+                    out.write('\n');
+                }
             }
             
 
@@ -54,4 +63,4 @@ public class CiscoConnectorThread extends ConnectorThread
         model.setValueAt("CONNECTED", row_id, 4);
     }
 }
-
+*/
