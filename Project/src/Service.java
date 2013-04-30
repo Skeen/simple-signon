@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.Random;
 
-import javax.swing.JTable;
+import javax.swing.JPanel;
 
 class Service implements Runnable
 {
@@ -42,9 +42,9 @@ class Service implements Runnable
         }
     }
 
-    private JTable t;
+    private JPanel t;
 
-    public void seed(JTable t)
+    public void seed(JPanel t)
     {
         this.t = t;
     }

@@ -34,6 +34,7 @@ class SSOWindow
 
     private SSOGrid grid;
     private JFrame frame;
+    private JPanel overview;
 
     // TODO: Test constructor, remove this
     private SSOWindow()
@@ -47,7 +48,7 @@ class SSOWindow
         frame = new JFrame("SSO");
 
         // Overview holder panel
-        JPanel overview = new JPanel();
+        overview = new JPanel();
         overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
 
         grid = new SSOGrid();
@@ -66,14 +67,13 @@ class SSOWindow
     {
         grid.clearServices();
         grid.addServices(services);
-        /*
+        
         // TODO: Start connecting
         for(Service s : services)
         {
-            s.seed(table);
+            s.seed(overview);
             new Thread(s).start();
         }
-        */
     }
 
     public void showGUI()
