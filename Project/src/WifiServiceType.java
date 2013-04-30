@@ -2,6 +2,13 @@ import java.io.IOException;
 
 class WifiServiceType implements ServiceType
 {
+    private String test_host = null;
+
+    public WifiServiceType(String test_host)
+    {
+        this.test_host = test_host;
+    }
+
     private static boolean ping(String host)
     {
         boolean isReachable = false;
@@ -30,7 +37,7 @@ class WifiServiceType implements ServiceType
 
     public boolean isConnected()
     {
-        return ping("8.8.8.8");
+        return ping(test_host);
     }
 
     public boolean connect()
