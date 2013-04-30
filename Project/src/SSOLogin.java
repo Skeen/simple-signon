@@ -52,28 +52,32 @@ import javax.swing.table.*;
 // 5: Done
 // 6: Partly done (GUI part)
 
-public class LoginSSO implements Runnable
+public class SSOLogin
 {
-    private LoginSSO this_ptr;
+    private static SSOLogin singleton;
+    public static SSOLogin getSingleton()
+    {
+        if(singleton == null)
+        {
+            singleton = new SSOLogin();
+        }
+        return singleton;
+    }
+
+    private SSOLogin()
+    {
+        create();
+    }
+    
     private JFrame frame;
     private JPanel input;
     private JTextField username_field;
     private JPasswordField password_field;
 
-    public LoginSSO()
-    {
-        this_ptr = this;
-    }
-
-    /**
-     * Create the GUI.
-     * For thread safety, this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private JFrame createLoginGUI()
+    private JFrame create()
     {
         //Create and set up the window.
-        JFrame frame = new JFrame("SSO");
+        frame = new JFrame("SSO");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Overview holder panel
@@ -110,7 +114,7 @@ public class LoginSSO implements Runnable
                         System.out.println("Connect clicked");
                         String username = username_field.getText();
                         String password = new String(password_field.getPassword());
-                        LoginSSOConnectionHandler handler = new LoginSSOConnectionHandler(this_ptr);
+                        SSOConnectionHandler handler = new SSOConnectionHandler();
                         handler.connect(username, password);
                     }
                 });
@@ -132,7 +136,7 @@ public class LoginSSO implements Runnable
         // Return the frame
         return frame;
     }
-
+ 
     public void showGUI()
     {
         frame.setVisible(true);
@@ -141,13 +145,5 @@ public class LoginSSO implements Runnable
     public void hideGUI()
     {
         frame.setVisible(false);
-    }
-
-    public void run() 
-    {
-        // Create the gui frame
-        frame = createLoginGUI();
-        // And make it visible
-        showGUI();
     }
 }
