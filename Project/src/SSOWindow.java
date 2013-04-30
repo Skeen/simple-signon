@@ -164,12 +164,16 @@ class SSOWindow
             {
                 case NOTCONNECTED:
                     path_to_image = not_connected_image;
+                    break;
                 case DISCONNECTED:
                     path_to_image = disconnected_image;
+                    break;
                 case CONNECTING:
                     path_to_image = connecting_image;
+                    break;
                 case CONNECTED:
                     path_to_image = connected_image;
+                    break;
             }
             // Load and return the image
             return Utilities.loadImage(path_to_image);
