@@ -152,40 +152,6 @@ class SSOWindow
             }
         }
 
-        private Image overlayImage(Image background, Image overlay)
-        {
-            Dimension d = new Dimension(background.getHeight(null), background.getWidth(null));
-            int w = d.width;
-            int h = d.height; 
-
-            // Creates the buffered image.
-            BufferedImage buffImg1 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = buffImg1.createGraphics();
-
-            // Creates the buffered image.
-            BufferedImage buffImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D gbi = buffImg.createGraphics();
-
-            // Clears the previously drawn image.
-            g2.setColor(Color.white);
-            g2.fillRect(0, 0, d.width, d.height);
-
-            int rectx = w/4;
-            int recty = h/4;
-
-            // Draws the rectangle and ellipse into the buffered image.
-            gbi.drawImage(background, null, null);
-
-            AffineTransform transform = new AffineTransform();
-            transform.setToTranslation(h-overlay.getHeight(null), w-overlay.getWidth(null));
-            gbi.drawImage(overlay, transform, null);
-
-            // Draws the buffered image.
-            g2.drawImage(buffImg, null, 0, 0);
-            
-            return buffImg;
-        }
-
         private Image getOverlay(Service.Status status)
         {
             final String not_connected_image = "resource/Pictogram/nothing_placeholder.png";
@@ -193,27 +159,20 @@ class SSOWindow
             final String connecting_image = "resource/Pictogram/Tandhjul.png";
             final String connected_image = "resource/Pictogram/Flueben.png";
 
-            try
+            String path_to_image = null;
+            switch(status)
             {
-                switch(status)
-                {
-                    case NOTCONNECTED:
-                        return ImageIO.read(new File(not_connected_image));
-                    case DISCONNECTED:
-                        return ImageIO.read(new File(disconnected_image));
-                    case CONNECTING:
-                        return ImageIO.read(new File(connecting_image));
-                    case CONNECTED:
-                        return ImageIO.read(new File(connected_image));
-                    default:
-                        return null;
-                }
+                case NOTCONNECTED:
+                    path_to_image = not_connected_image;
+                case DISCONNECTED:
+                    path_to_image = disconnected_image;
+                case CONNECTING:
+                    path_to_image = connecting_image;
+                case CONNECTED:
+                    path_to_image = connected_image;
             }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-                return null;
-            }
+            // Load and return the image
+            return Utilities.loadImage(path_to_image);
         }
 
         public JPanel createGUI()
@@ -249,11 +208,11 @@ class SSOWindow
                             if(value != null) {
                                 Service s = (Service) value;
                                 // Get the logo
-                                Image logo = LoginSSOConnectionHandler.resize(s.getLogo(), 64, 64);
+                                Image logo = Utilities.resizeImage(s.getLogo(), 64, 64);
                                 // Add the overlay
-                                Image overlay = LoginSSOConnectionHandler.resize(getOverlay(s.getStatus()),24,24);
+                                Image overlay = Utilities.resizeImage(getOverlay(s.getStatus()),24,24);
                                 // Render it
-                                setIcon(new ImageIcon(overlayImage(logo,overlay)));
+                                setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
 
                                 setText(((Service) value).getName());
                                 setText("");
