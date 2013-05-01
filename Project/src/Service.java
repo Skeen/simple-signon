@@ -39,13 +39,9 @@ class Service implements Runnable
             type = service_type;
         }
         this.auto_connect = auto_connect;
-        if(auto_connect == false)
+        this.status = Status.NOTCONNECTED;
+        if(auto_connect)
         {
-            this.status = Status.NOTCONNECTED;
-        }
-        else
-        {
-            this.status = Status.DISCONNECTED;
             new Thread(new Runnable() 
                     {
                         public void run() {
