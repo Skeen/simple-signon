@@ -1,27 +1,22 @@
 import java.io.IOException;
 
-class WifiServiceType implements ServiceType
+class WifiServiceType extends PingServiceType
 {
-    private String test_host = null;
-
-    public WifiServiceType(String test_host)
+    private volatile boolean connecting = false;
+    public WifiServiceType(String host)
     {
-        this.test_host = test_host;
+        super(host);
     }
 
-    private static boolean ping(String host)
+    private static int disconnectWifi()
     {
-        boolean isReachable = false;
         try
         {
-            Process proc = new ProcessBuilder("ping", host).start();
+            Process proc = new ProcessBuilder("netsh", "wlan disconnect").start();
 
             int exitValue = proc.waitFor();
-            System.out.println("Exit Value:" + exitValue);
-            if(exitValue == 0)
-            {
-                isReachable = true;
-            }
+            System.out.println("Disconnect:" + exitValue);
+            return exitValue;
         }
         catch (IOException e)
         {
@@ -32,21 +27,57 @@ class WifiServiceType implements ServiceType
         {
             e.printStackTrace();
         }
-        return isReachable;
+        return -1;
     }
 
-    public boolean isConnected()
+    private static int connectWifi(String profile)
     {
-        return ping(test_host);
+        try
+        {
+            Process proc = new ProcessBuilder("netsh", "connect", "name=" + profile).start();
+
+            int exitValue = proc.waitFor();
+            System.out.println("Disconnect:" + exitValue);
+            return exitValue;
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
-    public boolean connect()
+    public Service.Status getStatus()
     {
-        return false;
+        // Are we connecting currently
+        if(connecting)
+        {
+            return Service.Status.CONNECTING;
+        }
+        // If we're not connecting, let ping decide our state
+        else
+        {
+            return super.getStatus();
+        }
     }
 
-    public boolean disconnect()
+    public void connect()
     {
-        return false;
+        connecting = true;
+        // Start Connecting
+        connectWifi("AU-Gadget");
+        while(super.getStatus() != Service.Status.CONNECTED);
+        // Done Connecting
+        connecting = false;
+    }
+
+    public void disconnect()
+    {
+        disconnectWifi();
     }
 }

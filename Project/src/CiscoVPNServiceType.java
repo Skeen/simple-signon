@@ -9,7 +9,9 @@ class CiscoVPNServiceType implements ServiceType
     private static final String cisco_vpn_status = "state";
     private static final String cisco_vpn_server = "vpn.au.dk";
 
-    public boolean isConnected()
+    private volatile boolean connecting = false;
+
+    private boolean isConnected()
     {
         try
         {
@@ -44,13 +46,35 @@ class CiscoVPNServiceType implements ServiceType
         }
     }
 
-    public boolean connect()
+    public Service.Status getStatus()
     {
-        return false;
+        // Are we connecting currently
+        if(connecting)
+        {
+            return Service.Status.CONNECTING;
+        }
+        else
+        {
+            boolean connected = isConnected();
+            // Are we connected
+            if(connected)
+            {
+                return Service.Status.CONNECTED;
+            }
+            // We are not connecting, and not connected, hence we must be
+            // disconnected
+            else
+            {
+                return Service.Status.DISCONNECTED;
+            }
+        }
     }
 
-    public boolean disconnect()
+    public void connect()
     {
-        return false;
+    }
+
+    public void disconnect()
+    {
     }
 }

@@ -15,6 +15,8 @@ class Service implements Runnable
     private Image logo;
     // The type of this service
     private ServiceType type;
+    // Whether this service is auto-connect
+    private boolean auto_connect;
 
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -23,7 +25,7 @@ class Service implements Runnable
         CONNECTED     // Connected
     }
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect)
     {
         this.dependency = dependency;
         this.name = name;
@@ -36,7 +38,21 @@ class Service implements Runnable
         {
             type = service_type;
         }
-        this.status = Status.DISCONNECTED;
+        this.auto_connect = auto_connect;
+        if(auto_connect == false)
+        {
+            this.status = Status.NOTCONNECTED;
+        }
+        else
+        {
+            this.status = Status.DISCONNECTED;
+            new Thread(new Runnable() 
+                    {
+                        public void run() {
+                            type.connect();
+                        }
+                    }).start();
+        }
     }
 
     private void delay()
@@ -66,33 +82,13 @@ class Service implements Runnable
         while(true)
         {
             delay();
-            // Check if the service is connected
-            boolean isConnected = type.isConnected();
-            if(isConnected)
+            if(auto_connect == false)
             {
-                status = Status.CONNECTED;
+                status = Status.NOTCONNECTED;
             }
             else
             {
-                int id = Utilities.getRandomBetween(0,3);
-                switch(id)
-                {
-                    case 0:
-                        status = Status.NOTCONNECTED;
-                        break;
-                    case 1:
-                        status = Status.DISCONNECTED;
-                        break;
-                    case 2:
-                        status = Status.CONNECTING;
-                        break;
-                    case 3:
-                        status = Status.CONNECTED;
-                        break;
-                    default:
-                        System.err.println("WHAT");
-                        break;
-                }
+                status = type.getStatus();
             }
             t.updateUI();
         }
