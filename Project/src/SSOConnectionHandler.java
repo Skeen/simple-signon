@@ -27,7 +27,7 @@ class SSOConnectionHandler
 
         services.add(new Service(null, "WIFI", "resource/Wifi.png", new WifiServiceType("8.8.8.8"), true));
         services.add(new Service(null, "DNS", "resource/DNS.png", new PingServiceType("www.google.com"), true));
-        services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType(), true));
+        services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType("vpn.au.dk", "AU-Gadget"), true));
         services.add(new Service(null, "It's learning", "resource/its_learning.png", null, false));
         services.add(new Service(null, "Bulb", "resource/Bulb.gif", null, false));
         services.add(new Service(null, "Bus", "resource/Bus.png", null, false));
