@@ -51,19 +51,6 @@ class Service implements Runnable
         }
     }
 
-    private void delay(int amount)
-    {
-        try
-        {
-            // Just sleep
-            Thread.sleep(amount);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     private JPanel t;
 
     public void seed(JPanel t)
@@ -75,7 +62,7 @@ class Service implements Runnable
     {
         while(true)
         {
-            delay(1000);
+            Utilities.delay(1000);
             if(auto_connect == false)
             {
                 status = Status.NOTCONNECTED;
@@ -83,6 +70,10 @@ class Service implements Runnable
             else
             {
                 status = type.getStatus();
+                if(status == Status.DISCONNECTED)
+                {
+                    // Show an error at the tray icon
+                }
             }
             t.updateUI();
         }

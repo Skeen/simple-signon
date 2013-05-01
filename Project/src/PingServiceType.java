@@ -2,7 +2,7 @@ import java.io.*;
 
 class PingServiceType implements ServiceType
 {
-    private volatile boolean connected = false;
+    private volatile Boolean connected = null;
     public PingServiceType(final String host)
     {
         new Thread(new Runnable()
@@ -43,6 +43,11 @@ class PingServiceType implements ServiceType
     
     public Service.Status getStatus()
     {
+        // If we got no ping report yet, let's wait for it
+        while(connected == null)
+        {
+            Utilities.delay(1000);
+        }
         // Are we connected
         if(connected)
         {

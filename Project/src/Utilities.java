@@ -91,4 +91,17 @@ class Utilities
         Random rand = new Random();
         return min + rand.nextInt(max - min + 1);
     }
+
+    public static void delay(int amount)
+    {
+        try
+        {
+            // Just sleep
+            Thread.sleep(amount);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
