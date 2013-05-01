@@ -32,7 +32,6 @@ class SSOWindow
         return singleton;
     }
 
-    private SSOGrid serviceGrid;
     private JPanel servicePanel;
     private JFrame frame;
 
@@ -48,9 +47,8 @@ class SSOWindow
         frame = new JFrame("SSO");
         
         // Create GUI elements
-        serviceGrid = new SSOGrid();
-        servicePanel = serviceGrid.createGUI();
-        JPanel buttonPanel = createButtonPanel(serviceGrid);
+        servicePanel = createServicePanel();
+        JPanel buttonPanel = createButtonPanel();
         
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
@@ -63,8 +61,8 @@ class SSOWindow
     
     public void loadServices(java.util.List<Service> services)
     {
-        serviceGrid.clearServices();
-        serviceGrid.addServices(services);
+        clearServices();
+        addServices(services);
         
         // TODO: Start connecting
         for(Service s : services)
@@ -97,7 +95,7 @@ class SSOWindow
     private JButton refresh;
     private JButton logout;
         
-    public JPanel createButtonPanel(SSOGrid grid)
+    public JPanel createButtonPanel()
     {
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(2, 1));
@@ -149,10 +147,10 @@ class SSOWindow
         updateButtons(false);
         
         //Button fades out fades in depending on selection
-        serviceGrid.addSelectionCallback(new ListSelectionListener()
+        addSelectionCallback(new ListSelectionListener()
             {
                 private boolean isValidSelection() {
-                    Service s = serviceGrid.getSelection();
+                    Service s = getSelection();
                     return s != null;
                 }
                 
@@ -191,188 +189,181 @@ class SSOWindow
         }
     }
     
-    private class SSOGrid
+    private JTable table;
+    private DefaultTableModel model;
+    
+    public void clearServices()
     {
-        private JTable table;
-        private DefaultTableModel model;
+        // This method should remove all services AND stop them, in whatever
+        // they are doing (including all the subthreads of all services).
+    }
 
-        public SSOGrid()
+    public void addServices(java.util.List<Service> services)
+    {
+        for(Service s : services)
         {
+            addService(s);
         }
+    }
 
-        public void clearServices()
+    public void addService(Service s)
+    {
+        addToTable(s);
+    }
+
+    private void updateTableHeight()
+    {
+        for(int x=0; x<table.getRowCount(); x++)
         {
-            // This method should remove all services AND stop them, in whatever
-            // they are doing (including all the subthreads of all services).
+            table.setRowHeight(x, 64);
         }
+    }
 
-        public void addServices(java.util.List<Service> services)
+    private void addToTable(Object o)
+    {
+        while(true)
         {
-            for(Service s : services)
+            // If the model is empty
+            if (model.getRowCount() == 0)
             {
-                addService(s);
-            }
-        }
-
-        public void addService(Service s)
-        {
-            addToTable(s);
-        }
-
-        private void updateTableHeight()
-        {
-            for(int x=0; x<table.getRowCount(); x++)
-            {
-                table.setRowHeight(x, 64);
-            }
-        }
-
-        private void addToTable(Object o)
-        {
-            while(true)
-            {
-                // If the model is empty
-                if (model.getRowCount() == 0)
-                {
-                    model.setRowCount(1);
-                    // Go from the top again
-                    continue;
-                }
-
-                // Find next null in current row, and insert there
-                int last_row = model.getRowCount() - 1;
-                int column_count = model.getColumnCount();
-                for(int x=0; x<column_count; x++)
-                {
-                    Object value = model.getValueAt(last_row, x);
-                    if(value == null)
-                    {
-                        model.setValueAt(o, last_row, x);
-                        updateTableHeight();
-                        return;
-                    }
-                }
-                // The row is full, make a new one
-                model.setRowCount(model.getRowCount()+1);
-                // And go from the top again
+                model.setRowCount(1);
+                // Go from the top again
                 continue;
             }
-        }
 
-        private Image getOverlay(Service.Status status)
-        {
-            final String not_connected_image = "resource/Pictogram/nothing_placeholder.png";
-            final String disconnected_image = "resource/Pictogram/Kryds.png";
-            final String connecting_image = "resource/Pictogram/Tandhjul.png";
-            final String connected_image = "resource/Pictogram/Flueben.png";
-
-            String path_to_image = null;
-            switch(status)
+            // Find next null in current row, and insert there
+            int last_row = model.getRowCount() - 1;
+            int column_count = model.getColumnCount();
+            for(int x=0; x<column_count; x++)
             {
-                case NOTCONNECTED:
-                    path_to_image = not_connected_image;
-                    break;
-                case DISCONNECTED:
-                    path_to_image = disconnected_image;
-                    break;
-                case CONNECTING:
-                    path_to_image = connecting_image;
-                    break;
-                case CONNECTED:
-                    path_to_image = connected_image;
-                    break;
+                Object value = model.getValueAt(last_row, x);
+                if(value == null)
+                {
+                    model.setValueAt(o, last_row, x);
+                    updateTableHeight();
+                    return;
+                }
             }
-            // Load and return the image
-            return Utilities.loadImage(path_to_image);
+            // The row is full, make a new one
+            model.setRowCount(model.getRowCount()+1);
+            // And go from the top again
+            continue;
         }
+    }
 
-        public JPanel createGUI()
+    private Image getOverlay(Service.Status status)
+    {
+        final String not_connected_image = "resource/Pictogram/nothing_placeholder.png";
+        final String disconnected_image = "resource/Pictogram/Kryds.png";
+        final String connecting_image = "resource/Pictogram/Tandhjul.png";
+        final String connected_image = "resource/Pictogram/Flueben.png";
+
+        String path_to_image = null;
+        switch(status)
         {
-            JPanel grid = new JPanel();
-            grid.setLayout(new GridLayout(1, 1));
+            case NOTCONNECTED:
+                path_to_image = not_connected_image;
+                break;
+            case DISCONNECTED:
+                path_to_image = disconnected_image;
+                break;
+            case CONNECTING:
+                path_to_image = connecting_image;
+                break;
+            case CONNECTED:
+                path_to_image = connected_image;
+                break;
+        }
+        // Load and return the image
+        return Utilities.loadImage(path_to_image);
+    }
 
-            // Make an immutable table
-            model = new DefaultTableModel(0,3)
+    public JPanel createServicePanel()
+    {
+        JPanel grid = new JPanel();
+        grid.setLayout(new GridLayout(1, 1));
+
+        // Make an immutable table
+        model = new DefaultTableModel(0,3)
+        {
+            public boolean isCellEditable(int row, int column)
             {
-                public boolean isCellEditable(int row, int column)
-                {
-                    return false;
-                }
-            };
+                return false;
+            }
+        };
 
-            table = new JTable(model)
+        table = new JTable(model)
+        {
+            //  Returning the Class of each column will allow different
+            //  renderers to be used based on Class
+            public Class getColumnClass(int column)
             {
-                //  Returning the Class of each column will allow different
-                //  renderers to be used based on Class
-                public Class getColumnClass(int column)
+                return getValueAt(0, column).getClass();
+            }
+        };
+
+        table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
                 {
-                    return getValueAt(0, column).getClass();
-                }
-            };
+                    // TODO: Figure out why it renders the entire row out,
+                    // using the last icon, but it doesn't do this with
+                    // setText(...)
+                    public void setValue(Object value) {
+                        if(value != null) {
+                            Service s = (Service) value;
+                            // Get the logo
+                            Image logo = Utilities.resizeImage(s.getLogo(), 64, 64);
+                            // Add the overlay
+                            Image overlay = Utilities.resizeImage(getOverlay(s.getStatus()),24,24);
+                            // Render it
+                            setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
 
-            table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
-                    {
-                        // TODO: Figure out why it renders the entire row out,
-                        // using the last icon, but it doesn't do this with
-                        // setText(...)
-                        public void setValue(Object value) {
-                            if(value != null) {
-                                Service s = (Service) value;
-                                // Get the logo
-                                Image logo = Utilities.resizeImage(s.getLogo(), 64, 64);
-                                // Add the overlay
-                                Image overlay = Utilities.resizeImage(getOverlay(s.getStatus()),24,24);
-                                // Render it
-                                setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
-
-                                setText(((Service) value).getName());
-                                setText("");
-                                /*
-                                setText("!");
-                                */
-                            }
-                            else {
-                                setText("");
-                            }
+                            setText(((Service) value).getName());
+                            setText("");
+                            /*
+                            setText("!");
+                            */
                         }
-                    }); 
+                        else {
+                            setText("");
+                        }
+                    }
+                }); 
 
-            table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-            // No header
-            table.setTableHeader(null);
+        // No header
+        table.setTableHeader(null);
 
-            // Select one cell at a time
-            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            table.setColumnSelectionAllowed(true);
+        // Select one cell at a time
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setColumnSelectionAllowed(true);
 
-            grid.add(new JScrollPane(table));
+        grid.add(new JScrollPane(table));
 
-            grid.setPreferredSize(new Dimension(0,64*3));
-            return grid;
-        }
+        grid.setPreferredSize(new Dimension(0,64*3));
+        return grid;
+    }
 
-        public void addSelectionCallback(ListSelectionListener sl)
+    public void addSelectionCallback(ListSelectionListener sl)
+    {
+        table.getColumnModel().getSelectionModel().addListSelectionListener(sl);
+        table.getSelectionModel().addListSelectionListener(sl);
+    }
+
+    // Returns the Service corresponding to the GUI selection (if any)
+    // Returns null when no selection is made
+    public Service getSelection()
+    {
+        int column = table.getSelectedColumn();
+        int row = table.getSelectedRow();
+        System.out.println("Selection at (x,y)=(" + column + " , " + row + ");");
+        if(column == -1 || row == -1)
         {
-            table.getColumnModel().getSelectionModel().addListSelectionListener(sl);
-            table.getSelectionModel().addListSelectionListener(sl);
+            return null;
         }
-
-        // Returns the Service corresponding to the GUI selection (if any)
-        // Returns null when no selection is made
-        public Service getSelection()
+        else
         {
-            int column = table.getSelectedColumn();
-            int row = table.getSelectedRow();
-            System.out.println("Selection at (x,y)=(" + column + " , " + row + ");");
-            if(column == -1 || row == -1)
-            {
-                return null;
-            }
-            else
-            {
-                return (Service) table.getValueAt(row, column);
-            }
+            return (Service) table.getValueAt(row, column);
         }
     }
 }
