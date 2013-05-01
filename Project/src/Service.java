@@ -55,14 +55,12 @@ class Service implements Runnable
         }
     }
 
-    private void delay()
+    private void delay(int amount)
     {
         try
         {
-            int min = 100;
-            int max = 1000;
             // Just sleep
-            Thread.sleep(Utilities.getRandomBetween(min, max));
+            Thread.sleep(amount);
         }
         catch(Exception e)
         {
@@ -81,7 +79,7 @@ class Service implements Runnable
     {
         while(true)
         {
-            delay();
+            delay(1000);
             if(auto_connect == false)
             {
                 status = Status.NOTCONNECTED;

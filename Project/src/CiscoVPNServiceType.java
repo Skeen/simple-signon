@@ -7,7 +7,14 @@ class CiscoVPNServiceType implements ServiceType
     private static final String cisco_vpn_connect = "connect";
     private static final String cisco_vpn_disconnect = "disconnect";
     private static final String cisco_vpn_status = "state";
-    private static final String cisco_vpn_server = "vpn.au.dk";
+    private static String cisco_vpn_server = null;
+    private static String cisco_vpn_profile = null;
+
+    public CiscoVPNServiceType(String host, String profile)
+    {
+        this.cisco_vpn_server = host;
+        this.cisco_vpn_profile = profile;
+    }
 
     private volatile boolean connecting = false;
 
@@ -72,9 +79,25 @@ class CiscoVPNServiceType implements ServiceType
 
     public void connect()
     {
+        // TODO: Implementation
     }
 
     public void disconnect()
     {
+        try
+        {
+            Runtime rt = Runtime.getRuntime();
+            Process p = rt.exec(new String[]
+                    {
+                        cisco_vpn_path,
+                        cisco_vpn_disconnect,
+                        cisco_vpn_server
+                    });
+            p.waitFor();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
