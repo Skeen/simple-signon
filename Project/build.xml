@@ -1,0 +1,137 @@
+<project name="SSO" default="help" basedir=".">
+    <property name="source-directory" value="src"/>
+    <property name="test-source-directory" value="test"/>
+    <property name="build-directory" value="build"/>
+    <property name="lib-directory" value="lib"/>
+    <property name="configuration-directory" value="conf"/>
+    <property name="documentation-directory" value="doc"/>
+    <property name="resource-directory" value="resource"/>
+
+    <property name="build.compiler.pedantic" value="true"/>
+
+    <property name="junitJar" value="${lib-directory}/junit-4.4.jar"/>
+    <property name="doxygenJar" value="${lib-directory}/ant_doxygen.jar"/>
+
+    <taskdef name="doxygen" classname="org.doxygen.tools.DoxygenTask"
+        classpath="${doxygenJar}" />
+
+    <path id="class-path">
+        <pathelement location="${build-directory}"/>
+        <pathelement location="${junitJar}"/>
+    </path>
+
+    <target name="help">
+        <echo>
+   SSO build management.
+   Targets:
+            build-src: Builds production code.
+            clean:     Removes all bytecode.
+            handin:    Generate a Zip containing the code.
+
+       Documentation (output in ${documentation-directory})
+            javadoc:   Generate JavaDoc 
+            doxygen:   Generate Doxygen Documationation 
+
+       Testing Targets:
+            test:      Run JUnit test cases.
+        </echo>
+    </target>
+
+    <target name="handin">
+        <zip zipfile="CB.zip" update="true">
+            <fileset dir=".">
+                <include name="${source-directory}/**"/>
+                <include name="${test-source-directory}/**"/>
+                <include name="${lib-directory}/**"/>
+                <include name="${configuration-directory}/**"/>
+                <include name="build.xml"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="clean-doc">
+        <delete dir="${documentation-directory}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build-directory}"/>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="build-src" depends="prepare">
+        <javac srcdir="${source-directory}"
+            destdir="${build-directory}"
+            includeantruntime="true"
+            >
+            <classpath refid="class-path"/>
+        </javac>
+    </target>
+
+    <target name="build-test" depends="build-src">
+        <javac srcdir="${test-source-directory}"
+            destdir="${build-directory}"
+            includeantruntime="true"
+            >
+            <classpath refid="class-path"/>
+        </javac>
+    </target>
+
+    <target name="copyResource" depends="prepare">
+        <copy todir="${build-directory}\${resource-directory}" >
+            <fileset dir="${resource-directory}">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="build-all" depends="build-src,build-test,copyResource"/>
+
+    <target name="prepare-doc">
+        <mkdir dir="${documentation-directory}"/>
+    </target>
+
+    <target name="doxygen" depends="prepare-doc">
+        <doxygen configFilename="${configuration-directory}/doxygen.cfg"/>
+    </target>
+
+    <target name="run" depends="build-all">
+        <java classname="Driver" fork="true"> 
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+
+    <target name="javadoc" depends="clean-doc,prepare-doc">
+        <javadoc
+            source = "1.5"
+            packagenames="hotciv.*"
+            sourcepath="${source-directory}"
+            destdir="${documentation-directory}"
+            package="true"
+            doctitle="&lt;b&gt;HotCiv&lt;/b&gt;"
+            windowtitle="HotCiv system" >
+            <sourcepath> 
+                <pathelement path="${source-directory}"/> 
+            </sourcepath>
+            <classpath> 
+                <path refid="class-path"/> 
+            </classpath>
+        </javadoc>
+    </target>
+
+    <!-- JUnit testing -->    
+    <!--
+    <target name="test" depends="test-gui">
+    </target>
+    -->
+    <!--
+    <target name="test-gui"  depends="build-all">
+        <java classname="gui.variants.alphaciv.TestAlphaCiv"> 
+            <arg value="hotciv.variants.alphaciv.TestAlphaCiv"/>
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+    -->
+
+</project>
