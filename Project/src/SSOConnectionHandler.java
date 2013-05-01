@@ -22,9 +22,8 @@ class SSOConnectionHandler
 
     void connect(String username, String password)
     {
-        // TODO: Wifi Service, should be able to connect to wifi, given a
-        // profile name, and disconnect as well (netsh)
-
+        // Unpack each service using anonymous inner classes (Map<String, String>
+        // as input, constructor call, as output (lambdas?)).
         services.add(new Service(null, "WIFI", "resource/Wifi.png", new WifiServiceType("8.8.8.8"), true));
         services.add(new Service(null, "DNS", "resource/DNS.png", new PingServiceType("www.google.com"), true));
         services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType("vpn.au.dk", "AU-Gadget"), true));
