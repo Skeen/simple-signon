@@ -133,6 +133,8 @@ class SSOWindow
                             public void run() {
                                 // Hide ourselves login prompt
                                 hideGUI();
+                                // remove services
+                                serviceGrid.clearServices();
                                 // Hide the tray
                                 SSOTray tray = SSOTray.getSingleton();
                                 tray.hideGUI();
@@ -200,6 +202,8 @@ class SSOWindow
 
         public void clearServices()
         {
+            // This method should remove all services AND stop them, in whatever
+            // they are doing (including all the subthreads of all services).
         }
 
         public void addServices(java.util.List<Service> services)
