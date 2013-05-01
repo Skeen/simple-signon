@@ -32,9 +32,9 @@ class SSOWindow
         return singleton;
     }
 
-    private SSOGrid grid;
+    private SSOGrid serviceGrid;
+    private JPanel servicePanel;
     private JFrame frame;
-    private JPanel overview;
 
     // TODO: Test constructor, remove this
     private SSOWindow()
@@ -46,36 +46,37 @@ class SSOWindow
     {
         //Create and set up the window.
         frame = new JFrame("SSO");
-
-        // Overview holder panel
-        overview = new JPanel();
-        overview.setLayout(new BoxLayout(overview, BoxLayout.Y_AXIS));
-
-        grid = new SSOGrid();
-        overview.add(grid.createGUI());
-
-        SSOButtons buttons = new SSOButtons(grid);
-        overview.add(buttons.createGUI());
-
-        frame.add(overview);
-
+        
+        //TODO: remove Close on Exit when tray functionality is done.
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Create GUI elements
+        serviceGrid = new SSOGrid();
+        servicePanel = serviceGrid.createGUI();
+        JPanel buttonPanel = createButtonPanel(serviceGrid);
+        
+        Container pane = frame.getContentPane();
+        pane.setLayout(new BorderLayout());
+        pane.add(buttonPanel, BorderLayout.SOUTH);
+        pane.add(servicePanel, BorderLayout.CENTER);
+        
         frame.pack();
         frame.setResizable( false );
     }
-
+    
     public void loadServices(java.util.List<Service> services)
     {
-        grid.clearServices();
-        grid.addServices(services);
+        serviceGrid.clearServices();
+        serviceGrid.addServices(services);
         
         // TODO: Start connecting
         for(Service s : services)
         {
-            s.seed(overview);
+            s.seed(servicePanel);
             new Thread(s).start();
         }
     }
-
+    
     public void showGUI()
     {
         frame.setVisible(true);
@@ -85,12 +86,101 @@ class SSOWindow
     {
         frame.setVisible(false);
     }
-    
+
     public boolean isShown()
     {
         return frame.isVisible();
     }
+    
+    private JButton add;
+    private JButton remove;
+    private JButton reconnect;
+    private JButton edit;
 
+    private JButton refresh;
+    private JButton logout;
+        
+    public JPanel createButtonPanel(SSOGrid grid)
+    {
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(2, 1));
+        
+        JPanel buttons_top = new JPanel();
+        buttons_top.setLayout(new GridLayout(1, 4));
+        JPanel buttons_bot = new JPanel();
+        buttons_bot.setLayout(new GridLayout(1, 2));
+        
+        add = new JButton("Add");
+        remove = new JButton("Remove");
+        reconnect = new JButton("(Re)Connect");
+        edit = new JButton("Edit");
+        refresh = new JButton("Refresh");
+        logout = new JButton("Logout");
+        
+        //Button event actions
+        edit.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    SSOEdit edit = new SSOEdit();
+                    edit.showGUI();
+                }
+            });
+                    
+        logout.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    SSOLogin login = SSOLogin.getSingleton();
+                    login.showGUI();
+                    hideGUI();
+                }
+            });
+        updateButtons(false);
+        
+        //Button fades out fades in depending on selection
+        serviceGrid.addSelectionCallback(new ListSelectionListener()
+            {
+                private boolean isValidSelection() {
+                    Service s = serviceGrid.getSelection();
+                    return s != null;
+                }
+                
+                public void valueChanged(ListSelectionEvent e) {
+                    updateButtons(isValidSelection());
+                }
+            });
+        
+        buttons_top.add(add);
+        buttons_top.add(remove);
+        buttons_top.add(reconnect);
+        buttons_top.add(edit);
+        
+        buttons_bot.add(refresh);
+        buttons_bot.add(logout);
+        
+        buttons.add(buttons_top);
+        buttons.add(buttons_bot);
+        
+        return buttons;
+    }
+    
+    private void updateButtons(boolean hasSelection)
+    {
+        if(hasSelection) 
+        {
+            remove.setEnabled(true); 
+            reconnect.setEnabled(true); 
+            edit.setEnabled(true); 
+        }
+        else 
+        {
+            remove.setEnabled(false); 
+            reconnect.setEnabled(false); 
+            edit.setEnabled(false);
+        }
+    }
+    
     private class SSOGrid
     {
         private JTable table;
@@ -271,100 +361,6 @@ class SSOWindow
             {
                 return (Service) table.getValueAt(row, column);
             }
-        }
-    }
-
-    class SSOButtons
-    {
-        private SSOGrid grid;
-
-        private JButton add;
-        private JButton remove;
-        private JButton reconnect;
-        private JButton edit;
-
-        private JButton refresh;
-        private JButton logout;
-
-        private void updateButtons(boolean hasSelection)
-        {
-            if(hasSelection) 
-            {
-                remove.setEnabled(true); 
-                reconnect.setEnabled(true); 
-                edit.setEnabled(true); 
-            }
-            else 
-            {
-                remove.setEnabled(false); 
-                reconnect.setEnabled(false); 
-                edit.setEnabled(false);
-            }
-        }
-
-        public SSOButtons(SSOGrid s)
-        {
-            grid = s;
-
-            grid.addSelectionCallback(new ListSelectionListener()
-                    {
-                        private boolean isValidSelection() {
-                            Service s = grid.getSelection();
-                            return s != null;
-                        }
-
-                        public void valueChanged(ListSelectionEvent e) {
-                            updateButtons(isValidSelection());
-                        }
-                    });
-        }
-
-        private JPanel createBorderButton(JButton button)
-        {
-            JPanel button_panel = new JPanel();
-            button_panel.setLayout(new GridLayout(1, 1));
-            button_panel.add(button);
-            return button_panel;
-        }
-
-        public JPanel createGUI()
-        {
-            JPanel buttons = new JPanel();
-            buttons.setLayout(new GridLayout(2, 1));
-
-            JPanel buttons_top = new JPanel();
-            buttons_top.setLayout(new GridLayout(1, 4));
-            JPanel buttons_bot = new JPanel();
-            buttons_bot.setLayout(new GridLayout(1, 2));
-            buttons.add(buttons_top);
-            buttons.add(buttons_bot);
-
-            add = new JButton("Add");
-            remove = new JButton("Remove");
-            reconnect = new JButton("(Re)Connect");
-            edit = new JButton("Edit");
-            refresh = new JButton("Refresh");
-            logout = new JButton("Logout");
-            logout.addActionListener(new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent e) {
-                        SSOLogin login = SSOLogin.getSingleton();
-                        login.showGUI();
-                        hideGUI();
-                    }
-                });
-
-            updateButtons(false);
-
-            buttons_top.add(createBorderButton(add));
-            buttons_top.add(createBorderButton(remove));
-            buttons_top.add(createBorderButton(reconnect));
-            buttons_top.add(createBorderButton(edit));
-
-            buttons_bot.add(createBorderButton(refresh));
-            buttons_bot.add(createBorderButton(logout));
-
-            return buttons;
         }
     }
 }
