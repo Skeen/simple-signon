@@ -82,8 +82,15 @@ public class SSOEdit
         passPanel.add(passLabel, BorderLayout.WEST);
         passPanel.add(passInput, BorderLayout.EAST);
         
+        //Create panel with repeat of password label and text input
+        JLabel repeatLabel = new JLabel(" Repeat Password: ");
+		JTextField repeatInput = new JTextField(10);
+		JPanel repeatPanel = new JPanel(new BorderLayout());
+        repeatPanel.add(repeatLabel, BorderLayout.WEST);
+        repeatPanel.add(repeatInput, BorderLayout.EAST);
+        
         //Create panel with auto connect checkmark, and Accept/Cancel buttons.
-        JCheckBox autoConBox = new JCheckBox("Autoconnect: ");
+        JCheckBox autoConBox = new JCheckBox("Autoconnect");
         //JCheckBox autoConBox = new JCheckBox("Autoconnect: ", Services.do you autoconnect());
         JButton accept = new JButton("Accept");
         JButton cancel = new JButton("Cancel");
@@ -92,12 +99,23 @@ public class SSOEdit
         buttonPanel.add(accept);
         buttonPanel.add(cancel);
         
+        //Add events when clicking buttons
+        cancel.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    SSOEdit edit = new SSOEdit();
+                    edit.hideGUI();
+                    frame.dispose();
+                }
+            });
         
         //Set this window to use box layout and add panels
         Container pane = frame.getContentPane();
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         pane.add(userPanel);
         pane.add(passPanel);
+        pane.add(repeatPanel);
         pane.add(buttonPanel);
         
         frame.pack();
