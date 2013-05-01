@@ -44,12 +44,12 @@ class PingServiceType implements ServiceType
     public Service.Status getStatus()
     {
         // If we got no ping report yet, let's wait for it
-        while(connected == null)
+        if(connected == null)
         {
-            Utilities.delay(1000);
+            return Service.Status.CONNECTING;
         }
         // Are we connected
-        if(connected)
+        else if(connected)
         {
             return Service.Status.CONNECTED;
         }

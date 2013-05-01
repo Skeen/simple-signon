@@ -73,6 +73,16 @@ class Service implements Runnable
                 if(status == Status.DISCONNECTED)
                 {
                     // Show an error at the tray icon
+                    SSOTray tray = SSOTray.getSingleton();
+                    tray.showError(name + " disconnected");
+                }
+                else
+                {
+                    /*
+                    // Show an error at the tray icon
+                    SSOTray tray = SSOTray.getSingleton();
+                    tray.showInfo(name + " connected");
+                    */
                 }
             }
             t.updateUI();

@@ -16,10 +16,31 @@ class SSOTray
     }
 
     private static final String SystemTrayPath = "resource/SystemTray.png";
-
     private SSOTray()
     {
         create();
+    }
+
+    private TrayIcon trayIcon = null;
+
+    public void showError(String str)
+    {
+        trayIcon.displayMessage("SSO Error", str, TrayIcon.MessageType.ERROR);
+    }
+
+    public void showWarning(String str)
+    {
+        trayIcon.displayMessage("SSO Warning", str, TrayIcon.MessageType.WARNING);
+    }
+
+    public void showInfo(String str)
+    {
+        trayIcon.displayMessage("SSO Info", str, TrayIcon.MessageType.INFO);
+    }
+
+    public void showMessage(String str)
+    {
+        trayIcon.displayMessage("SSO Message", str, TrayIcon.MessageType.NONE);
     }
 
     private void create() 
@@ -31,11 +52,9 @@ class SSOTray
             return;
         }
         final PopupMenu popup = new PopupMenu();
-        final TrayIcon trayIcon = new TrayIcon(Utilities.loadImage(SystemTrayPath));// "Tray Icon"));
+        trayIcon = new TrayIcon(Utilities.loadImage(SystemTrayPath));// "Tray Icon"));
         trayIcon.setImageAutoSize(true);
         trayIcon.setToolTip("Simple-Signon SystemTray");
-
-        final SystemTray tray = SystemTray.getSystemTray();
 
         // Create a popup menu components
         MenuItem aboutItem = new MenuItem("About");
@@ -57,13 +76,6 @@ class SSOTray
         popup.add(exitItem);
 
         trayIcon.setPopupMenu(popup);
-
-        try {
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            System.err.println("TrayIcon could not be added.");
-            return;
-        }
 
         trayIcon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -114,9 +126,30 @@ class SSOTray
 
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                final SystemTray tray = SystemTray.getSystemTray();
                 tray.remove(trayIcon);
                 System.exit(0);
             }
         });
+    }
+
+    public void showGUI()
+    {
+        final SystemTray tray = SystemTray.getSystemTray();
+        try 
+        {
+            tray.add(trayIcon);
+        }
+        catch (AWTException e) 
+        {
+            System.err.println("TrayIcon could not be added.");
+            return;
+        }
+    }
+
+    public void HideGUI()
+    {
+        final SystemTray tray = SystemTray.getSystemTray();
+        tray.remove(trayIcon);
     }
 }
