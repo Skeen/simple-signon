@@ -47,9 +47,6 @@ class SSOWindow
         //Create and set up the window.
         frame = new JFrame("SSO");
         
-        //TODO: remove Close on Exit when tray functionality is done.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         // Create GUI elements
         serviceGrid = new SSOGrid();
         servicePanel = serviceGrid.createGUI();
@@ -131,9 +128,20 @@ class SSOWindow
             {
                 public void actionPerformed(ActionEvent e) 
                 {
-                    SSOLogin login = SSOLogin.getSingleton();
-                    login.showGUI();
-                    hideGUI();
+                    SwingUtilities.invokeLater(new Runnable()
+                        {
+                            public void run() {
+                                // Hide ourselves login prompt
+                                hideGUI();
+                                // Hide the tray
+                                SSOTray tray = SSOTray.getSingleton();
+                                tray.hideGUI();
+                                // Show the loginWindow
+                                SSOLogin login = SSOLogin.getSingleton();
+                                login.clearPasswordField();
+                                login.showGUI();
+                            }
+                        });
                 }
             });
         updateButtons(false);
