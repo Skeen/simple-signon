@@ -38,15 +38,13 @@ class SSOConnectionHandler
         services.add(new Service(null, "bug", "resource/bug.png", null, false));
         services.add(new Service(null, "Dragon", "resource/Dragon.png", null, false));
 
-        /*
         SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run() {
-                        tray = SSOTray.getSingleton();
+                        SSOTray tray = SSOTray.getSingleton();
                         tray.showGUI();
                     }
                 });
-        */
         SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run() {
