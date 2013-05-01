@@ -23,7 +23,7 @@ class PingServiceType implements ServiceType
             Process proc = new ProcessBuilder("ping"/*, "-n 1"*/, host).start();
 
             int exitValue = proc.waitFor();
-            System.out.println("Exit Value:" + exitValue);
+            //System.out.println("Exit Value:" + exitValue);
             if(exitValue == 0)
             {
                 isReachable = true;
@@ -32,7 +32,7 @@ class PingServiceType implements ServiceType
         catch (IOException e)
         {
             System.out.println(e.getMessage());
-                e.printStackTrace();
+            e.printStackTrace();
         }
         catch (InterruptedException e)
         {

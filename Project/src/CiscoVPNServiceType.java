@@ -18,7 +18,7 @@ class CiscoVPNServiceType implements ServiceType
 
     private volatile boolean connecting = false;
 
-    private boolean isConnected()
+    private Boolean isConnected()
     {
         try
         {
@@ -41,16 +41,14 @@ class CiscoVPNServiceType implements ServiceType
                     return false;
                 }
             }
-            // If we get here, something went wrong, and we did not get the
-            // result we wanted, hence throw an exception
-            throw new RuntimeException("SHIT");
-            //p.waitFor();
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            throw new RuntimeException("SHIT");
         }
+        // If we get here, something went wrong, and we did not get the
+        // result we wanted, or we got an exception, so lets return null
+        return null;
     }
 
     public Service.Status getStatus()
@@ -62,17 +60,16 @@ class CiscoVPNServiceType implements ServiceType
         }
         else
         {
-            boolean connected = isConnected();
-            // Are we connected
-            if(connected)
-            {
-                return Service.Status.CONNECTED;
-            }
-            // We are not connecting, and not connected, hence we must be
-            // disconnected
-            else
+            Boolean connected = isConnected();
+            // We're not connected
+            if(connected == null || connected == false)
             {
                 return Service.Status.DISCONNECTED;
+            }
+            // Are we connected
+            else
+            {
+                return Service.Status.CONNECTED;
             }
         }
     }
