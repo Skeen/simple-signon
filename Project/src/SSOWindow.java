@@ -132,7 +132,7 @@ class SSOWindow
                                 // Hide ourselves login prompt
                                 hideGUI();
                                 // remove services
-                                serviceGrid.clearServices();
+                                clearServices();
                                 // Hide the tray
                                 SSOTray tray = SSOTray.getSingleton();
                                 tray.hideGUI();
