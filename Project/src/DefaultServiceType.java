@@ -1,17 +1,15 @@
 class DefaultServiceType implements ServiceType
 {
-    public boolean isConnected()
+    public Service.Status getStatus()
     {
-        return false;
+        return Service.Status.DISCONNECTED;
     }
 
-    public boolean connect()
+    public void connect()
     {
-        return false;
     }
 
-    public boolean disconnect()
+    public void disconnect()
     {
-        return false;
     }
 }

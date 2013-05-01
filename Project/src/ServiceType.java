@@ -1,6 +1,6 @@
 interface ServiceType
 {
-    public boolean isConnected();
-    public boolean connect();
-    public boolean disconnect();
+    public Service.Status getStatus();
+    public void connect();
+    public void disconnect();
 }
