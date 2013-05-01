@@ -41,15 +41,13 @@ class SSOConnectionHandler
         SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run() {
-                        SSOTray tray = SSOTray.getSingleton();
-                        tray.showGUI();
-                    }
-                });
-        SwingUtilities.invokeLater(new Runnable()
-                {
-                    public void run() {
+                        // Hide the login prompt
                         SSOLogin login = SSOLogin.getSingleton();
                         login.hideGUI();
+                        // Show the tray
+                        SSOTray tray = SSOTray.getSingleton();
+                        tray.showGUI();
+                        // Show the window (load it as well)
                         SSOWindow window = SSOWindow.getSingleton();
                         window.loadServices(services);
                         window.showGUI();

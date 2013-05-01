@@ -136,6 +136,11 @@ public class SSOLogin
         // Return the frame
         return frame;
     }
+
+    public void clearPasswordField()
+    {
+        password_field = new JPasswordField();
+    }
  
     public void showGUI()
     {

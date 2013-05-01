@@ -109,7 +109,7 @@ class SSOTray
         }
     }
 
-    public void HideGUI()
+    public void hideGUI()
     {
         final SystemTray tray = SystemTray.getSystemTray();
         tray.remove(trayIcon);
