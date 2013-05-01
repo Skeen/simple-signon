@@ -12,7 +12,12 @@ class WifiServiceType extends PingServiceType
     {
         try
         {
-            Process proc = new ProcessBuilder("netsh", "wlan disconnect").start();
+            Process proc = new ProcessBuilder(new String[]
+                    {
+                        "netsh",
+                        "wlan",
+                        "disconnect"
+                    }).start();
 
             int exitValue = proc.waitFor();
             System.out.println("Disconnect:" + exitValue);
@@ -34,10 +39,16 @@ class WifiServiceType extends PingServiceType
     {
         try
         {
-            Process proc = new ProcessBuilder("netsh", "connect", "name=" + profile).start();
+            Process proc = new ProcessBuilder(new String[]
+                    {
+                        "netsh",
+                        "wlan",
+                        "connect",
+                        "name=" + profile
+                    }).start();
 
             int exitValue = proc.waitFor();
-            System.out.println("Disconnect:" + exitValue);
+            System.out.println("Connect:" + exitValue);
             return exitValue;
         }
         catch (IOException e)
@@ -68,6 +79,7 @@ class WifiServiceType extends PingServiceType
 
     public void connect()
     {
+        // TODO: Only connect if host is different!!
         connecting = true;
         // Start Connecting
         connectWifi("AU-Gadget");
