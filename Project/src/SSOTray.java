@@ -57,17 +57,20 @@ class SSOTray
         trayIcon.setToolTip("Simple-Signon SystemTray");
 
         // Create a popup menu components
+        MenuItem openItem = new MenuItem("Open / Close");
         MenuItem aboutItem = new MenuItem("About");
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to popup menu
+        popup.add(openItem);
+        popup.addSeparator();
         popup.add(aboutItem);
         popup.addSeparator();
         popup.add(exitItem);
 
         trayIcon.setPopupMenu(popup);
 
-        trayIcon.addActionListener(new ActionListener() {
+        ActionListener openWindow = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SSOWindow window = SSOWindow.getSingleton();
                 if(window.isShown()) {
@@ -77,7 +80,10 @@ class SSOTray
                     window.showGUI();
                 }
             }
-        });
+        };
+
+        trayIcon.addActionListener(openWindow);
+        openItem.addActionListener(openWindow);
 
         aboutItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
