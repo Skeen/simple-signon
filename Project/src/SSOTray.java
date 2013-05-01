@@ -58,71 +58,33 @@ class SSOTray
 
         // Create a popup menu components
         MenuItem aboutItem = new MenuItem("About");
-        Menu displayMenu = new Menu("Display");
-        MenuItem errorItem = new MenuItem("Error");
-        MenuItem warningItem = new MenuItem("Warning");
-        MenuItem infoItem = new MenuItem("Info");
-        MenuItem noneItem = new MenuItem("None");
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to popup menu
         popup.add(aboutItem);
         popup.addSeparator();
-        popup.add(displayMenu);
-        displayMenu.add(errorItem);
-        displayMenu.add(warningItem);
-        displayMenu.add(infoItem);
-        displayMenu.add(noneItem);
         popup.add(exitItem);
 
         trayIcon.setPopupMenu(popup);
 
         trayIcon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,
-                    "This dialog box is run from System Tray");
+                SSOWindow window = SSOWindow.getSingleton();
+                if(window.isShown()) {
+                    window.hideGUI();
+                }
+                else {
+                    window.showGUI();
+                }
             }
         });
 
         aboutItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null,
-                    "This dialog box is run from the About menu item");
+                    "SSO (SingleSignOn) Solution developed by DJ-JOE");
             }
         });
-
-        ActionListener listener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                MenuItem item = (MenuItem)e.getSource();
-                //TrayIcon.MessageType type = null;
-                System.out.println(item.getLabel());
-                if ("Error".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.ERROR;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an error message", TrayIcon.MessageType.ERROR);
-
-                } else if ("Warning".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.WARNING;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is a warning message", TrayIcon.MessageType.WARNING);
-
-                } else if ("Info".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.INFO;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an info message", TrayIcon.MessageType.INFO);
-
-                } else if ("None".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.NONE;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an ordinary message", TrayIcon.MessageType.NONE);
-                }
-            }
-        };
-
-        errorItem.addActionListener(listener);
-        warningItem.addActionListener(listener);
-        infoItem.addActionListener(listener);
-        noneItem.addActionListener(listener);
 
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -85,6 +85,11 @@ class SSOWindow
     {
         frame.setVisible(false);
     }
+    
+    public boolean isShown()
+    {
+        return frame.isVisible();
+    }
 
     private class SSOGrid
     {
