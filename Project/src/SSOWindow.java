@@ -22,13 +22,9 @@ import java.awt.image.*;
 
 class SSOWindow
 {
-    private static SSOWindow singleton;
+    private static SSOWindow singleton = new SSOWindow();
     public static SSOWindow getSingleton()
     {
-        if(singleton == null)
-        {
-            singleton = new SSOWindow();
-        }
         return singleton;
     }
 

@@ -54,13 +54,9 @@ import javax.swing.table.*;
 
 public class SSOLogin
 {
-    private static SSOLogin singleton;
+    private static SSOLogin singleton = new SSOLogin();
     public static SSOLogin getSingleton()
     {
-        if(singleton == null)
-        {
-            singleton = new SSOLogin();
-        }
         return singleton;
     }
 

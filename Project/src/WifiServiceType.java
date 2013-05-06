@@ -35,8 +35,42 @@ class WifiServiceType extends PingServiceType
         return -1;
     }
 
-    private static int connectWifi(String profile)
+    // Oprettelse af profil
+    /* // Creates a profile, given a profile.xml document (given as argument)
+     * private static int createProfile(String path_to_profile)
+     * {
+     *  try
+     *  {
+     *      Process proc = new ProcessBuilder(new String[]
+     *              {
+     *                  "netsh",
+     *                  "wlan",
+     *                  "add",
+     *                  "profile",
+     *                  "filename=\"" + path_to_profile + "\"
+     *              }).start();
+     *
+     *           int exitValue = proc.waitFor();
+     *          System.out.println("CreateProfile:" + exitValue);
+     *         return exitValue;
+     *    }
+     *   catch (IOException e)
+     *  {
+     *     System.out.println(e.getMessage());
+     *    e.printStackTrace();
+     *     }
+     *    catch (InterruptedException e)
+     *   {
+     *      e.printStackTrace();
+     * }
+     *  return -1;
+     * }
+     */
+
+    // Antager at profilen 'profile' allerede findes
+    private static boolean connectWifi(String profile)
     {
+        boolean did_connect = false;
         try
         {
             Process proc = new ProcessBuilder(new String[]
@@ -49,7 +83,10 @@ class WifiServiceType extends PingServiceType
 
             int exitValue = proc.waitFor();
             System.out.println("Connect:" + exitValue);
-            return exitValue;
+            if(exitValue == 0)
+            {
+                did_connect = true;
+            }
         }
         catch (IOException e)
         {
@@ -60,7 +97,7 @@ class WifiServiceType extends PingServiceType
         {
             e.printStackTrace();
         }
-        return -1;
+        return did_connect;
     }
 
     public Service.Status getStatus()
