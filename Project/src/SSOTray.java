@@ -5,13 +5,9 @@ import javax.swing.*;
 
 class SSOTray
 {
-    private static SSOTray singleton;
+    private static SSOTray singleton = new SSOTray();
     public static SSOTray getSingleton()
     {
-        if(singleton == null)
-        {
-            singleton = new SSOTray();
-        }
         return singleton;
     }
 
