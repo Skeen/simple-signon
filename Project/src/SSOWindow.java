@@ -101,12 +101,12 @@ class SSOWindow
         JPanel buttons_bot = new JPanel();
         buttons_bot.setLayout(new GridLayout(1, 2));
         
-        add = new JButton("Add");
-        remove = new JButton("Remove");
-        reconnect = new JButton("(Re)Connect");
-        edit = new JButton("Edit");
-        refresh = new JButton("Refresh");
-        logout = new JButton("Logout");
+        add = new JButton("Tilføj");
+        remove = new JButton("Fjern");
+        reconnect = new JButton("Opret forbindelse");
+        edit = new JButton("Rediger");
+        refresh = new JButton("Opdater");
+        logout = new JButton("Log af");
         
         //Button event actions
         edit.addActionListener(new ActionListener()
