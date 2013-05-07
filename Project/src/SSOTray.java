@@ -53,8 +53,8 @@ class SSOTray
         trayIcon.setToolTip("Simple-Signon SystemTray");
 
         // Create a popup menu components
-        MenuItem openItem = new MenuItem("Open / Close");
-        MenuItem aboutItem = new MenuItem("About");
+        MenuItem openItem = new MenuItem("Åben / Luk");
+        MenuItem aboutItem = new MenuItem("Info");
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to popup menu
