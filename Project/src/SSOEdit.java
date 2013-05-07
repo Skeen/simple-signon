@@ -64,36 +64,36 @@ public class SSOEdit
     private void create()
     {
         //Create and set up the window.
-        frame = new JFrame("SSO Edit");
+        frame = new JFrame("SSO Rediger");
         
         //frame.setLayout(new BorderLayout());
 		
         //Create panel with username label and text input
-        JLabel userLabel = new JLabel(" Username: ");
+        JLabel userLabel = new JLabel(" Brugernavn: ");
 		JTextField userInput = new JTextField(10);
         JPanel userPanel = new JPanel(new BorderLayout());
         userPanel.add(userLabel, BorderLayout.WEST);
         userPanel.add(userInput, BorderLayout.EAST);
         
         //Create panel with password label and text input
-        JLabel passLabel = new JLabel(" Password: ");
+        JLabel passLabel = new JLabel(" Kodeord: ");
 		JTextField passInput = new JTextField(10);
 		JPanel passPanel = new JPanel(new BorderLayout());
         passPanel.add(passLabel, BorderLayout.WEST);
         passPanel.add(passInput, BorderLayout.EAST);
         
         //Create panel with repeat of password label and text input
-        JLabel repeatLabel = new JLabel(" Repeat Password: ");
+        JLabel repeatLabel = new JLabel(" Gentag Kodeord: ");
 		JTextField repeatInput = new JTextField(10);
 		JPanel repeatPanel = new JPanel(new BorderLayout());
         repeatPanel.add(repeatLabel, BorderLayout.WEST);
         repeatPanel.add(repeatInput, BorderLayout.EAST);
         
         //Create panel with auto connect checkmark, and Accept/Cancel buttons.
-        JCheckBox autoConBox = new JCheckBox("Autoconnect");
+        JCheckBox autoConBox = new JCheckBox("Autoforbind");
         //JCheckBox autoConBox = new JCheckBox("Autoconnect: ", Services.do you autoconnect());
-        JButton accept = new JButton("Accept");
-        JButton cancel = new JButton("Cancel");
+        JButton accept = new JButton("Godkend");
+        JButton cancel = new JButton("Annuller");
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(autoConBox);
         buttonPanel.add(accept);

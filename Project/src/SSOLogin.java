@@ -93,17 +93,17 @@ public class SSOLogin
         //input_layout.setVgap(10);
         input.setLayout(input_layout);
         // And contents
-        input.add(new JLabel("Username:"));
+        input.add(new JLabel("Brugernavn:"));
         username_field = new JTextField();
         input.add(username_field);
 
-        input.add(new JLabel("Password:"));
+        input.add(new JLabel("Kodeord:"));
         password_field = new JPasswordField();
         input.add(password_field);
 
         // Connect botton
         JPanel connect = new JPanel();
-        JButton botton = new JButton("Connect");
+        JButton botton = new JButton("Forbind");
         botton.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e) {
