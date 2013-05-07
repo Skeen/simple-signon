@@ -12,7 +12,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.SwingUtilities;
 import javax.swing.text.*;
-import javax.swing.table.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +29,17 @@ class SSOWindow
 
     private JPanel servicePanel;
     private JFrame frame;
+    
+    private JButton add;
+    private JButton remove;
+    private JButton reconnect;
+    private JButton edit;
+    private JButton refresh;
+    private JButton logout;
 
+    private JList<Service> serviceList;
+	private DefaultListModel<Service> model;
+    
     // TODO: Test constructor, remove this
     private SSOWindow()
     {
@@ -50,9 +59,8 @@ class SSOWindow
         pane.setLayout(new BorderLayout());
         pane.add(buttonPanel, BorderLayout.SOUTH);
         pane.add(servicePanel, BorderLayout.CENTER);
-        
         frame.pack();
-        frame.setResizable( false );
+        frame.setMinimumSize(new Dimension(64*2*4+10, 100));
     }
     
     public void loadServices(java.util.List<Service> services)
@@ -82,14 +90,6 @@ class SSOWindow
     {
         return frame.isVisible();
     }
-    
-    private JButton add;
-    private JButton remove;
-    private JButton reconnect;
-    private JButton edit;
-
-    private JButton refresh;
-    private JButton logout;
         
     public JPanel createButtonPanel()
     {
@@ -185,8 +185,13 @@ class SSOWindow
         }
     }
     
-    private JTable table;
-    private DefaultTableModel model;
+    
+    // Returns the Service corresponding to the GUI selection (if any)
+    // Returns null when no selection is made
+    public Service getSelection()
+    {
+        return (Service)serviceList.getSelectedValue();
+    }
     
     public void clearServices()
     {
@@ -198,53 +203,13 @@ class SSOWindow
     {
         for(Service s : services)
         {
-            addService(s);
+            model.addElement(s);
         }
     }
-
+	
     public void addService(Service s)
     {
-        addToTable(s);
-    }
-
-    private void updateTableHeight()
-    {
-        for(int x=0; x<table.getRowCount(); x++)
-        {
-            table.setRowHeight(x, 64);
-        }
-    }
-
-    private void addToTable(Object o)
-    {
-        while(true)
-        {
-            // If the model is empty
-            if (model.getRowCount() == 0)
-            {
-                model.setRowCount(1);
-                // Go from the top again
-                continue;
-            }
-
-            // Find next null in current row, and insert there
-            int last_row = model.getRowCount() - 1;
-            int column_count = model.getColumnCount();
-            for(int x=0; x<column_count; x++)
-            {
-                Object value = model.getValueAt(last_row, x);
-                if(value == null)
-                {
-                    model.setValueAt(o, last_row, x);
-                    updateTableHeight();
-                    return;
-                }
-            }
-            // The row is full, make a new one
-            model.setRowCount(model.getRowCount()+1);
-            // And go from the top again
-            continue;
-        }
+		model.addElement(s);
     }
 
     private Image getOverlay(Service.Status status)
@@ -273,93 +238,54 @@ class SSOWindow
         // Load and return the image
         return Utilities.loadImage(path_to_image);
     }
-
+	
     public JPanel createServicePanel()
     {
         JPanel grid = new JPanel();
-        grid.setLayout(new GridLayout(1, 1));
-
-        // Make an immutable table
-        model = new DefaultTableModel(0,3)
-        {
-            public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }
-        };
-
-        table = new JTable(model)
-        {
-            //  Returning the Class of each column will allow different
-            //  renderers to be used based on Class
-            public Class getColumnClass(int column)
-            {
-                return getValueAt(0, column).getClass();
-            }
-        };
-
-        table.setDefaultRenderer(Service.class, new DefaultTableCellRenderer()
-                {
-                    // TODO: Figure out why it renders the entire row out,
-                    // using the last icon, but it doesn't do this with
-                    // setText(...)
-                    public void setValue(Object value) {
-                        if(value != null) {
-                            Service s = (Service) value;
-                            // Get the logo
-                            Image logo = Utilities.resizeImage(s.getLogo(), 64, 64);
-                            // Add the overlay
-                            Image overlay = Utilities.resizeImage(getOverlay(s.getStatus()),24,24);
-                            // Render it
-                            setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
-
-                            setText(((Service) value).getName());
-                            setText("");
-                            /*
-                            setText("!");
-                            */
-                        }
-                        else {
-                            setText("");
-                        }
-                    }
-                }); 
-
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-
-        // No header
-        table.setTableHeader(null);
-
+		
+		model = new DefaultListModel<Service>();
+		
+		serviceList = new JList<Service>(model);
+		
+		System.out.println("Making cell renderer");
+		
+        serviceList.setCellRenderer(new DefaultListCellRenderer()
+			{
+				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
+				{
+					JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+					Service s = (Service) value;
+					// Get the logo
+                    Image logo = s.getLogo().getScaledInstance(64,64,Image.SCALE_SMOOTH);
+					// Add the overlay
+                    Image overlay = getOverlay(s.getStatus()).getScaledInstance(24,24,Image.SCALE_SMOOTH);
+					// Render it
+					setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
+					
+					//setText(((Service) value).getName());
+					setText("");
+					return label;
+				}
+			});
+		
         // Select one cell at a time
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setColumnSelectionAllowed(true);
-
-        grid.add(new JScrollPane(table));
-
-        grid.setPreferredSize(new Dimension(0,64*3));
+        serviceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		serviceList.setLayoutOrientation(serviceList.HORIZONTAL_WRAP);
+        serviceList.setFixedCellWidth(64*2);
+        serviceList.setFixedCellHeight(64);
+		serviceList.setVisibleRowCount(0);
+        //serviceList.setPreferredSize(new Dimension(64*2*4, 64*3));
+		JScrollPane scrollableList = new JScrollPane(serviceList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//JScrollPane scrollableList = new JScrollPane(serviceList);
+        scrollableList.setPreferredSize(new Dimension(64*2*4+5, 64*3+5));
+        grid.setLayout(new GridLayout(1,1));
+		grid.add(scrollableList);
         return grid;
     }
 
     public void addSelectionCallback(ListSelectionListener sl)
     {
-        table.getColumnModel().getSelectionModel().addListSelectionListener(sl);
-        table.getSelectionModel().addListSelectionListener(sl);
+        serviceList.addListSelectionListener(sl);
     }
 
-    // Returns the Service corresponding to the GUI selection (if any)
-    // Returns null when no selection is made
-    public Service getSelection()
-    {
-        int column = table.getSelectedColumn();
-        int row = table.getSelectedRow();
-        System.out.println("Selection at (x,y)=(" + column + " , " + row + ");");
-        if(column == -1 || row == -1)
-        {
-            return null;
-        }
-        else
-        {
-            return (Service) table.getValueAt(row, column);
-        }
-    }
 }
