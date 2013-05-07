@@ -11,7 +11,7 @@ BACKLOG
 
 - Opfølgning på første interview			DONE
 
-- Første prototype (MEGET skrapet!)			DONE 
+- Første prototype (MEGET skrapet!)			DONE/SHOWN 
 
 - Aftale interview af brugere				DONE
 
@@ -19,11 +19,15 @@ BACKLOG
 
 - Opfølgning af interview af brugere			DONE
 
-- Revideret prototype					IN PROGRESS
+- Revideret prototype					DONE/SHOWN
 
 - Dagbog						IN PROGRESS
 
-- Aftale et interview med Lars Lisberg			IN PROGRESS
+- Aftale et interview med Lars Lisberg			DONE
+
+- 2. møde/interview med Lars				DONE
+
+- Opfølgning på 2. interview af Lars			IN PROGRESS
 
 - Lave 3. Aflevering					WAITING
 
