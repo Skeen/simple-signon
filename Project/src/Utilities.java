@@ -48,16 +48,6 @@ class Utilities
         return ImageUtil.load(path);
     }
 
-    public static Image resizeImage(Image srcImage, int width, int height)
-    {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImage, 0, 0, width, height, null);
-        g2.dispose();
-        return resizedImg;
-    }
-
     public static Image overlayImage(Image background, Image overlay)
     {
         Dimension dim = new Dimension(background.getHeight(null), background.getWidth(null));
