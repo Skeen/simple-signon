@@ -17,6 +17,8 @@ class Service implements Runnable
     private ServiceType type;
     // Whether this service is auto-connect
     private boolean auto_connect;
+    // Whether this service is in list of used services
+    private boolean in_use;
 
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -25,7 +27,9 @@ class Service implements Runnable
         CONNECTED     // Connected
     }
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect)
+    private boolean connect;
+
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
     {
         this.dependency = dependency;
         this.name = name;
@@ -39,6 +43,8 @@ class Service implements Runnable
             type = service_type;
         }
         this.auto_connect = auto_connect;
+        this.connect = auto_connect;
+        this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
         if(auto_connect)
         {
@@ -51,11 +57,11 @@ class Service implements Runnable
         }
     }
 
-    private JPanel t;
+    private ServiceCallback callback;
 
-    public void seed(JPanel t)
+    public void seed(ServiceCallback callback)
     {
-        this.t = t;
+        this.callback = callback;
     }
 
     public void run()
@@ -85,8 +91,27 @@ class Service implements Runnable
                     */
                 }
             }
-            t.updateUI();
+            callback.callback(this);
         }
+    }
+    
+    public void connect()
+    {
+        connect = true;
+        type.connect();
+        //TODO: actually connect
+    }
+    public void disconnect()
+    {
+        connect = false;
+        type.disconnect();
+        //TODO: stop thread and close current connect
+    }
+
+    // Return whether this service is set to be connected.
+    public boolean getConnectStatus()
+    {
+        return connect;
     }
 
     public Image getLogo()
@@ -102,5 +127,15 @@ class Service implements Runnable
     public Status getStatus()
     {
         return status;
+    }
+    
+    public boolean isUsed()
+    {
+        return in_use;
+    }
+    
+    public boolean autoconnect()
+    {
+        return auto_connect;
     }
 }
