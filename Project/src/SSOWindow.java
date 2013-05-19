@@ -19,7 +19,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
-class SSOWindow
+class SSOWindow implements ServiceCallback
 {
     private static SSOWindow singleton = new SSOWindow();
     public static SSOWindow getSingleton()
@@ -28,6 +28,7 @@ class SSOWindow
     }
 
     private JPanel servicePanel;
+    private JPanel buttonPanel;
     private JFrame frame;
     
     private JButton add;
@@ -38,11 +39,16 @@ class SSOWindow
     private JButton logout;
 
     private JList<Service> serviceList;
+    
 	private DefaultListModel<Service> model;
+    private DefaultListModel<Service> availableServices;
+    
+    private SSOWindow THIS;
     
     // TODO: Test constructor, remove this
     private SSOWindow()
     {
+        this.THIS = this;
         create();
     }
 
@@ -53,7 +59,9 @@ class SSOWindow
         
         // Create GUI elements
         servicePanel = createServicePanel();
-        JPanel buttonPanel = createButtonPanel();
+        buttonPanel = createButtonPanel();
+        
+        availableServices = new DefaultListModel<Service>();
         
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
@@ -66,12 +74,33 @@ class SSOWindow
     public void loadServices(java.util.List<Service> services)
     {
         clearServices();
-        addServices(services);
-        
-        // TODO: Start connecting
+        //Add the services to the active and inactive listmodels.
         for(Service s : services)
         {
-            s.seed(servicePanel);
+            if(s.isUsed())
+            {
+                model.addElement(s);
+            }
+            else
+            {
+                availableServices.addElement(s);
+            }
+        }
+        
+        // TODO: Start connecting
+        int size = model.getSize();
+        for(int i=0 ; i < model.getSize(); i++)
+        {
+            Service s = model.getElementAt(i);
+            prepareService(s);
+        }
+    }
+    
+    private void prepareService(Service s)
+    {
+        s.seed(this);
+        if(s.autoconnect())
+        {
             new Thread(s).start();
         }
     }
@@ -90,84 +119,6 @@ class SSOWindow
     {
         return frame.isVisible();
     }
-        
-    public JPanel createButtonPanel()
-    {
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(2, 1));
-        
-        JPanel buttons_top = new JPanel();
-        buttons_top.setLayout(new GridLayout(1, 4));
-        JPanel buttons_bot = new JPanel();
-        buttons_bot.setLayout(new GridLayout(1, 2));
-        
-        add = new JButton("Tilføj");
-        remove = new JButton("Fjern");
-        reconnect = new JButton("Opret forbindelse");
-        edit = new JButton("Rediger");
-        refresh = new JButton("Opdater");
-        logout = new JButton("Log af");
-        
-        //Button event actions
-        edit.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e) 
-                {
-                    SSOEdit edit = new SSOEdit();
-                    edit.showGUI();
-                }
-            });
-                    
-        logout.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e) 
-                {
-                    SwingUtilities.invokeLater(new Runnable()
-                        {
-                            public void run() {
-                                // Hide ourselves login prompt
-                                hideGUI();
-                                // remove services
-                                clearServices();
-                                // Hide the tray
-                                SSOTray tray = SSOTray.getSingleton();
-                                tray.hideGUI();
-                                // Show the loginWindow
-                                SSOLogin login = SSOLogin.getSingleton();
-                                login.clearPasswordField();
-                                login.showGUI();
-                            }
-                        });
-                }
-            });
-        updateButtons(false);
-        
-        //Button fades out fades in depending on selection
-        addSelectionCallback(new ListSelectionListener()
-            {
-                private boolean isValidSelection() {
-                    Service s = getSelection();
-                    return s != null;
-                }
-                
-                public void valueChanged(ListSelectionEvent e) {
-                    updateButtons(isValidSelection());
-                }
-            });
-        
-        buttons_top.add(add);
-        buttons_top.add(remove);
-        buttons_top.add(reconnect);
-        buttons_top.add(edit);
-        
-        buttons_bot.add(refresh);
-        buttons_bot.add(logout);
-        
-        buttons.add(buttons_top);
-        buttons.add(buttons_bot);
-        
-        return buttons;
-    }
     
     private void updateButtons(boolean hasSelection)
     {
@@ -185,33 +136,55 @@ class SSOWindow
         }
     }
     
+    public void callback(Service s)
+    {
+        if(getSelection() == s)
+        {
+            if(s.getConnectStatus())
+            {
+                reconnect.setText("Stop forbindelse");
+            }
+            else
+            {
+                reconnect.setText("Opret forbindelse");
+            }
+        }
+        servicePanel.updateUI();
+        buttonPanel.updateUI();
+    }
+    
     
     // Returns the Service corresponding to the GUI selection (if any)
     // Returns null when no selection is made
     public Service getSelection()
     {
-        return (Service)serviceList.getSelectedValue();
+        return serviceList.getSelectedValue();
     }
     
     public void clearServices()
     {
         // This method should remove all services AND stop them, in whatever
         // they are doing (including all the subthreads of all services).
-    }
-
-    public void addServices(java.util.List<Service> services)
-    {
-        for(Service s : services)
-        {
-            model.addElement(s);
-        }
+        
+        model.clear();
+        availableServices.clear();
+        
     }
 	
     public void addService(Service s)
     {
 		model.addElement(s);
+        prepareService(s);
+        availableServices.removeElement(s);
     }
-
+    
+    public void removeService(Service s)
+    {
+        model.removeElement(s);
+        s.disconnect();
+        availableServices.addElement(s);
+    }
+    
     private Image getOverlay(Service.Status status)
     {
         final String not_connected_image = "resource/Pictogram/nothing_placeholder.png";
@@ -239,7 +212,140 @@ class SSOWindow
         return Utilities.loadImage(path_to_image);
     }
 	
-    public JPanel createServicePanel()
+    private JPanel createButtonPanel()
+    {
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(2, 1));
+        
+        JPanel buttons_top = new JPanel();
+        buttons_top.setLayout(new GridLayout(1, 4));
+        JPanel buttons_bot = new JPanel();
+        buttons_bot.setLayout(new GridLayout(1, 2));
+        
+        add = new JButton("Tilføj");
+        remove = new JButton("Fjern");
+        reconnect = new JButton("Opret forbindelse");
+        edit = new JButton("Rediger");
+        refresh = new JButton("Opdater");
+        logout = new JButton("Log af");
+        
+        //Button event actions
+        edit.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    Service s = getSelection();
+                    SSOEdit edit = new SSOEdit(s);
+                    edit.showGUI();
+                }
+            });
+                    
+        logout.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    SwingUtilities.invokeLater(new Runnable()
+                        {
+                            public void run() {
+                                // Hide ourselves login prompt
+                                hideGUI();
+                                // remove services
+                                clearServices();
+                                // Hide the tray
+                                SSOTray tray = SSOTray.getSingleton();
+                                tray.hideGUI();
+                                // Show the loginWindow
+                                SSOLogin login = SSOLogin.getSingleton();
+                                login.clearPasswordField();
+                                login.showGUI();
+                            }
+                        });
+                }
+            });
+        
+        add.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    //TODO: Use a popup context menu instead of a window
+                    //TODO: Use a seperate list (using the same JList instance is buggy)
+                    SSOAdd ssoAdd = new SSOAdd(THIS, availableServices);
+                    ssoAdd.showGUI();
+                }
+            });
+            
+            
+        remove.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    removeService(getSelection());
+                }
+            });
+        
+        reconnect.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    Service s = getSelection();
+                    
+                    if (s.getConnectStatus())
+                    {
+                        s.disconnect();
+                        reconnect.setText("Opret forbindelse");
+                    }
+                    else
+                    {
+                        s.connect();
+                        reconnect.setText("Stop forbindelse");
+                    }
+                }
+            });
+        
+        updateButtons(false);
+        
+        //Button fades out fades in depending on selection
+        addSelectionCallback(new ListSelectionListener()
+            {
+                public void valueChanged(ListSelectionEvent e) 
+                {
+                    Service s = getSelection();
+                    boolean valid = (s != null);
+                    if ( valid )
+                    {
+                        if (s.getConnectStatus())
+                        {
+                            reconnect.setText("Stop forbindelse");
+                        }
+                        else
+                        {
+                            reconnect.setText("Opret forbindelse");
+                        }
+                    }
+                    updateButtons((valid));
+                }
+            });
+        
+        buttons_top.add(add);
+        buttons_top.add(remove);
+        buttons_top.add(reconnect);
+        buttons_top.add(edit);
+        
+        buttons_bot.add(refresh);
+        buttons_bot.add(logout);
+        
+        buttons.add(buttons_top);
+        buttons.add(buttons_bot);
+        
+        return buttons;
+    }
+    
+    public void addSelectionCallback(ListSelectionListener sl)
+    {
+        serviceList.addListSelectionListener(sl);
+    }
+    
+    private JPanel createServicePanel()
     {
         JPanel grid = new JPanel();
 		
@@ -247,24 +353,22 @@ class SSOWindow
 		
 		serviceList = new JList<Service>(model);
 		
-		System.out.println("Making cell renderer");
-		
         serviceList.setCellRenderer(new DefaultListCellRenderer()
 			{
 				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 				{
-					JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-					Service s = (Service) value;
-					// Get the logo
+                    JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    Service s = (Service) value;
+                    // Get the logo
                     Image logo = s.getLogo().getScaledInstance(64,64,Image.SCALE_SMOOTH);
-					// Add the overlay
+                    // Add the overlay
                     Image overlay = getOverlay(s.getStatus()).getScaledInstance(24,24,Image.SCALE_SMOOTH);
-					// Render it
-					setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
-					
-					//setText(((Service) value).getName());
-					setText("");
-					return label;
+                    // Render it
+                    setIcon(new ImageIcon(Utilities.overlayImage(logo,overlay)));
+                    
+                    //setText(((Service) value).getName());
+                    setText("");
+                    return label;
 				}
 			});
 		
@@ -274,18 +378,10 @@ class SSOWindow
         serviceList.setFixedCellWidth(64*2);
         serviceList.setFixedCellHeight(64);
 		serviceList.setVisibleRowCount(0);
-        //serviceList.setPreferredSize(new Dimension(64*2*4, 64*3));
 		JScrollPane scrollableList = new JScrollPane(serviceList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//JScrollPane scrollableList = new JScrollPane(serviceList);
         scrollableList.setPreferredSize(new Dimension(64*2*4+5, 64*3+5));
         grid.setLayout(new GridLayout(1,1));
 		grid.add(scrollableList);
         return grid;
     }
-
-    public void addSelectionCallback(ListSelectionListener sl)
-    {
-        serviceList.addListSelectionListener(sl);
-    }
-
 }

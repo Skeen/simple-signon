@@ -39,12 +39,6 @@ public class SSOEdit
     private JLabel passLabel;
     */
     
-    // For testing, should take a service
-    public SSOEdit()
-    {
-        create();
-    }
-    
     public SSOEdit(Service service)
     {
         this.service = service;
@@ -104,8 +98,15 @@ public class SSOEdit
             {
                 public void actionPerformed(ActionEvent e) 
                 {
-                    SSOEdit edit = new SSOEdit();
-                    edit.hideGUI();
+                    frame.dispose();
+                }
+            });
+            
+        accept.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    //TODO: make changes
                     frame.dispose();
                 }
             });
