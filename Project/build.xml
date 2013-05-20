@@ -11,6 +11,7 @@
 
     <property name="junitJar" value="${lib-directory}/junit-4.4.jar"/>
     <property name="doxygenJar" value="${lib-directory}/ant_doxygen.jar"/>
+    <property name="exproxyJar" value="${lib-directory}/exproxy.jar"/>
 
     <taskdef name="doxygen" classname="org.doxygen.tools.DoxygenTask"
         classpath="${doxygenJar}" />
@@ -18,6 +19,7 @@
     <path id="class-path">
         <pathelement location="${build-directory}"/>
         <pathelement location="${junitJar}"/>
+        <pathelement location="${exproxyJar}"/>
     </path>
 
     <target name="help">
@@ -70,7 +72,7 @@
         <delete dir="${build-directory}"/>
     </target>
 
-    <target name="prepare">
+    <target name="prepare" depends="get-exproxy-jar">
         <mkdir dir="${build-directory}"/>
     </target>
 

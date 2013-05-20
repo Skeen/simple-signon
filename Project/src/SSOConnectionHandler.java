@@ -12,6 +12,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.table.*;
 
+import proxy.Proxy;
+
+import java.lang.Class;
+import java.lang.reflect.Constructor;
+
 class SSOConnectionHandler
 {
     public SSOConnectionHandler()
@@ -22,21 +27,48 @@ class SSOConnectionHandler
 
     void connect(String username, String password)
     {
-        // Unpack each service using anonymous inner classes (Map<String, String>
-        // as input, constructor call, as output (lambdas?)).
-        services.add(new Service(null, "WIFI", "resource/Wifi.png", new WifiServiceType("8.8.8.8"), true, true));
-        services.add(new Service(null, "DNS", "resource/DNS.png", new PingServiceType("www.google.com"), true, true));
-        services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType("vpn.au.dk", "AU-Gadget"), true, true));
-        services.add(new Service(null, "It's learning", "resource/its_learning.png", new WebServiceType("https://www.elevplan.dk/app/moduler/start/start.asp"), false, true));
-        services.add(new Service(null, "Bulb", "resource/Bulb.gif", null, false, false));
-        services.add(new Service(null, "Bus", "resource/Bus.png", null, false, false));
-        services.add(new Service(null, "Car", "resource/Car.png", null, false, false));
-        services.add(new Service(null, "Clock", "resource/Clock.png", null, false, false));
+        // Read the services from a comma-seperated-file (code ready for sql server)
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("resource/data.csv"));
+            for(String line = br.readLine(); line != null; line = br.readLine())
+            {
+                String[] items = line.split("\\s*,\\s*");
+                // Dependency
+                Service dependency = null;
+                if(items[0].equals("") == false)
+                {
+                    //TODO: Set dependency to the required service class
+                }
+                // Strings
+                String name         = items[1];
+                String logo_path    = items[2];
+                // Service_type
+                ServiceType service_type = null;
+                if(items[3].equals("") == false)
+                {
+                    // Non-null service_type class, so let's ask the class
+                    // loader to find it
+                    Class service_type_class = Class.forName(items[3]);
+                    // Let's find the constructor that takes a single string
+                    // (TODO: Should be the one that takes a Serializable)
+                    Constructor service_type_constructor = service_type_class.getConstructor(String.class);
+                    // Now construct the service type, using the string we've
+                    // loaded in the csv file.
+                    service_type = (ServiceType) service_type_constructor.newInstance(items[4]);
+                }
+                // Booleans
+                boolean auto_connect = Boolean.parseBoolean(items[5]);
+                boolean in_use       = Boolean.parseBoolean(items[6]);
 
-        services.add(new Service(null, "akis", "resource/akis.png", null, false, false));
-        services.add(new Service(null, "akis_green", "resource/akis_green.png", null, false, false));
-        services.add(new Service(null, "bug", "resource/bug.png", null, false, false));
-        services.add(new Service(null, "Dragon", "resource/Dragon.png", null, false, false));
+                // Create the service
+                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use));
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
         SwingUtilities.invokeLater(new Runnable()
                 {
@@ -51,6 +83,9 @@ class SSOConnectionHandler
                         SSOWindow window = SSOWindow.getSingleton();
                         window.loadServices(services);
                         window.showGUI();
+                        // Activate the proxy
+                        Proxy proxy = Proxy.getSingleton();
+                        proxy.enable();
                     }
                 });
 
