@@ -27,7 +27,7 @@ class SSOConnectionHandler
         services.add(new Service(null, "WIFI", "resource/Wifi.png", new WifiServiceType("8.8.8.8"), true, true));
         services.add(new Service(null, "DNS", "resource/DNS.png", new PingServiceType("www.google.com"), true, true));
         services.add(new Service(null, "VPN", "resource/vpn.png", new CiscoVPNServiceType("vpn.au.dk", "AU-Gadget"), true, true));
-        services.add(new Service(null, "It's learning", "resource/its_learning.png", null, false, true));
+        services.add(new Service(null, "It's learning", "resource/its_learning.png", new WebServiceType("https://www.elevplan.dk/app/moduler/start/start.asp"), false, true));
         services.add(new Service(null, "Bulb", "resource/Bulb.gif", null, false, false));
         services.add(new Service(null, "Bus", "resource/Bus.png", null, false, false));
         services.add(new Service(null, "Car", "resource/Car.png", null, false, false));

@@ -371,6 +371,22 @@ class SSOWindow implements ServiceCallback
                     return label;
 				}
 			});
+
+        serviceList.addMouseListener(new MouseAdapter()
+            {
+                public void mouseClicked(MouseEvent evt) 
+                {
+                    JList list = (JList) evt.getSource();
+                    // If double clicking
+                    if (evt.getClickCount() == 2)
+                    {
+                        int index = list.locationToIndex(evt.getPoint());
+                        Service s = (Service) list.getModel().getElementAt(index);
+                        s.double_click();
+                    }
+                }
+            });
+        
 		
         // Select one cell at a time
         serviceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
