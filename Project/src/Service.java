@@ -3,6 +3,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import com.exproxy.processors.HttpMessageProcessor;
+
 class Service implements Runnable
 {
     // The Status of the service
@@ -81,6 +83,11 @@ class Service implements Runnable
     public void seed(ServiceCallback callback)
     {
         this.callback = callback;
+    }
+
+    public HttpMessageProcessor getHttpProcessor()
+    {
+        return null;
     }
 
     public void double_click()

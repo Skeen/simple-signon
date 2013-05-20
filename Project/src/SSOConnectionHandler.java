@@ -12,10 +12,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.table.*;
 
-import proxy.Proxy;
-
 import java.lang.Class;
 import java.lang.reflect.Constructor;
+
+import com.exproxy.processors.HttpMessageProcessor;
 
 class SSOConnectionHandler
 {
@@ -85,7 +85,14 @@ class SSOConnectionHandler
                         window.showGUI();
                         // Activate the proxy
                         Proxy proxy = Proxy.getSingleton();
-                        proxy.enable();
+                        for(Service s : services)
+                        {
+                            HttpMessageProcessor processor = s.getHttpProcessor();
+                            if(processor != null)
+                            {
+                                proxy.addHttpMessageProcessor(processor);
+                            }
+                        }
                     }
                 });
 
