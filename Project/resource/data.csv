@@ -1,0 +1,12 @@
+, WIFI, resource/Wifi.png, WifiServiceType, 8.8.8.8, true, true
+, DNS, resource/DNS.png, PingServiceType, www.google.com, true, true
+, VPN, resource/vpn.png, CiscoVPNServiceType, vpn.au.dk, true, true
+, It's learning, resource/its_learning.png, WebServiceType, https://www.elevplan.dk/app/moduler/start/start.asp, false, true
+, Bulb, resource/Bulb.gif,,,false,false
+, Bus, resource/Bus.png,,,false,false
+, Car, resource/Car.png,,,false,false
+, Clock, resource/Clock.png,,,false,false
+, akis, resource/akis.png,,,false,false
+, akis_green, resource/akis_green.png,,,false,false
+, bug, resource/bug.png,,,false,false
+, Dragon, resource/Dragon.png,,,false,false

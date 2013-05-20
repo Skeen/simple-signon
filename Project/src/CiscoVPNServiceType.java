@@ -10,10 +10,10 @@ class CiscoVPNServiceType implements ServiceType
     private static String cisco_vpn_server = null;
     private static String cisco_vpn_profile = null;
 
-    public CiscoVPNServiceType(String host, String profile)
+    public CiscoVPNServiceType(String host)
     {
         this.cisco_vpn_server = host;
-        this.cisco_vpn_profile = profile;
+        this.cisco_vpn_profile = "";
     }
 
     public void double_click()

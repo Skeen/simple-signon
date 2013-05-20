@@ -19,6 +19,8 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
+import proxy.Proxy;
+
 class SSOWindow implements ServiceCallback
 {
     private static SSOWindow singleton = new SSOWindow();
@@ -247,13 +249,16 @@ class SSOWindow implements ServiceCallback
                     SwingUtilities.invokeLater(new Runnable()
                         {
                             public void run() {
-                                // Hide ourselves login prompt
+                                // Hide ourselves (SSO window)
                                 hideGUI();
                                 // remove services
                                 clearServices();
                                 // Hide the tray
                                 SSOTray tray = SSOTray.getSingleton();
                                 tray.hideGUI();
+                                // Disable the proxy
+                                Proxy proxy = Proxy.getSingleton();
+                                proxy.disable();
                                 // Show the loginWindow
                                 SSOLogin login = SSOLogin.getSingleton();
                                 login.clearPasswordField();
