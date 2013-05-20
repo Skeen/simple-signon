@@ -1,7 +1,5 @@
 import javax.swing.SwingUtilities;
 
-import proxy.Proxy;
-
 class Driver
 {
     public static void main(String[] args) 
@@ -19,8 +17,6 @@ class Driver
 
         // Get the proxy
         Proxy proxy = Proxy.getSingleton();
-        // Disable all processors
-        proxy.disable();
         // Run the proxy
         proxy.run();
     }

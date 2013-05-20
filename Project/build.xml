@@ -51,6 +51,19 @@
         </zip>
     </target>
 
+    <target name="clean-exproxy">
+        <!-- Exproxy folder -->
+        <subant antfile="libsrc/exproxy/build.xml" target="clean" buildpath="."/>
+
+        <!-- Our folder -->
+        <delete dir="${lib-directory}/resource"/>
+        <delete file="${lib-directory}/commons-codec-1.7.jar"/>
+        <delete file="${lib-directory}/commons-collections-3.2.1.jar"/>
+        <delete file="${lib-directory}/commons-httpclient-3.1.jar"/>
+        <delete file="${lib-directory}/commons-logging-1.1.2.jar"/>
+        <delete file="${exproxyJar}"/>
+    </target>
+
     <target name="get-exproxy-jar" depends="build-exproxy-jar">
         <copy todir="${lib-directory}" >
             <fileset dir="libsrc/exproxy/bin"/>
@@ -68,7 +81,7 @@
         <delete dir="${documentation-directory}"/>
     </target>
 
-    <target name="clean">
+    <target name="clean" depends="clean-exproxy">
         <delete dir="${build-directory}"/>
     </target>
 
