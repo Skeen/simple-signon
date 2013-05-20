@@ -49,6 +49,19 @@
         </zip>
     </target>
 
+    <target name="get-exproxy-jar" depends="build-exproxy-jar">
+        <copy todir="${lib-directory}" >
+            <fileset dir="libsrc/exproxy/bin"/>
+        </copy>
+        <copy todir="${lib-directory}" >
+            <fileset dir="libsrc/exproxy/lib"/>
+        </copy>
+    </target>
+
+    <target name="build-exproxy-jar">
+        <subant antfile="libsrc/exproxy/build.xml" buildpath="."/>
+    </target>
+
     <target name="clean-doc">
         <delete dir="${documentation-directory}"/>
     </target>
@@ -81,8 +94,7 @@
 
     <target name="copyResource" depends="prepare">
         <copy todir="${build-directory}\${resource-directory}" >
-            <fileset dir="${resource-directory}">
-            </fileset>
+            <fileset dir="${resource-directory}"/>
         </copy>
     </target>
 
