@@ -16,6 +16,10 @@ class CiscoVPNServiceType implements ServiceType
         this.cisco_vpn_profile = profile;
     }
 
+    public void double_click()
+    {
+    }
+
     private volatile boolean connecting = false;
 
     private Boolean isConnected()

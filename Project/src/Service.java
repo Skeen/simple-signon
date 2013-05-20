@@ -27,6 +27,25 @@ class Service implements Runnable
         CONNECTED     // Connected
     }
 
+    // Make an enum class, and a to string method on that
+    private String status_to_string(Status s)
+    {
+        switch(s)
+        {
+            case NOTCONNECTED:
+                return "Not Connected";
+            case DISCONNECTED:
+                return "Disconnected";
+            case CONNECTING:
+                return "Connecting";
+            case CONNECTED:
+                return "Connected";
+            // This will never happen
+            default:
+                return null;
+        }
+    }
+
     private boolean connect;
 
     public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
@@ -64,34 +83,50 @@ class Service implements Runnable
         this.callback = callback;
     }
 
+    public void double_click()
+    {
+        System.out.println("DOUBLE CLICK ON " + name);
+        type.double_click();
+    }
+
+    private void do_callback_if_status_changed(Status s)
+    {
+        if(s != status)
+        {
+            status = s;
+            callback.callback(this);
+            // Show info at the tray icon
+            if(status == Status.DISCONNECTED)
+            {
+                // Show an error at the tray icon
+                SSOTray tray = SSOTray.getSingleton();
+                tray.showError(name + " " + status_to_string(status));
+            }
+            else
+            {
+                // Show an error at the tray icon
+                SSOTray tray = SSOTray.getSingleton();
+                tray.showInfo(name + " " + status_to_string(status));
+            }
+        }
+    }
+
     public void run()
     {
         while(true)
         {
             Utilities.delay(1000);
+            Status new_status = Status.NOTCONNECTED;
             if(auto_connect == false)
             {
-                status = Status.NOTCONNECTED;
+                new_status = Status.NOTCONNECTED;
             }
             else
             {
-                status = type.getStatus();
-                if(status == Status.DISCONNECTED)
-                {
-                    // Show an error at the tray icon
-                    SSOTray tray = SSOTray.getSingleton();
-                    tray.showError(name + " disconnected");
-                }
-                else
-                {
-                    /*
-                    // Show an error at the tray icon
-                    SSOTray tray = SSOTray.getSingleton();
-                    tray.showInfo(name + " connected");
-                    */
-                }
+                new_status = type.getStatus();
             }
-            callback.callback(this);
+            do_callback_if_status_changed(new_status);
+            
         }
     }
     

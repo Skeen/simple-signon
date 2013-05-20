@@ -15,6 +15,10 @@ class PingServiceType implements ServiceType
                 }).start();
     }
 
+    public void double_click()
+    {
+    }
+
     private static boolean ping(String host)
     {
         boolean isReachable = false;
