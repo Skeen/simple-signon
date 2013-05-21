@@ -35,7 +35,6 @@ class Transition
             for(Service s : services)
             {
                 // Setup the service, and make it runnable
-                s.seed(window);
                 new Thread(s).start();
 
                 HttpMessageProcessor processor = s.getHttpProcessor();
