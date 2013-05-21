@@ -17,9 +17,11 @@
         classpath="${doxygenJar}" />
 
     <path id="class-path">
+        <fileset dir="${lib-directory}">
+            <include name="**/*.jar"/>
+        </fileset>
+         
         <pathelement location="${build-directory}"/>
-        <pathelement location="${junitJar}"/>
-        <pathelement location="${exproxyJar}"/>
     </path>
 
     <target name="help">

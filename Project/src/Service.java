@@ -87,6 +87,11 @@ class Service implements Runnable
 
     public HttpMessageProcessor getHttpProcessor()
     {
+        // TODO: REMOVE HARD_CODING
+        if(type instanceof WebServiceType)
+        {
+            return new CompositeHttpMessageProcessor(new ElevPlan(), new ElevPlanModifier());
+        }
         return null;
     }
 
