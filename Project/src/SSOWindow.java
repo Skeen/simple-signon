@@ -86,23 +86,6 @@ class SSOWindow implements ServiceCallback
                 availableServices.addElement(s);
             }
         }
-        
-        // TODO: Start connecting
-        int size = model.getSize();
-        for(int i=0 ; i < model.getSize(); i++)
-        {
-            Service s = model.getElementAt(i);
-            prepareService(s);
-        }
-    }
-    
-    private void prepareService(Service s)
-    {
-        s.seed(this);
-        if(s.autoconnect())
-        {
-            new Thread(s).start();
-        }
     }
     
     public void showGUI()
@@ -174,14 +157,12 @@ class SSOWindow implements ServiceCallback
     public void addService(Service s)
     {
 		model.addElement(s);
-        prepareService(s);
         availableServices.removeElement(s);
     }
     
     public void removeService(Service s)
     {
         model.removeElement(s);
-        s.disconnect();
         availableServices.addElement(s);
     }
     

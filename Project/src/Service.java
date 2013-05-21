@@ -21,6 +21,8 @@ class Service implements Runnable
     private boolean auto_connect;
     // Whether this service is in list of used services
     private boolean in_use;
+    // The callback to use
+    private ServiceCallback callback;
 
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -50,11 +52,12 @@ class Service implements Runnable
 
     private boolean connect;
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, ServiceCallback callback)
     {
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
+        this.callback = callback;
         if(service_type == null)
         {
             type = new DefaultServiceType();
@@ -76,13 +79,6 @@ class Service implements Runnable
                         }
                     }).start();
         }
-    }
-
-    private ServiceCallback callback;
-
-    public void seed(ServiceCallback callback)
-    {
-        this.callback = callback;
     }
 
     public HttpMessageProcessor getHttpProcessor()
@@ -146,13 +142,12 @@ class Service implements Runnable
     {
         connect = true;
         type.connect();
-        //TODO: actually connect
     }
+
     public void disconnect()
     {
         connect = false;
         type.disconnect();
-        //TODO: stop thread and close current connect
     }
 
     // Return whether this service is set to be connected.
