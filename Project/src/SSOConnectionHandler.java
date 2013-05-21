@@ -1,16 +1,9 @@
 import java.lang.*;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
-
 import java.io.*;
 import java.util.*;
 
-import javax.swing.*;
 import javax.swing.SwingUtilities;
-import javax.swing.text.*;
-import javax.swing.table.*;
 
 import java.lang.Class;
 import java.lang.reflect.Constructor;
@@ -19,14 +12,13 @@ import com.exproxy.processors.HttpMessageProcessor;
 
 class SSOConnectionHandler
 {
-    public SSOConnectionHandler()
+    public SSOConnectionHandler(String username, String password)
     {
     }
 
-    java.util.List<Service> services = new ArrayList<Service>();
-
-    void connect(String username, String password)
+    List<Service> getServices()
     {
+        List<Service> services = new ArrayList<Service>();
         // Read the services from a comma-seperated-file (code ready for sql server)
         try
         {
@@ -69,33 +61,6 @@ class SSOConnectionHandler
         {
             e.printStackTrace();
         }
-
-        SwingUtilities.invokeLater(new Runnable()
-                {
-                    public void run() {
-                        // Hide the login prompt
-                        SSOLogin login = SSOLogin.getSingleton();
-                        login.hideGUI();
-                        // Show the tray
-                        SSOTray tray = SSOTray.getSingleton();
-                        tray.showGUI();
-                        // Show the window (load it as well)
-                        SSOWindow window = SSOWindow.getSingleton();
-                        window.loadServices(services);
-                        window.showGUI();
-                        // Activate the proxy
-                        Proxy proxy = Proxy.getSingleton();
-                        for(Service s : services)
-                        {
-                            HttpMessageProcessor processor = s.getHttpProcessor();
-                            if(processor != null)
-                            {
-                                proxy.addHttpMessageProcessor(processor);
-                            }
-                        }
-                    }
-                });
-
-        System.out.println("Connect using; " + username + " : " + password);
+        return services;
     }
 }

@@ -110,8 +110,7 @@ public class SSOLogin
                         System.out.println("Connect clicked");
                         String username = username_field.getText();
                         String password = new String(password_field.getPassword());
-                        SSOConnectionHandler handler = new SSOConnectionHandler();
-                        handler.connect(username, password);
+                        Transition.login(username, password);
                     }
                 });
         connect.add(botton);

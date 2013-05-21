@@ -244,25 +244,7 @@ class SSOWindow implements ServiceCallback
             {
                 public void actionPerformed(ActionEvent e) 
                 {
-                    SwingUtilities.invokeLater(new Runnable()
-                        {
-                            public void run() {
-                                // Hide ourselves (SSO window)
-                                hideGUI();
-                                // remove services
-                                clearServices();
-                                // Hide the tray
-                                SSOTray tray = SSOTray.getSingleton();
-                                tray.hideGUI();
-                                // Disable the proxy
-                                Proxy proxy = Proxy.getSingleton();
-                                proxy.removeAllHttpMessageProcessors();
-                                // Show the loginWindow
-                                SSOLogin login = SSOLogin.getSingleton();
-                                login.clearPasswordField();
-                                login.showGUI();
-                            }
-                        });
+                    Transition.logout();
                 }
             });
         
