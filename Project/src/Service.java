@@ -78,13 +78,6 @@ class Service implements Runnable
         }
     }
 
-    private ServiceCallback callback;
-
-    public void seed(ServiceCallback callback)
-    {
-        this.callback = callback;
-    }
-
     public HttpMessageProcessor getHttpProcessor()
     {
         // TODO: REMOVE HARD_CODING
@@ -105,8 +98,9 @@ class Service implements Runnable
     {
         if(s != status)
         {
+            EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
-            callback.callback(this);
+            eventSystem.trigger_event("UPDATE_GUI", this);
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
             {

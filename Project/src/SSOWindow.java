@@ -19,7 +19,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
-class SSOWindow implements ServiceCallback
+class SSOWindow implements EventSystem.EventListener
 {
     private static SSOWindow singleton = new SSOWindow();
     public static SSOWindow getSingleton()
@@ -41,17 +41,44 @@ class SSOWindow implements ServiceCallback
     private JList<Service> serviceList;
     
 	private DefaultListModel<Service> model;
-    private DefaultListModel<Service> availableServices;
     
-    private SSOWindow THIS;
+    private EventSystem eventSystem;
     
     // TODO: Test constructor, remove this
     private SSOWindow()
     {
-        this.THIS = this;
+        model = new DefaultListModel<Service>();
+        eventSystem = EventSystem.getSingleton();
+        
+        eventSystem.addListener(EventSystem.LOAD_SERVICE, this);
+        eventSystem.addListener(EventSystem.CLEAR_SERVICES, this);
+        eventSystem.addListener(EventSystem.ADD_SERVICE_EVENT, this);
+        eventSystem.addListener(EventSystem.UPDATE_GUI, this);
+        
         create();
     }
-
+    
+    public void event(String event, Object payload)
+    {
+        switch(event)
+        {
+            case EventSystem.LOAD_SERVICE:
+                loadService((Service) payload);
+                break;
+            case EventSystem.CLEAR_SERVICES:
+                clearServices();
+                break;
+            case EventSystem.ADD_SERVICE_EVENT:
+                addService((Service) payload);
+                break;
+            case EventSystem.UPDATE_GUI:
+                updateGUI();
+                break;
+            default:
+                break;
+        }
+    }
+    
     private void create()
     {
         //Create and set up the window.
@@ -61,8 +88,6 @@ class SSOWindow implements ServiceCallback
         servicePanel = createServicePanel();
         buttonPanel = createButtonPanel();
         
-        availableServices = new DefaultListModel<Service>();
-        
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
         pane.add(buttonPanel, BorderLayout.SOUTH);
@@ -70,38 +95,12 @@ class SSOWindow implements ServiceCallback
         frame.pack();
         frame.setMinimumSize(new Dimension(64*2*4+10, 100));
     }
-    
-    public void loadServices(java.util.List<Service> services)
+
+    public void loadService(Service s)
     {
-        clearServices();
-        //Add the services to the active and inactive listmodels.
-        for(Service s : services)
+        if(s.isUsed())
         {
-            if(s.isUsed())
-            {
-                model.addElement(s);
-            }
-            else
-            {
-                availableServices.addElement(s);
-            }
-        }
-        
-        // TODO: Start connecting
-        int size = model.getSize();
-        for(int i=0 ; i < model.getSize(); i++)
-        {
-            Service s = model.getElementAt(i);
-            prepareService(s);
-        }
-    }
-    
-    private void prepareService(Service s)
-    {
-        s.seed(this);
-        if(s.autoconnect())
-        {
-            new Thread(s).start();
+            addService(s);
         }
     }
     
@@ -136,9 +135,10 @@ class SSOWindow implements ServiceCallback
         }
     }
     
-    public void callback(Service s)
+    public void updateGUI()
     {
-        if(getSelection() == s)
+        Service s = getSelection();
+        if(s != null)
         {
             if(s.getConnectStatus())
             {
@@ -163,26 +163,17 @@ class SSOWindow implements ServiceCallback
     
     public void clearServices()
     {
-        // This method should remove all services AND stop them, in whatever
-        // they are doing (including all the subthreads of all services).
-        
         model.clear();
-        availableServices.clear();
-        
     }
 	
     public void addService(Service s)
     {
 		model.addElement(s);
-        prepareService(s);
-        availableServices.removeElement(s);
     }
     
     public void removeService(Service s)
     {
         model.removeElement(s);
-        s.disconnect();
-        availableServices.addElement(s);
     }
     
     private Image getOverlay(Service.Status status)
@@ -235,8 +226,10 @@ class SSOWindow implements ServiceCallback
                 public void actionPerformed(ActionEvent e) 
                 {
                     Service s = getSelection();
-                    SSOEdit edit = new SSOEdit(s);
-                    edit.showGUI();
+                    if (s != null)
+                    {
+                        eventSystem.trigger_event(EventSystem.EDIT_EVENT, s);
+                    }
                 }
             });
                     
@@ -244,7 +237,7 @@ class SSOWindow implements ServiceCallback
             {
                 public void actionPerformed(ActionEvent e) 
                 {
-                    Transition.logout();
+                    eventSystem.trigger_event(EventSystem.LOGOUT_EVENT, null);
                 }
             });
         
@@ -252,10 +245,7 @@ class SSOWindow implements ServiceCallback
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    //TODO: Use a popup context menu instead of a window
-                    //TODO: Use a seperate list (using the same JList instance is buggy)
-                    SSOAdd ssoAdd = new SSOAdd(THIS, availableServices);
-                    ssoAdd.showGUI();
+                    eventSystem.trigger_event(EventSystem.ADD_EVENT, null);
                 }
             });
             
@@ -264,7 +254,12 @@ class SSOWindow implements ServiceCallback
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    removeService(getSelection());
+                    Service s = getSelection();
+                    if (s != null)
+                    {
+                        removeService(s);
+                        eventSystem.trigger_event(EventSystem.REMOVE_EVENT, s);
+                    }
                 }
             });
         
@@ -273,16 +268,9 @@ class SSOWindow implements ServiceCallback
                 public void actionPerformed(ActionEvent e)
                 {
                     Service s = getSelection();
-                    
-                    if (s.getConnectStatus())
+                    if (s != null)
                     {
-                        s.disconnect();
-                        reconnect.setText("Opret forbindelse");
-                    }
-                    else
-                    {
-                        s.connect();
-                        reconnect.setText("Stop forbindelse");
+                        eventSystem.trigger_event(EventSystem.RECONNECT_EVENT, s);
                     }
                 }
             });
@@ -294,19 +282,7 @@ class SSOWindow implements ServiceCallback
             {
                 public void valueChanged(ListSelectionEvent e) 
                 {
-                    Service s = getSelection();
-                    boolean valid = (s != null);
-                    if ( valid )
-                    {
-                        if (s.getConnectStatus())
-                        {
-                            reconnect.setText("Stop forbindelse");
-                        }
-                        else
-                        {
-                            reconnect.setText("Opret forbindelse");
-                        }
-                    }
+                    boolean valid = (getSelection() != null);
                     updateButtons((valid));
                 }
             });
@@ -333,8 +309,6 @@ class SSOWindow implements ServiceCallback
     private JPanel createServicePanel()
     {
         JPanel grid = new JPanel();
-		
-		model = new DefaultListModel<Service>();
 		
 		serviceList = new JList<Service>(model);
 		
@@ -367,7 +341,10 @@ class SSOWindow implements ServiceCallback
                     {
                         int index = list.locationToIndex(evt.getPoint());
                         Service s = (Service) list.getModel().getElementAt(index);
-                        s.double_click();
+                        if (s != null)
+                        {
+                            eventSystem.trigger_event(EventSystem.DOUBLE_CLICK, s);
+                        }
                     }
                 }
             });

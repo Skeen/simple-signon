@@ -20,7 +20,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
-public class SSOEdit
+public class SSOEdit implements EventSystem.EventListener
 {
     /* Edit an SSO Service:
      *  Set Username
@@ -28,23 +28,45 @@ public class SSOEdit
      *  Autologin
      */
      
+    private static SSOEdit singleton = new SSOEdit();
+    public SSOEdit getSingleton()
+    {
+        return singleton;
+    }
+    
     private Service service;
     
     private JFrame frame;
-    /*
-    private JPanel inputPanel;
-    private JTextField passInput;
-    private JTextField userInput;
-    private JLabel userLabel;
-    private JLabel passLabel;
-    */
+    private EventSystem eventSystem;
     
-    public SSOEdit(Service service)
+    private SSOEdit()
     {
-        this.service = service;
+        eventSystem = EventSystem.getSingleton();
+        
+        eventSystem.addListener("EDIT_EVENT", this);
+        
         create();
     }
 
+    public void event(String event, Object payload)
+    {
+        switch(event)
+        {
+            case EventSystem.EDIT_EVENT:
+                prepareEdit((Service) payload);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void prepareEdit(Service s)
+    {
+        service = s;
+        //TODO: put current username and password(as ***) in input fields, set autoconnect to its current value
+        showGUI();
+    }
+    
     public void showGUI()
     {
         frame.setVisible(true);
@@ -84,8 +106,7 @@ public class SSOEdit
         repeatPanel.add(repeatInput, BorderLayout.EAST);
         
         //Create panel with auto connect checkmark, and Accept/Cancel buttons.
-        JCheckBox autoConBox = new JCheckBox("Autoforbind");
-        //JCheckBox autoConBox = new JCheckBox("Autoconnect: ", Services.do you autoconnect());
+        JCheckBox autoConBox = new JCheckBox("Autoforbind: ");
         JButton accept = new JButton("Godkend");
         JButton cancel = new JButton("Annuller");
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -98,7 +119,8 @@ public class SSOEdit
             {
                 public void actionPerformed(ActionEvent e) 
                 {
-                    frame.dispose();
+                    hideGUI();
+                    service = null;
                 }
             });
             
@@ -106,8 +128,10 @@ public class SSOEdit
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    //TODO: make changes
-                    frame.dispose();
+                    hideGUI();
+                    //TODO: bring changes along as tuple
+                    eventSystem.trigger_event("EDIT_ACCEPT_EVENT", null);
+                    service = null;
                 }
             });
         

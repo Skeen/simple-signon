@@ -7,17 +7,29 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class SSOAdd
+public class SSOAdd implements EventSystem.EventListener
 {
+    
+    private static SSOAdd singleton = new SSOAdd();
+    public static SSOAdd getSingleton()
+    {
+        return singleton;
+    }
+    
+    private EventSystem eventSystem;
     private JFrame frame;
     private JList<Service> list;
     private DefaultListModel<Service> listModel;
-    private SSOWindow parentWindow;
     
-    public SSOAdd(SSOWindow parentWindow, DefaultListModel<Service> listModel)
+    private SSOAdd()
     {
-        this.listModel = listModel;
-        this.parentWindow = parentWindow;
+        listModel = new DefaultListModel<Service>();
+        eventSystem = EventSystem.getSingleton();
+        
+        eventSystem.addListener(EventSystem.LOAD_SERVICE, this);
+        eventSystem.addListener(EventSystem.CLEAR_SERVICES, this);
+        eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
+        
         create();
     }
     
@@ -63,9 +75,9 @@ public class SSOAdd
                     Service s = list.getSelectedValue();
                     if (s != null)
                     {
-                        parentWindow.addService(s);
+                        hideGUI();
                         list.clearSelection();
-                        frame.dispose();
+                        eventSystem.trigger_event("ADD_SERVICE_EVENT", s);
                     }
                 }
             });
@@ -77,6 +89,37 @@ public class SSOAdd
         frame.pack();
         frame.setResizable( false );
         
+    }
+    
+    public void event(String event, Object payload)
+    {
+        switch(event)
+        {
+            case EventSystem.LOAD_SERVICE:
+                loadService((Service) payload);
+                break;
+            case EventSystem.CLEAR_SERVICES:
+                clearServices();
+                break;
+            case EventSystem.REMOVE_EVENT:
+                listModel.addElement((Service) payload);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void clearServices()
+    {
+        listModel.clear();
+    }
+    
+    public void loadService(Service s)
+    {
+        if(! s.isUsed())
+        {
+            listModel.addElement(s);
+        }
     }
     
     public void showGUI()
