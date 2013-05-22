@@ -1,9 +1,10 @@
 import java.awt.*;
 import java.util.Random;
 
-import javax.swing.JPanel;
-
 import com.exproxy.processors.HttpMessageProcessor;
+
+import java.util.Map;
+import java.util.HashMap;
 
 class Service implements Runnable, EventSystem.EventListener
 {
@@ -74,6 +75,7 @@ class Service implements Runnable, EventSystem.EventListener
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
+        eventSystem.addListener(EventSystem.DOUBLE_CLICK, this);
         
         if(auto_connect)
         {
@@ -99,6 +101,9 @@ class Service implements Runnable, EventSystem.EventListener
             case EventSystem.EDIT_ACCEPT_EVENT:
                 edit(payload);
                 break;
+            case EventSystem.DOUBLE_CLICK:
+                type.double_click();
+                break;
             default:
                 break;
         }
@@ -109,15 +114,12 @@ class Service implements Runnable, EventSystem.EventListener
         // TODO: REMOVE HARD_CODING
         if(type instanceof WebServiceType)
         {
-            return new CompositeHttpMessageProcessor(new ElevPlan(), new ElevPlanModifier());
+            Map<String, String> initMap = new HashMap<String, String>();
+            initMap.put("USERNAME", "lanie962");
+            initMap.put("PASSWORD", "onsdag01Maj");
+            return new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
         }
         return null;
-    }
-
-    public void double_click()
-    {
-        System.out.println("DOUBLE CLICK ON " + name);
-        type.double_click();
     }
 
     private void do_callback_if_status_changed(Status s)

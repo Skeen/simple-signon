@@ -14,19 +14,24 @@ import java.io.ByteArrayInputStream;
 
 class ElevPlan implements HttpMessageProcessor
 {
+    private Map<String,String> initMap;
+
+    public ElevPlan(Map<String,String> input)
+    {
+        this.initMap = input;
+    }
+
     private class ElevPlanRequest extends HttpMessageRequest
     {
         private HttpMessageRequest old_request = null;
 
-        public ElevPlanRequest(HttpMessageRequest request)
+        public ElevPlanRequest(HttpMessageRequest request, final String brugernavn, final String password)
         {
             this.old_request = request;
 
             // Body
             setBody(new HttpMessageBody()
                     {
-                        private String brugernavn = "";
-                        private String password = "";
                         private byte[] data = new String("brugernavn=" + brugernavn + "&adgangskode=" + password + "&LOG+IND=Log+ind&uniloginbrugernavn=&uniloginbrugernavnold=&verifikation=").getBytes();
 
                         public byte[] getContent()
@@ -100,7 +105,7 @@ class ElevPlan implements HttpMessageProcessor
             if(request.getToHost().toLowerCase().equals("www.elevplan.dk") &&
                request.getUri().equals("/SSO_AUTO_LOGIN"))
             {
-                return new ElevPlanRequest(request);
+                return new ElevPlanRequest(request, initMap.get("USERNAME"), initMap.get("PASSWORD"));
             }
         }
         return input;
