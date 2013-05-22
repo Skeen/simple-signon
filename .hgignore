@@ -1,0 +1,7 @@
+syntax: glob
+*~
+*.class
+*.swp
+Project/build/*
+Project/doc/*
+_SERVER*
