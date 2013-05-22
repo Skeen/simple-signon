@@ -57,7 +57,7 @@ class Service implements Runnable
         this.logo = Utilities.loadImage(logo_path);
         if(service_type == null)
         {
-            type = new DefaultServiceType();
+            type = new DefaultServiceType(null);
         }
         else
         {
@@ -140,13 +140,12 @@ class Service implements Runnable
     {
         connect = true;
         type.connect();
-        //TODO: actually connect
     }
+
     public void disconnect()
     {
         connect = false;
         type.disconnect();
-        //TODO: stop thread and close current connect
     }
 
     // Return whether this service is set to be connected.
