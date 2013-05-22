@@ -60,5 +60,5 @@ INSERT INTO `services`.`service_indirection` (`idservice_indirection`, `user_ser
 INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('5', 'profile', 'AUWLAN');
 -- Login URL for it's learning
 INSERT INTO `services`.`service_indirection` (`idservice_indirection`, `service_id`) VALUES ('6', '4');
-INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('6', 'URL', 'www.elevplan.dk/SSO_AUTO_LOGIN');
+INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('6', 'URL', 'https://www.elevplan.dk/SSO_AUTO_LOGIN');
 
