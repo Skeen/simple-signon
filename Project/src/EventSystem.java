@@ -46,7 +46,7 @@ class EventSystem
         return event_listeners.get(event);
     }
 
-    public void addListener(String event, EventListener listen)
+    public synchronized void addListener(String event, EventListener listen)
     {
         // Get the list of listeners
         List<EventListener> listeners = getList(event);
@@ -54,7 +54,7 @@ class EventSystem
         listeners.add(listen);
     }
 
-    public boolean removeListener(String event, EventListener listen)
+    public synchronized boolean removeListener(String event, EventListener listen)
     {
         // Get the list of listeners
         List<EventListener> listeners = getList(event);
@@ -62,7 +62,7 @@ class EventSystem
         return listeners.remove(listen);
     }
 
-    public void trigger_event(String event, Object payload)
+    public synchronized void trigger_event(String event, Object payload)
     {
         // Get the list of listeners
         List<EventListener> listeners = getList(event);
