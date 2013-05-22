@@ -21,8 +21,6 @@ class Service implements Runnable
     private boolean auto_connect;
     // Whether this service is in list of used services
     private boolean in_use;
-    // The callback to use
-    private ServiceCallback callback;
 
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -52,12 +50,11 @@ class Service implements Runnable
 
     private boolean connect;
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, ServiceCallback callback)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
     {
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
-        this.callback = callback;
         if(service_type == null)
         {
             type = new DefaultServiceType(null);
@@ -101,8 +98,9 @@ class Service implements Runnable
     {
         if(s != status)
         {
+            EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
-            callback.callback(this);
+            eventSystem.trigger_event("UPDATE_GUI", this);
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
             {

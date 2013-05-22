@@ -4,3 +4,4 @@ syntax: glob
 *.swp
 Project/build/*
 Project/doc/*
+_SERVER*

@@ -108,7 +108,7 @@ class SSOConnectionHandler
                 boolean in_use       = r.getBoolean("in_use");
 
                 // Create the service
-                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use, SSOWindow.getSingleton()));
+                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use));
             }
         }
         catch(Exception e)

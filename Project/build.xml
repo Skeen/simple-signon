@@ -41,16 +41,8 @@
         </echo>
     </target>
 
-    <target name="handin">
-        <zip zipfile="CB.zip" update="true">
-            <fileset dir=".">
-                <include name="${source-directory}/**"/>
-                <include name="${test-source-directory}/**"/>
-                <include name="${lib-directory}/**"/>
-                <include name="${configuration-directory}/**"/>
-                <include name="build.xml"/>
-            </fileset>
-        </zip>
+    <target name="get-server">
+        <get src="http://www.cs.au.dk/~skeen/_SERVER.rar" dest="_SERVER.rar" verbose="on"/>
     </target>
 
     <target name="clean-exproxy">
