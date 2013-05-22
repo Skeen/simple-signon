@@ -19,23 +19,22 @@ class Transition
         {
             SSOConnectionHandler connection = new SSOConnectionHandler(username, password);
             List<Service> services = connection.getServices();
-
+            
+            EventSystem eventSystem = EventSystem.getSingleton();
+            
             // Hide the login prompt
             SSOLogin login = SSOLogin.getSingleton();
             login.hideGUI();
             // Show the tray
             SSOTray tray = SSOTray.getSingleton();
-            tray.showGUI();
             // Show the window (load it as well)
             SSOWindow window = SSOWindow.getSingleton();
-            window.loadServices(services);
-            window.showGUI();
             // Activate the proxy
             Proxy proxy = Proxy.getSingleton();
             for(Service s : services)
             {
+                eventSystem.trigger_event(EventSystem.LOAD_SERVICE, s);
                 // Setup the service, and make it runnable
-                s.seed(window);
                 new Thread(s).start();
 
                 HttpMessageProcessor processor = s.getHttpProcessor();
@@ -44,6 +43,8 @@ class Transition
                     proxy.addHttpMessageProcessor(processor);
                 }
             }
+            tray.showGUI();
+            window.showGUI();
         }
     }
 
@@ -51,9 +52,11 @@ class Transition
     {
         public void run() 
         {
+            EventSystem eventSystem = EventSystem.getSingleton();
+            
             // Hide SSO window
             SSOWindow window = SSOWindow.getSingleton();
-            window.clearServices();
+            eventSystem.trigger_event(EventSystem.CLEAR_SERVICES, null);
             window.hideGUI();
             // Hide the tray
             SSOTray tray = SSOTray.getSingleton();
