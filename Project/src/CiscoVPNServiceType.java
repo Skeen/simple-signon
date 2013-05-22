@@ -15,7 +15,7 @@ class CiscoVPNServiceType implements ServiceType
     public CiscoVPNServiceType(Map<String,String> input)
     {
         this.cisco_vpn_server = input.get("host");
-        this.cisco_vpn_profile = input.get("profile");;
+        this.cisco_vpn_profile = input.get("profile");
     }
 
     public void double_click()
