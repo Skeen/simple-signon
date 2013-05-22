@@ -1,12 +1,15 @@
 import java.net.URI;
 import java.awt.Desktop;
 
+import java.util.Map;
+
 class WebServiceType implements ServiceType
 {
     private URI webpage = null;
 
-    public WebServiceType(String webpage)
+    public WebServiceType(Map<String,String> input)
     {
+        String webpage = input.get("URL");
         try
         {
             this.webpage = new URI(webpage);

@@ -60,7 +60,7 @@ class Service implements Runnable
         this.callback = callback;
         if(service_type == null)
         {
-            type = new DefaultServiceType();
+            type = new DefaultServiceType(null);
         }
         else
         {

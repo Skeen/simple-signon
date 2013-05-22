@@ -1,11 +1,13 @@
 import java.io.IOException;
 
+import java.util.Map;
+
 class WifiServiceType extends PingServiceType
 {
     private volatile boolean connecting = false;
-    public WifiServiceType(String host)
+    public WifiServiceType(Map<String,String> input)
     {
-        super(host);
+        super(input);
     }
 
     private static int disconnectWifi()
