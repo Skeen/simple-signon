@@ -122,14 +122,10 @@ class Service implements Runnable
         while(true)
         {
             Utilities.delay(1000);
-            Status new_status = Status.NOTCONNECTED;
-            if(auto_connect == false)
+            Status new_status = type.getStatus();
+            if(new_status == Status.DISCONNECTED && auto_connect == false)
             {
                 new_status = Status.NOTCONNECTED;
-            }
-            else
-            {
-                new_status = type.getStatus();
             }
             do_callback_if_status_changed(new_status);
             
