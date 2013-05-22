@@ -5,17 +5,40 @@ import java.util.HashMap;
 
 class EventSystem
 {
+    //SSOAdd and SSOWindow add the service depending on whether they are active or not.
     public static final String LOAD_SERVICE         = "LOAD_SERVICE";
+    
+    //Clears services from lists held by SSOAdd and SSOWindow
     public static final String CLEAR_SERVICES       = "CLEAR_SERVICES";
+    
+    //Add button in SSOWindow was pushed. Show SSOAdd 
     public static final String ADD_EVENT            = "ADD_EVENT";
+    
+    //Adds a service to list of active services, which is held by SSOWindow
     public static final String ADD_SERVICE_EVENT    = "ADD_SERVICE_EVENT";
+    
+    //Removes a service from the list held by SSOWindow, it is added to list held by SSOAdd.
     public static final String REMOVE_EVENT         = "REMOVE_EVENT";
+    
+    //Edit button in SSOWindow was pushed. Show SSOEdit
     public static final String EDIT_EVENT           = "EDIT_EVENT";
+    
+    //Accept button in SSOEdit was pushed.
     public static final String EDIT_ACCEPT_EVENT    = "EDIT_ACCEPT_EVENT";
+    
+    //Reconnect button in SSOWindow was pushed
     public static final String RECONNECT_EVENT      = "RECONNECT_EVENT";
+    
+    //Refresh button in SSOWindow was pushed
     public static final String REFRESH_EVENT        = "REFRESH_EVENT";
+    
+    //Logout button in SSOWidnow was pushed
     public static final String LOGOUT_EVENT         = "LOGOUT_EVENT";
+    
+    //Double click on a service in SSOWindow was detected.
     public static final String DOUBLE_CLICK         = "DOUBLE_CLICK";
+    
+    //Update the various GUIs to show new state of services, etc
     public static final String UPDATE_GUI           = "UPDATE_GUI";
 
     public interface EventListener
