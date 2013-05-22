@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.io.*;
 
+import java.util.Map;
+
 class CiscoVPNServiceType implements ServiceType
 {
     private static final String cisco_vpn_path = "C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client\\vpncli.exe";
@@ -10,10 +12,10 @@ class CiscoVPNServiceType implements ServiceType
     private static String cisco_vpn_server = null;
     private static String cisco_vpn_profile = null;
 
-    public CiscoVPNServiceType(String host)
+    public CiscoVPNServiceType(Map<String,String> input)
     {
-        this.cisco_vpn_server = host;
-        this.cisco_vpn_profile = "";
+        this.cisco_vpn_server = input.get("host");
+        this.cisco_vpn_profile = input.get("profile");
     }
 
     public void double_click()
