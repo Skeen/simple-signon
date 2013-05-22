@@ -28,8 +28,8 @@ public class SSOAdd implements EventSystem.EventListener
         
         eventSystem.addListener(EventSystem.LOAD_SERVICE, this);
         eventSystem.addListener(EventSystem.CLEAR_SERVICES, this);
+        eventSystem.addListener(EventSystem.ADD_EVENT, this);
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
-        
         create();
     }
     
@@ -73,10 +73,11 @@ public class SSOAdd implements EventSystem.EventListener
                 public void valueChanged(ListSelectionEvent e)
                 {
                     Service s = list.getSelectedValue();
-                    if (s != null)
+                    if (s != null && !e.getValueIsAdjusting())
                     {
                         hideGUI();
                         list.clearSelection();
+                        listModel.removeElement(s);
                         eventSystem.trigger_event("ADD_SERVICE_EVENT", s);
                     }
                 }
@@ -101,6 +102,9 @@ public class SSOAdd implements EventSystem.EventListener
             case EventSystem.CLEAR_SERVICES:
                 clearServices();
                 break;
+            case EventSystem.ADD_EVENT:
+                showGUI();
+                break;
             case EventSystem.REMOVE_EVENT:
                 listModel.addElement((Service) payload);
                 break;
@@ -124,6 +128,7 @@ public class SSOAdd implements EventSystem.EventListener
     
     public void showGUI()
     {
+        frame.pack();
         frame.setVisible(true);
     }
 

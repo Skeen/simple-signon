@@ -116,6 +116,7 @@ class WifiServiceType extends PingServiceType
 
     public void connect()
     {
+        /*
         // TODO: Only connect if host is different!!
         connecting = true;
         // Start Connecting
@@ -123,10 +124,13 @@ class WifiServiceType extends PingServiceType
         while(super.getStatus() != Service.Status.CONNECTED);
         // Done Connecting
         connecting = false;
+        */
     }
 
     public void disconnect()
     {
+        /*
         disconnectWifi();
+        */
     }
 }

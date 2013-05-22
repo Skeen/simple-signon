@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 import com.exproxy.processors.HttpMessageProcessor;
 
-class Service implements Runnable
+class Service implements Runnable, EventSystem.EventListener
 {
     // The Status of the service
     private Status status;
@@ -21,7 +21,9 @@ class Service implements Runnable
     private boolean auto_connect;
     // Whether this service is in list of used services
     private boolean in_use;
-
+    
+    private EventSystem eventSystem;
+    
     public enum Status {
         NOTCONNECTED, // Not going to
         DISCONNECTED, // Was connected, lost connection
@@ -67,6 +69,12 @@ class Service implements Runnable
         this.connect = auto_connect;
         this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
+        
+        eventSystem = EventSystem.getSingleton();
+        eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
+        eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
+        eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
+        
         if(auto_connect)
         {
             new Thread(new Runnable() 
@@ -77,7 +85,25 @@ class Service implements Runnable
                     }).start();
         }
     }
-
+    
+    public void event(String event, Object payload)
+    {
+        switch(event)
+        {
+            case EventSystem.REMOVE_EVENT:
+                disconnect();
+                break;
+            case EventSystem.RECONNECT_EVENT:
+                reconnect();
+                break;
+            case EventSystem.EDIT_ACCEPT_EVENT:
+                edit(payload);
+                break;
+            default:
+                break;
+        }
+    }
+    
     public HttpMessageProcessor getHttpProcessor()
     {
         // TODO: REMOVE HARD_CODING
@@ -101,6 +127,7 @@ class Service implements Runnable
             EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
             eventSystem.trigger_event("UPDATE_GUI", this);
+            System.out.println("CALLBACK");
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
             {
@@ -132,23 +159,39 @@ class Service implements Runnable
                 new_status = type.getStatus();
             }
             do_callback_if_status_changed(new_status);
-            
         }
     }
     
-    public void connect()
+    private void connect()
     {
         connect = true;
         type.connect();
         //TODO: actually connect
     }
-    public void disconnect()
+    private void disconnect()
     {
         connect = false;
         type.disconnect();
         //TODO: stop thread and close current connect
     }
-
+    
+    private void reconnect()
+    {
+        if(connect)
+        {
+            disconnect();
+        }
+        else
+        {
+            connect();
+        }
+    }
+    
+    private void edit(Object payload)
+    {
+        
+    }
+    
     // Return whether this service is set to be connected.
     public boolean getConnectStatus()
     {

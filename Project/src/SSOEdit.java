@@ -29,7 +29,7 @@ public class SSOEdit implements EventSystem.EventListener
      */
      
     private static SSOEdit singleton = new SSOEdit();
-    public SSOEdit getSingleton()
+    public static SSOEdit getSingleton()
     {
         return singleton;
     }
@@ -38,6 +38,11 @@ public class SSOEdit implements EventSystem.EventListener
     
     private JFrame frame;
     private EventSystem eventSystem;
+    
+    private JTextField userInput;
+    private JTextField passInput;
+    private JTextField repeatInput;
+    private JCheckBox autoConBox;
     
     private SSOEdit()
     {
@@ -86,27 +91,27 @@ public class SSOEdit implements EventSystem.EventListener
 		
         //Create panel with username label and text input
         JLabel userLabel = new JLabel(" Brugernavn: ");
-		JTextField userInput = new JTextField(10);
+		userInput = new JTextField(10);
         JPanel userPanel = new JPanel(new BorderLayout());
         userPanel.add(userLabel, BorderLayout.WEST);
         userPanel.add(userInput, BorderLayout.EAST);
         
         //Create panel with password label and text input
         JLabel passLabel = new JLabel(" Kodeord: ");
-		JTextField passInput = new JTextField(10);
+		passInput = new JTextField(10);
 		JPanel passPanel = new JPanel(new BorderLayout());
         passPanel.add(passLabel, BorderLayout.WEST);
         passPanel.add(passInput, BorderLayout.EAST);
         
         //Create panel with repeat of password label and text input
         JLabel repeatLabel = new JLabel(" Gentag Kodeord: ");
-		JTextField repeatInput = new JTextField(10);
+		repeatInput = new JTextField(10);
 		JPanel repeatPanel = new JPanel(new BorderLayout());
         repeatPanel.add(repeatLabel, BorderLayout.WEST);
         repeatPanel.add(repeatInput, BorderLayout.EAST);
         
         //Create panel with auto connect checkmark, and Accept/Cancel buttons.
-        JCheckBox autoConBox = new JCheckBox("Autoforbind: ");
+        autoConBox = new JCheckBox("Autoforbind: ");
         JButton accept = new JButton("Godkend");
         JButton cancel = new JButton("Annuller");
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -128,10 +133,24 @@ public class SSOEdit implements EventSystem.EventListener
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    hideGUI();
-                    //TODO: bring changes along as tuple
-                    eventSystem.trigger_event("EDIT_ACCEPT_EVENT", null);
-                    service = null;
+                    
+                    String username = userInput.getText();
+                    String password = passInput.getText();
+                    String repeated = repeatInput.getText();
+                    boolean autocon = autoConBox.isSelected();
+                    
+                    if (password.equals(repeated))
+                    {
+                        hideGUI();
+                        Object[] array = new Object[] {username, password, autocon};
+                        eventSystem.trigger_event("EDIT_ACCEPT_EVENT", array);
+                        service = null;
+                    }
+                    else
+                    {
+                        SSOTray tray = SSOTray.getSingleton();
+                        tray.showError("Kodeord og gentaget kodeord var ikke ens.");
+                    }
                 }
             });
         
