@@ -40,8 +40,8 @@ public class SSOEdit implements EventSystem.EventListener
     private EventSystem eventSystem;
     
     private JTextField userInput;
-    private JTextField passInput;
-    private JTextField repeatInput;
+    private JPasswordField passInput;
+    private JPasswordField repeatInput;
     private JCheckBox autoConBox;
     
     private SSOEdit()
@@ -98,14 +98,14 @@ public class SSOEdit implements EventSystem.EventListener
         
         //Create panel with password label and text input
         JLabel passLabel = new JLabel(" Kodeord: ");
-		passInput = new JTextField(10);
+		passInput = new JPasswordField(10);
 		JPanel passPanel = new JPanel(new BorderLayout());
         passPanel.add(passLabel, BorderLayout.WEST);
         passPanel.add(passInput, BorderLayout.EAST);
         
         //Create panel with repeat of password label and text input
         JLabel repeatLabel = new JLabel(" Gentag Kodeord: ");
-		repeatInput = new JTextField(10);
+		repeatInput = new JPasswordField(10);
 		JPanel repeatPanel = new JPanel(new BorderLayout());
         repeatPanel.add(repeatLabel, BorderLayout.WEST);
         repeatPanel.add(repeatInput, BorderLayout.EAST);
@@ -135,8 +135,8 @@ public class SSOEdit implements EventSystem.EventListener
                 {
                     
                     String username = userInput.getText();
-                    String password = passInput.getText();
-                    String repeated = repeatInput.getText();
+                    String password = new String(passInput.getPassword());
+                    String repeated = new String(repeatInput.getPassword());
                     boolean autocon = autoConBox.isSelected();
                     
                     if (password.equals(repeated))
