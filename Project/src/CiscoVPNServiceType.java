@@ -85,6 +85,7 @@ class CiscoVPNServiceType implements ServiceType
 
     public void disconnect()
     {
+        /*
         try
         {
             Runtime rt = Runtime.getRuntime();
@@ -100,5 +101,6 @@ class CiscoVPNServiceType implements ServiceType
         {
             e.printStackTrace();
         }
+        */
     }
 }

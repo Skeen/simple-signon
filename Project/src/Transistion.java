@@ -2,8 +2,23 @@ import javax.swing.SwingUtilities;
 import java.util.List;
 import com.exproxy.processors.HttpMessageProcessor;
 
-class Transition
+class Transition implements EventSystem.EventListener
 {
+    private static Transition singleton = new Transition();
+    private Transition()
+    {
+        EventSystem eventSystem = EventSystem.getSingleton();
+        eventSystem.addListener(EventSystem.LOGOUT_EVENT, this);
+    }
+    
+    public void event(String event, Object payload)
+    {
+        if (event.equals(EventSystem.LOGOUT_EVENT))
+        {
+            logout();
+        }
+    }
+    
     private static class LoginScript implements Runnable
     {
         private String username;
