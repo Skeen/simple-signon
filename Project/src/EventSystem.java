@@ -36,15 +36,20 @@ class EventSystem
         event_listeners = new HashMap<String, List<EventListener>>();
     }
 
-    public void addListener(String event, EventListener listen)
+    private List<EventListener> getList(String event)
     {
         // Ensure the table exists
         if(event_listeners.containsKey(event) == false)
         {
             event_listeners.put(event, new ArrayList<EventListener>());
         }
+        return event_listeners.get(event);
+    }
+
+    public void addListener(String event, EventListener listen)
+    {
         // Get the list of listeners
-        List<EventListener> listeners = event_listeners.get(event);
+        List<EventListener> listeners = getList(event);
         // Add us
         listeners.add(listen);
     }
@@ -52,7 +57,7 @@ class EventSystem
     public boolean removeListener(String event, EventListener listen)
     {
         // Get the list of listeners
-        List<EventListener> listeners = event_listeners.get(event);
+        List<EventListener> listeners = getList(event);
         // Add us
         return listeners.remove(listen);
     }
@@ -60,7 +65,7 @@ class EventSystem
     public void trigger_event(String event, Object payload)
     {
         // Get the list of listeners
-        List<EventListener> listeners = event_listeners.get(event);
+        List<EventListener> listeners = getList(event);
         // Add us
         for(EventListener listen : listeners)
         {
