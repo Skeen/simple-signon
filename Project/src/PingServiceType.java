@@ -1,10 +1,13 @@
 import java.io.*;
 
+import java.util.Map;
+
 class PingServiceType implements ServiceType
 {
     private volatile Boolean connected = null;
-    public PingServiceType(final String host)
+    public PingServiceType(Map<String,String> input)
     {
+        final String host = input.get("host");
         new Thread(new Runnable()
                 {
                     public void run() {
