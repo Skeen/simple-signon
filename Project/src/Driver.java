@@ -4,6 +4,10 @@ class Driver
 {
     public static void main(String[] args) 
     {
+        
+        SSOAdd.getSingleton();
+        SSOEdit.getSingleton();
+        SSOWindow.getSingleton();
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's Login GUI.
         SwingUtilities.invokeLater(new Runnable()
