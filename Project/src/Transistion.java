@@ -44,19 +44,19 @@ class Transition implements EventSystem.EventListener
             SSOTray tray = SSOTray.getSingleton();
             // Show the window (load it as well)
             SSOWindow window = SSOWindow.getSingleton();
-            // Activate the proxy
-            Proxy proxy = Proxy.getSingleton();
+            // Load each service
             for(Service s : services)
             {
                 eventSystem.trigger_event(EventSystem.LOAD_SERVICE, s);
                 // Setup the service, and make it runnable
                 new Thread(s).start();
-
-                HttpMessageProcessor processor = s.getHttpProcessor();
-                if(processor != null)
-                {
-                    proxy.addHttpMessageProcessor(processor);
-                }
+                /*
+                   HttpMessageProcessor processor = s.getHttpProcessor();
+                   if(processor != null)
+                   {
+                   proxy.addHttpMessageProcessor(processor);
+                   }
+                   */
             }
             tray.showGUI();
             window.showGUI();
@@ -84,9 +84,6 @@ class Transition implements EventSystem.EventListener
             // Hide the tray
             SSOTray tray = SSOTray.getSingleton();
             tray.hideGUI();
-            // Disable the proxy
-            Proxy proxy = Proxy.getSingleton();
-            proxy.removeAllHttpMessageProcessors();
             // Show the loginWindow
             SSOLogin login = SSOLogin.getSingleton();
             login.clearPasswordField();

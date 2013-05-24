@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 // http://reuse.pagesperso-orange.fr/exproxy/index.html
-public class Proxy
+public class Proxy implements EventSystem.EventListener
 {
     private static String localHost = "127.0.0.1";
     private static int localPort = 8001;
@@ -35,11 +35,70 @@ public class Proxy
         {
             e.printStackTrace();
         }
+
+        EventSystem eventSystem = EventSystem.getSingleton();
+        eventSystem.addListener(EventSystem.LOAD_SERVICE, this);
+        eventSystem.addListener(EventSystem.CLEAR_SERVICES, this);
+        eventSystem.addListener(EventSystem.ADD_SERVICE_EVENT, this);
+        eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
+    }
+
+    private boolean add_service_if_http_processor(Service s)
+    {
+        HttpMessageProcessor processor = s.getProxyFilter();
+        if(processor != null)
+        {
+            addHttpMessageProcessor(processor);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean remove_service_if_http_processor(Service s)
+    {
+        HttpMessageProcessor processor = s.getProxyFilter();
+        if(processor != null)
+        {
+            removeHttpMessageProcessor(processor);
+            return true;
+        }
+        return false;
+    }
+
+    public void event(String event, Object payload)
+    {
+        switch(event)
+        {
+            case EventSystem.LOAD_SERVICE:
+                // Load the service
+                Service s = (Service) payload;
+                // Check if this is an active service
+                boolean active = s.isUsed();
+                if(active)
+                {
+                    // Add it (if valid)
+                    add_service_if_http_processor(s);
+                }
+                // Otherwise fall through
+                break;
+            case EventSystem.CLEAR_SERVICES:
+                // Clear all services
+                removeAllHttpMessageProcessors();
+                break; 
+            case EventSystem.ADD_SERVICE_EVENT:
+                // Add it (if valid)
+                add_service_if_http_processor((Service) payload);
+                break;
+            case EventSystem.REMOVE_EVENT:
+                // Remove it (if valid)
+                remove_service_if_http_processor((Service) payload);
+                break;
+        }
     }
 
     // Add a proxy processor
     private List<HttpMessageProcessor> processors = new ArrayList<HttpMessageProcessor>();
-    public void addHttpMessageProcessor(HttpMessageProcessor processor)
+    private void addHttpMessageProcessor(HttpMessageProcessor processor)
     {
         System.out.println("HttpMessageProcessor added");
 
@@ -49,7 +108,17 @@ public class Proxy
         processors.add(processor);
     }
 
-    public void removeAllHttpMessageProcessors()
+    private void removeHttpMessageProcessor(HttpMessageProcessor processor)
+    {
+        System.out.println("HttpMessageProcessor removed");
+
+        exproxy.removeRequestProcessor(processor);
+        exproxy.removeResponseProcessor(processor);
+
+        processors.remove(processor);
+    }
+
+    private void removeAllHttpMessageProcessors()
     {
         System.out.println("All HttpMessageProcessors removed");
 
