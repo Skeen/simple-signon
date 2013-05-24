@@ -68,11 +68,19 @@ class Transition implements EventSystem.EventListener
         public void run() 
         {
             EventSystem eventSystem = EventSystem.getSingleton();
-            
-            // Hide SSO window
-            SSOWindow window = SSOWindow.getSingleton();
+
+            // Clear all services from the system
             eventSystem.trigger_event(EventSystem.CLEAR_SERVICES, null);
+            
+            // Hide SSO main window
+            SSOWindow window = SSOWindow.getSingleton();
             window.hideGUI();
+            // Hide SSO add window
+            SSOAdd add_window = SSOAdd.getSingleton();
+            add_window.hideGUI();
+            // Hide SSO edit window
+            SSOEdit edit_window = SSOEdit.getSingleton();
+            edit_window.hideGUI();
             // Hide the tray
             SSOTray tray = SSOTray.getSingleton();
             tray.hideGUI();
