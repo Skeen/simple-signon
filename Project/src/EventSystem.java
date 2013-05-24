@@ -35,8 +35,8 @@ class EventSystem
     //Logout button in SSOWidnow was pushed
     public static final String LOGOUT_EVENT         = "LOGOUT_EVENT";
     
-    //Double click on a service in SSOWindow was detected.
-    public static final String DOUBLE_CLICK         = "DOUBLE_CLICK";
+    //Double click or enter on a service in SSOWindow was detected. Open the page for that service
+    public static final String SERVICE_ACTIVATE     = "SERVICE_ACTIVATE";
     
     //Update the various GUIs to show new state of services, etc
     public static final String UPDATE_GUI           = "UPDATE_GUI";

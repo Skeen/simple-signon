@@ -75,7 +75,7 @@ class Service implements Runnable, EventSystem.EventListener
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
-        eventSystem.addListener(EventSystem.DOUBLE_CLICK, this);
+        eventSystem.addListener(EventSystem.SERVICE_ACTIVATE, this);
         
         if(auto_connect)
         {
@@ -101,7 +101,7 @@ class Service implements Runnable, EventSystem.EventListener
             case EventSystem.EDIT_ACCEPT_EVENT:
                 edit(payload);
                 break;
-            case EventSystem.DOUBLE_CLICK:
+            case EventSystem.SERVICE_ACTIVATE:
                 type.double_click();
                 break;
             default:
@@ -129,7 +129,6 @@ class Service implements Runnable, EventSystem.EventListener
             EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
             eventSystem.trigger_event("UPDATE_GUI", this);
-            System.out.println("CALLBACK");
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
             {
