@@ -6,7 +6,7 @@ import com.exproxy.processors.HttpMessageProcessor;
 import java.util.Map;
 import java.util.HashMap;
 
-class Service implements Runnable, EventSystem.EventListener
+class Service implements Runnable, EventSystem.EventListener 
 {
     // The Status of the service
     private Status status;
@@ -22,8 +22,8 @@ class Service implements Runnable, EventSystem.EventListener
     private boolean auto_connect;
     // Whether this service is in list of used services
     private boolean in_use;
-    
-    private EventSystem eventSystem;
+    // The proxy filter (if any)
+    private HttpMessageProcessor proxy_filter;
     
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -71,11 +71,22 @@ class Service implements Runnable, EventSystem.EventListener
         this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
         
-        eventSystem = EventSystem.getSingleton();
+        EventSystem eventSystem = EventSystem.getSingleton();
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
         eventSystem.addListener(EventSystem.DOUBLE_CLICK, this);
+
+        //proxy_filter code
+        proxy_filter = null;
+        // TODO: REMOVE HARD_CODING
+        if(type instanceof WebServiceType)
+        {
+            Map<String, String> initMap = new HashMap<String, String>();
+            initMap.put("USERNAME", "lanie962");
+            initMap.put("PASSWORD", "onsdag01Maj");
+            proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
+        }
         
         if(auto_connect)
         {
@@ -109,25 +120,17 @@ class Service implements Runnable, EventSystem.EventListener
         }
     }
     
-    public HttpMessageProcessor getHttpProcessor()
+    public HttpMessageProcessor getProxyFilter()
     {
-        // TODO: REMOVE HARD_CODING
-        if(type instanceof WebServiceType)
-        {
-            Map<String, String> initMap = new HashMap<String, String>();
-            initMap.put("USERNAME", "lanie962");
-            initMap.put("PASSWORD", "onsdag01Maj");
-            return new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
-        }
-        return null;
+        return proxy_filter;
     }
 
     private void do_callback_if_status_changed(Status s)
     {
         if(s != status)
         {
-            EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
+            EventSystem eventSystem = EventSystem.getSingleton();
             eventSystem.trigger_event("UPDATE_GUI", this);
             System.out.println("CALLBACK");
             // Show info at the tray icon
@@ -186,7 +189,6 @@ class Service implements Runnable, EventSystem.EventListener
     
     private void edit(Object payload)
     {
-        
     }
     
     // Return whether this service is set to be connected.
