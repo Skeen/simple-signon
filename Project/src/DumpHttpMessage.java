@@ -6,11 +6,12 @@ import java.io.BufferedWriter;
 import com.exproxy.HttpMessage;
 import com.exproxy.HttpMessageRequest;
 import com.exproxy.HttpMessageResponse;
+import com.exproxy.processors.HttpMessageProcessor;
 
 import java.util.List;
 import java.util.Map;
 
-class DumpHttpMessage
+class DumpHttpMessage implements HttpMessageProcessor
 {
     public static void dumpInfo(HttpMessage input)
     {
@@ -151,5 +152,22 @@ class DumpHttpMessage
         {
             e.printStackTrace();
         }
+    }
+
+    public boolean doContinue(HttpMessage input)
+    {
+        return true;
+    }
+
+    public boolean doSend(HttpMessage input)
+    {
+        return true;
+    }
+
+    public HttpMessage process(HttpMessage input)
+    {
+        dumpInfo(input);
+        System.out.println("DUMPED!");
+        return input;
     }
 }

@@ -88,27 +88,24 @@ class SSOConnectionHandler
                 // Service_type
                 String service_type_string = r.getString("service_type_name");
                 ServiceType service_type = null;
-                if(service_type_string.equals("") == false)
-                {
-                    // Non-null service_type class, so let's ask the class
-                    // loader to find it
-                    Class service_type_class = Class.forName(service_type_string);
-                    // Let's find the constructor that takes a map
-                    Constructor service_type_constructor = service_type_class.getConstructor(Map.class);
-                    // Now let's get the map, the constructor needs
-                    int service_id = r.getInt("service_id");
-                    int user_service_id = r.getInt("user_service_id");
-                    Map<String,String> initMap = getInitMap(service_id, user_service_id);
-                    // Now construct the service type, using the map we've just
-                    // created
-                    service_type = (ServiceType) service_type_constructor.newInstance(initMap);
-                }
+                // Now let's get the map, the constructors needs
+                int service_id = r.getInt("service_id");
+                int user_service_id = r.getInt("user_service_id");
+                Map<String,String> initMap = getInitMap(service_id, user_service_id);
+                // Non-null service_type class, so let's ask the class
+                // loader to find it
+                Class service_type_class = Class.forName(service_type_string);
+                // Let's find the constructor that takes a map
+                Constructor service_type_constructor = service_type_class.getConstructor(Map.class);
+                // Now construct the service type, using the map we've just
+                // created
+                service_type = (ServiceType) service_type_constructor.newInstance(initMap);
                 // Booleans
                 boolean auto_connect = r.getBoolean("auto_connect");
                 boolean in_use       = r.getBoolean("in_use");
 
                 // Create the service
-                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use));
+                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use, initMap));
             }
         }
         catch(Exception e)
