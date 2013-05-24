@@ -3,6 +3,7 @@
     <property name="test-source-directory" value="test"/>
     <property name="build-directory" value="build"/>
     <property name="lib-directory" value="lib"/>
+    <property name="bin-directory" value="bin"/>
     <property name="configuration-directory" value="conf"/>
     <property name="documentation-directory" value="doc"/>
     <property name="resource-directory" value="resource"/>
@@ -18,7 +19,7 @@
 
     <path id="class-path">
         <fileset dir="${lib-directory}">
-            <include name="**/*.jar"/>
+            <include name="*.jar"/>
         </fileset>
          
         <pathelement location="${build-directory}"/>
@@ -75,12 +76,20 @@
         <delete dir="${documentation-directory}"/>
     </target>
 
-    <target name="clean" depends="clean-exproxy">
+    <target name="clean" depends="clean-exproxy, clean-doc, clean-bin">
         <delete dir="${build-directory}"/>
     </target>
 
     <target name="prepare" depends="get-exproxy-jar">
         <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="clean-bin">
+        <delete dir="${bin-directory}"/>
+    </target>
+    
+    <target name="prepare-bin">
+        <mkdir dir="${bin-directory}"/>
     </target>
 
     <target name="build-src" depends="prepare">
@@ -117,28 +126,20 @@
         <doxygen configFilename="${configuration-directory}/doxygen.cfg"/>
     </target>
 
-    <target name="run" depends="build-all">
-        <java classname="Driver" fork="true"> 
-            <classpath refid="class-path"/>
-        </java>
+    <target name="jar" depends="build-all, prepare-bin">
+        <jar destfile="${bin-directory}/sso.jar"
+            basedir="${build-directory}">
+            <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+            <manifest>
+                <attribute name="Main-Class" value="Driver"/>
+            </manifest>
+        </jar>
     </target>
 
-    <target name="javadoc" depends="clean-doc,prepare-doc">
-        <javadoc
-            source = "1.5"
-            packagenames="hotciv.*"
-            sourcepath="${source-directory}"
-            destdir="${documentation-directory}"
-            package="true"
-            doctitle="&lt;b&gt;HotCiv&lt;/b&gt;"
-            windowtitle="HotCiv system" >
-            <sourcepath> 
-                <pathelement path="${source-directory}"/> 
-            </sourcepath>
-            <classpath> 
-                <path refid="class-path"/> 
-            </classpath>
-        </javadoc>
+    <target name="run" depends="jar">
+        <java jar="${bin-directory}/sso.jar" fork="true"> 
+            <classpath refid="class-path"/>
+        </java>
     </target>
 
     <!-- JUnit testing -->    
