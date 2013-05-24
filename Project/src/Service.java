@@ -72,7 +72,7 @@ class Service implements Runnable, EventSystem.EventListener
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
-        eventSystem.addListener(EventSystem.DOUBLE_CLICK, this);
+        eventSystem.addListener(EventSystem.SERVICE_ACTIVATE, this);
 
         // ProxyFilter code
         proxy_filter = null;
@@ -94,6 +94,7 @@ class Service implements Runnable, EventSystem.EventListener
             }
             //proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
         }
+>>>>>>> other
         
         if(auto_connect)
         {
@@ -119,7 +120,7 @@ class Service implements Runnable, EventSystem.EventListener
             case EventSystem.EDIT_ACCEPT_EVENT:
                 edit(payload);
                 break;
-            case EventSystem.DOUBLE_CLICK:
+            case EventSystem.SERVICE_ACTIVATE:
                 // Only the clicked service, trigger the events effect
                 if(payload == this)
                 {
@@ -143,7 +144,6 @@ class Service implements Runnable, EventSystem.EventListener
             status = s;
             EventSystem eventSystem = EventSystem.getSingleton();
             eventSystem.trigger_event("UPDATE_GUI", this);
-            System.out.println("CALLBACK");
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
             {

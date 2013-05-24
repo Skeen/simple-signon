@@ -2,9 +2,6 @@ import java.lang.*;
 
 import javax.imageio.ImageIO;
 
-import java.awt.*;
-import java.awt.event.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -335,20 +332,33 @@ class SSOWindow implements EventSystem.EventListener
             {
                 public void mouseClicked(MouseEvent evt) 
                 {
-                    JList list = (JList) evt.getSource();
                     // If double clicking
-                    if (evt.getClickCount() == 2)
+                    if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1)
                     {
-                        int index = list.locationToIndex(evt.getPoint());
-                        Service s = (Service) list.getModel().getElementAt(index);
+                        //int index = list.locationToIndex(evt.getPoint());
+                        //Service s = (Service) list.getModel().getElementAt(index);
+                        Service s = getSelection();
                         if (s != null)
                         {
-                            eventSystem.trigger_event(EventSystem.DOUBLE_CLICK, s);
+                            eventSystem.trigger_event(EventSystem.SERVICE_ACTIVATE, s);
                         }
                     }
                 }
             });
-        
+        serviceList.addKeyListener(new KeyAdapter()
+            {
+                public void keyReleased(KeyEvent event)
+                {
+                    if(event.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+                    {
+                        Service s = getSelection();
+                        if (s != null)
+                        {
+                            eventSystem.trigger_event(EventSystem.SERVICE_ACTIVATE, s);
+                        }
+                    }
+                }
+            });
 		
         // Select one cell at a time
         serviceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
