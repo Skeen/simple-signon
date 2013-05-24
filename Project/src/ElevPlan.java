@@ -52,15 +52,15 @@ class ElevPlan implements HttpMessageProcessor
             // Headers
             Map<String,List<String>> set_headers = new HashMap<String,List<String>>();
 
-            set_headers.put("content-type", Arrays.asList(new String[]{"application/x-www-form-urlencoded"}));
-            set_headers.put("cookie", Arrays.asList(new String[]{"ASPSESSIONIDASSQRQSQ=FFBGFJMADBKAMHNCFOJJCKPG; BALANCEID=mycluster.node2; ASP.NET_SessionId=n13kxj45s3e41cubw3cyufah; V%5FAUO=ROLLETYPE=MED&ERPRODSKOLE=N&PERSONID=1535855&SKOLEID=177&ROLLEID=42782&BRUGERNAVN=lanie962&ERUEVEJL=N&uniloginbrugernavn=&SKOLENR=203&LINIERPRSIDE=50; NoFormRestorePages="}));
-            set_headers.put("connection", Arrays.asList(new String[]{"keep-alive"}));
+            set_headers.put(HttpMessage.HEADER_CONTENT_TYPE, Arrays.asList(new String[]{"application/x-www-form-urlencoded"}));
+            set_headers.put(HttpMessage.HEADER_COOKIE, Arrays.asList(new String[]{"ASPSESSIONIDASSQRQSQ=FFBGFJMADBKAMHNCFOJJCKPG; BALANCEID=mycluster.node2; ASP.NET_SessionId=n13kxj45s3e41cubw3cyufah; V%5FAUO=ROLLETYPE=MED&ERPRODSKOLE=N&PERSONID=1535855&SKOLEID=177&ROLLEID=42782&BRUGERNAVN=lanie962&ERUEVEJL=N&uniloginbrugernavn=&SKOLENR=203&LINIERPRSIDE=50; NoFormRestorePages="}));
+            set_headers.put(HttpMessage.HEADER_CONNECTION, Arrays.asList(new String[]{HttpMessage.HEADER_KEEP_ALIVE}));
 
-            set_headers.put("accept-language", Arrays.asList(new String[]{"da","en-us;q=0.7","en;q=0.3"}));
+            set_headers.put(HttpMessage.HEADER_ACCEPT_LANGUAGE , Arrays.asList(new String[]{"da","en-us;q=0.7","en;q=0.3"}));
             set_headers.put("host", Arrays.asList(new String[]{"www.elevplan.dk"}));
-            set_headers.put("content-length", Arrays.asList(new String[]{"116"}));
-            set_headers.put("accept", Arrays.asList(new String[]{"text/html","application/xhtml+xml","application/xml;q=0.9","*/*;q=0.8"}));
-            set_headers.put("user-agent", Arrays.asList(new String[]{"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0"}));
+            set_headers.put(HttpMessage.HEADER_CONTENT_LENGTH, Arrays.asList(new String[]{"116"}));
+            set_headers.put(HttpMessage.HEADER_ACCEPT, Arrays.asList(new String[]{"text/html","application/xhtml+xml","application/xml;q=0.9","*/*;q=0.8"}));
+            set_headers.put(HttpMessage.HEADER_USER_AGENT, Arrays.asList(new String[]{"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0"}));
             set_headers.put("referer", Arrays.asList(new String[]{"https://www.elevplan.dk/offentlig/Default.aspx"}));
 
             setHeaders(set_headers);
