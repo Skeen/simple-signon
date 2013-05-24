@@ -6,6 +6,9 @@ import com.exproxy.processors.HttpMessageProcessor;
 import java.util.Map;
 import java.util.HashMap;
 
+import java.lang.Class;
+import java.lang.reflect.Constructor;
+
 class Service implements Runnable, EventSystem.EventListener 
 {
     // The Status of the service
@@ -53,39 +56,43 @@ class Service implements Runnable, EventSystem.EventListener
 
     private boolean connect;
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, Map<String, String> initMap)
     {
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
-        if(service_type == null)
-        {
-            type = new DefaultServiceType(null);
-        }
-        else
-        {
-            type = service_type;
-        }
+        this.type = service_type;
         this.auto_connect = auto_connect;
         this.connect = auto_connect;
         this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
         
+        // Register with the event system
         EventSystem eventSystem = EventSystem.getSingleton();
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
         eventSystem.addListener(EventSystem.DOUBLE_CLICK, this);
 
-        //proxy_filter code
+        // ProxyFilter code
         proxy_filter = null;
-        // TODO: REMOVE HARD_CODING
         if(type instanceof WebServiceType)
         {
-            Map<String, String> initMap = new HashMap<String, String>();
-            initMap.put("USERNAME", "lanie962");
-            initMap.put("PASSWORD", "onsdag01Maj");
-            proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
+            if(initMap.containsKey("PROXY_FILTER_CLASS"))
+            {
+                try
+                {
+                    String proxy_filter_name = initMap.get("PROXY_FILTER_CLASS");
+                    Class proxy_filter_class = Class.forName(proxy_filter_name);
+                    Constructor proxy_filter_constructor = proxy_filter_class.getConstructor(Map.class);
+                    proxy_filter = (HttpMessageProcessor) proxy_filter_constructor.newInstance(initMap);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            //proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
         }
         
         if(auto_connect)
@@ -113,7 +120,11 @@ class Service implements Runnable, EventSystem.EventListener
                 edit(payload);
                 break;
             case EventSystem.DOUBLE_CLICK:
-                type.double_click();
+                // Only the clicked service, trigger the events effect
+                if(payload == this)
+                {
+                    type.double_click();
+                }
                 break;
             default:
                 break;

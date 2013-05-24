@@ -142,6 +142,13 @@
         </java>
     </target>
 
+    <target name="run-source" depends="build-all">
+        <java classname="Driver" fork="true"> 
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+
+
     <!-- JUnit testing -->    
     <!--
     <target name="test" depends="test-gui">
