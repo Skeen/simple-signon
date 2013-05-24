@@ -44,19 +44,19 @@ class Transition implements EventSystem.EventListener
             SSOTray tray = SSOTray.getSingleton();
             // Show the window (load it as well)
             SSOWindow window = SSOWindow.getSingleton();
-            // Activate the proxy
-            Proxy proxy = Proxy.getSingleton();
+            // Load each service
             for(Service s : services)
             {
                 eventSystem.trigger_event(EventSystem.LOAD_SERVICE, s);
                 // Setup the service, and make it runnable
                 new Thread(s).start();
-
-                HttpMessageProcessor processor = s.getHttpProcessor();
-                if(processor != null)
-                {
-                    proxy.addHttpMessageProcessor(processor);
-                }
+                /*
+                   HttpMessageProcessor processor = s.getHttpProcessor();
+                   if(processor != null)
+                   {
+                   proxy.addHttpMessageProcessor(processor);
+                   }
+                   */
             }
             tray.showGUI();
             window.showGUI();
@@ -68,17 +68,22 @@ class Transition implements EventSystem.EventListener
         public void run() 
         {
             EventSystem eventSystem = EventSystem.getSingleton();
-            
-            // Hide SSO window
-            SSOWindow window = SSOWindow.getSingleton();
+
+            // Clear all services from the system
             eventSystem.trigger_event(EventSystem.CLEAR_SERVICES, null);
+            
+            // Hide SSO main window
+            SSOWindow window = SSOWindow.getSingleton();
             window.hideGUI();
+            // Hide SSO add window
+            SSOAdd add_window = SSOAdd.getSingleton();
+            add_window.hideGUI();
+            // Hide SSO edit window
+            SSOEdit edit_window = SSOEdit.getSingleton();
+            edit_window.hideGUI();
             // Hide the tray
             SSOTray tray = SSOTray.getSingleton();
             tray.hideGUI();
-            // Disable the proxy
-            Proxy proxy = Proxy.getSingleton();
-            proxy.removeAllHttpMessageProcessors();
             // Show the loginWindow
             SSOLogin login = SSOLogin.getSingleton();
             login.clearPasswordField();

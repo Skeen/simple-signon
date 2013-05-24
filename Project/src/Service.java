@@ -6,7 +6,10 @@ import com.exproxy.processors.HttpMessageProcessor;
 import java.util.Map;
 import java.util.HashMap;
 
-class Service implements Runnable, EventSystem.EventListener
+import java.lang.Class;
+import java.lang.reflect.Constructor;
+
+class Service implements Runnable, EventSystem.EventListener 
 {
     // The Status of the service
     private Status status;
@@ -22,8 +25,8 @@ class Service implements Runnable, EventSystem.EventListener
     private boolean auto_connect;
     // Whether this service is in list of used services
     private boolean in_use;
-    
-    private EventSystem eventSystem;
+    // The proxy filter (if any)
+    private HttpMessageProcessor proxy_filter;
     
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -53,29 +56,45 @@ class Service implements Runnable, EventSystem.EventListener
 
     private boolean connect;
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use)
+    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, Map<String, String> initMap)
     {
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
-        if(service_type == null)
-        {
-            type = new DefaultServiceType(null);
-        }
-        else
-        {
-            type = service_type;
-        }
+        this.type = service_type;
         this.auto_connect = auto_connect;
         this.connect = auto_connect;
         this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
         
-        eventSystem = EventSystem.getSingleton();
+        // Register with the event system
+        EventSystem eventSystem = EventSystem.getSingleton();
         eventSystem.addListener(EventSystem.REMOVE_EVENT, this);
         eventSystem.addListener(EventSystem.RECONNECT_EVENT, this);
         eventSystem.addListener(EventSystem.EDIT_ACCEPT_EVENT, this);
         eventSystem.addListener(EventSystem.SERVICE_ACTIVATE, this);
+
+        // ProxyFilter code
+        proxy_filter = null;
+        if(type instanceof WebServiceType)
+        {
+            if(initMap.containsKey("PROXY_FILTER_CLASS"))
+            {
+                try
+                {
+                    String proxy_filter_name = initMap.get("PROXY_FILTER_CLASS");
+                    Class proxy_filter_class = Class.forName(proxy_filter_name);
+                    Constructor proxy_filter_constructor = proxy_filter_class.getConstructor(Map.class);
+                    proxy_filter = (HttpMessageProcessor) proxy_filter_constructor.newInstance(initMap);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            //proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
+        }
+>>>>>>> other
         
         if(auto_connect)
         {
@@ -102,32 +121,28 @@ class Service implements Runnable, EventSystem.EventListener
                 edit(payload);
                 break;
             case EventSystem.SERVICE_ACTIVATE:
-                type.double_click();
+                // Only the clicked service, trigger the events effect
+                if(payload == this)
+                {
+                    type.double_click();
+                }
                 break;
             default:
                 break;
         }
     }
     
-    public HttpMessageProcessor getHttpProcessor()
+    public HttpMessageProcessor getProxyFilter()
     {
-        // TODO: REMOVE HARD_CODING
-        if(type instanceof WebServiceType)
-        {
-            Map<String, String> initMap = new HashMap<String, String>();
-            initMap.put("USERNAME", "lanie962");
-            initMap.put("PASSWORD", "onsdag01Maj");
-            return new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
-        }
-        return null;
+        return proxy_filter;
     }
 
     private void do_callback_if_status_changed(Status s)
     {
         if(s != status)
         {
-            EventSystem eventSystem = EventSystem.getSingleton();
             status = s;
+            EventSystem eventSystem = EventSystem.getSingleton();
             eventSystem.trigger_event("UPDATE_GUI", this);
             // Show info at the tray icon
             if(status == Status.DISCONNECTED)
@@ -185,7 +200,6 @@ class Service implements Runnable, EventSystem.EventListener
     
     private void edit(Object payload)
     {
-        
     }
     
     // Return whether this service is set to be connected.
