@@ -106,11 +106,14 @@ public class SSOLogin
         JButton botton = new JButton("Forbind");
         botton.addActionListener(new ActionListener()
                 {
-                    public void actionPerformed(ActionEvent e) {
+                    public void actionPerformed(ActionEvent e) 
+                    {
                         System.out.println("Connect clicked");
                         String username = username_field.getText();
                         String password = new String(password_field.getPassword());
-                        Transition.login(username, password);
+
+                        EventSystem eventSystem = EventSystem.getSingleton();
+                        eventSystem.trigger_event(EventSystem.LOGIN_EVENT, new String[]{username, password});
                     }
                 });
         connect.add(botton);

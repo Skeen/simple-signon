@@ -34,6 +34,9 @@ class EventSystem
     
     //Logout button in SSOWidnow was pushed
     public static final String LOGOUT_EVENT         = "LOGOUT_EVENT";
+ 
+    //Connect button in SSOLogin was pushed
+    public static final String LOGIN_EVENT          = "LOGIN_EVENT";
     
     //Double click on a service in SSOWindow was detected.
     public static final String DOUBLE_CLICK         = "DOUBLE_CLICK";

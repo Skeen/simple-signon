@@ -14,31 +14,11 @@ import java.sql.*;
 
 class SSOConnectionHandler
 {
-    private static final String SERVER = "localhost";
-    private static final String DATABASE = "services";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-
-    private Connection connection = null;
-
     private String lookup_username;
 
     public SSOConnectionHandler(String username, String password)
     {
         this.lookup_username = username;
-        try 
-        {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            connection = java.sql.DriverManager.getConnection(
-                    "jdbc:mysql://" + SERVER + "/" + DATABASE, USERNAME, PASSWORD);
-
-        }
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-            System.out.println("An error occurred: " + e);
-            System.exit(0);
-        }
     }
 
     private Map<String,String> getInitMap(int service_id, int user_service_id)
@@ -47,8 +27,9 @@ class SSOConnectionHandler
         Map<String,String> initMap = new HashMap<String,String>();
 
         // Get all key-value pairs from the server
+        Connection connection = MySQLConnection.getSingleton().getConnection();
         Statement s = connection.createStatement();
-        ResultSet r = s.executeQuery("SELECT key_entry, value_entry FROM " + DATABASE + ".`key_value` " +
+        ResultSet r = s.executeQuery("SELECT key_entry, value_entry FROM " + MySQLConnection.DATABASE + ".`key_value` " +
                                      "join service_indirection on idservice_indirection = service_indirection_id " +
                                      "where service_id = " + service_id + " or user_service_id = " + user_service_id);
 
@@ -71,9 +52,10 @@ class SSOConnectionHandler
         // Read the services from sql server
         try
         {
+            Connection connection = MySQLConnection.getSingleton().getConnection();
             Statement s = connection.createStatement();
             ResultSet r = s.executeQuery("SELECT service_id, user_service_id, service_logo, service_name, service_type_name, auto_connect, in_use " +
-                    "FROM " + DATABASE + ".`user_service` " +
+                    "FROM " + MySQLConnection.DATABASE + ".`user_service` " +
                     "join service on user_service.service_id = service.idservice " + 
                     "join service_type on service.service_type_id = idservice_type " +
                     "where user_service.username = \"" + lookup_username + "\"");
@@ -105,7 +87,7 @@ class SSOConnectionHandler
                 boolean in_use       = r.getBoolean("in_use");
 
                 // Create the service
-                services.add(new Service(dependency, name, logo_path, service_type, auto_connect, in_use, initMap));
+                services.add(new Service(user_service_id, dependency, name, logo_path, service_type, auto_connect, in_use, initMap));
             }
         }
         catch(Exception e)
