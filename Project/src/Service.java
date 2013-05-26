@@ -97,7 +97,6 @@ class Service implements Runnable, EventSystem.EventListener
             }
             //proxy_filter = new CompositeHttpMessageProcessor(new ElevPlan(initMap), new ElevPlanModifier());
         }
->>>>>>> other
         
         if(auto_connect)
         {
