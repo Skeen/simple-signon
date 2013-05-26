@@ -133,7 +133,7 @@ class Service implements Runnable, EventSystem.EventListener
                 reconnect();
                 break;
             case EventSystem.EDIT_ACCEPT_EVENT:
-                edit(payload);
+                edit((Object[]) payload);
                 break;
             case EventSystem.SERVICE_ACTIVATE:
                 // Only the clicked service, trigger the events effect
@@ -213,8 +213,17 @@ class Service implements Runnable, EventSystem.EventListener
         }
     }
     
-    private void edit(Object payload)
+    private void edit(Object[] payload)
     {
+        // Payload[0] is the service itself
+        String username = (String) payload[1];
+        String password = (String) payload[2];
+        boolean autoconnect = (boolean) payload[3];
+
+        // Set the values
+        configuration_map.put("USERNAME", username);
+        configuration_map.put("PASSWORD", password);
+        this.auto_connect = autoconnect;
     }
     
     // Return whether this service is set to be connected.
@@ -246,10 +255,5 @@ class Service implements Runnable, EventSystem.EventListener
     public boolean autoconnect()
     {
         return auto_connect;
-    }
-
-    public void set_autoconnect(boolean b)
-    {
-        auto_connect = b;
     }
 }
