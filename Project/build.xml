@@ -134,6 +134,9 @@
                 <attribute name="Main-Class" value="Driver"/>
             </manifest>
         </jar>
+        <copy todir="${bin-directory}\${resource-directory}" >
+            <fileset dir="${resource-directory}"/>
+        </copy>
     </target>
 
     <target name="run" depends="jar">
