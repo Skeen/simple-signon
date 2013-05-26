@@ -18,7 +18,6 @@
         </delete>
     </target>
 
-
     <target name="prepare-build">
         <mkdir dir="${build-directory}"/>
     </target>
