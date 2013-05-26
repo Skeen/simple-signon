@@ -29,6 +29,8 @@ class Service implements Runnable, EventSystem.EventListener
     private boolean in_use;
     // The proxy filter (if any)
     private HttpMessageProcessor proxy_filter;
+    // The configuration map
+    private Map<String, String> configuration_map;
     
     public enum Status {
         NOTCONNECTED, // Not going to
@@ -69,6 +71,7 @@ class Service implements Runnable, EventSystem.EventListener
         this.connect = auto_connect;
         this.in_use = in_use;
         this.status = Status.NOTCONNECTED;
+        this.configuration_map = initMap;
         
         // Register with the event system
         EventSystem eventSystem = EventSystem.getSingleton();
@@ -107,6 +110,11 @@ class Service implements Runnable, EventSystem.EventListener
                         }
                     }).start();
         }
+    }
+
+    public Map<String,String> getConfigurationMap()
+    {
+        return configuration_map;
     }
 
     public int getUserServiceID()

@@ -68,7 +68,22 @@ public class SSOEdit implements EventSystem.EventListener
     public void prepareEdit(Service s)
     {
         service = s;
-        //TODO: put current username and password(as ***) in input fields, set autoconnect to its current value
+
+        // Load the values into username and password fields
+        Map<String, String> info_map = s.getConfigurationMap();
+        if(info_map.containsKey("USERNAME"))
+        {
+            String username = info_map.get("USERNAME");
+            userInput.setText(username);
+        }
+        if(info_map.containsKey("PASSWORD"))
+        {
+            String password = info_map.get("PASSWORD");
+            passInput.setText(password);
+        }
+        // Also check the box, with the current autoconnect status
+        autoConBox.setSelected(s.autoconnect());
+        // Show the GUI
         showGUI();
     }
     
