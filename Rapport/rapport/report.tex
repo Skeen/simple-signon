@@ -1,0 +1,62 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{a4wide}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{verbatim} 
+\usepackage{ulem}
+\usepackage{hyperref}
+\usepackage[geometry]{ifsym}
+
+\usepackage[danish]{babel}
+\usepackage{t1enc}
+
+%declare where to look for graphics
+\graphicspath{{gfx/}}
+
+\usepackage{natbib} 
+\citestyle{chicago} % Chicago Manual of Style citations
+\bibliographystyle{dkchicago}
+
+%wrapper til images (align along tekst)
+\usepackage{wrapfig}
+
+% Til linieret kodeeksempler:
+% The moreverb package extends the verbatim package, providing a listing
+% environment and a \listinginput command, which
+% line-number the text of the file. The package also has a \verbatimtabinput
+% command, that honours TAB characters in the % input (the packageâ€™s
+% listing environment and the \listinginput command also both honour TAB).
+
+\begin{document}
+
+\title{\huge Eksperimentel Systemudvikling}
+\author{Holdet\\
+        \\
+        \href{mailto:skeen@cs.au.dk}{Emil Madsen - 20105376}\\
+        \href{mailto:emray@cs.au.dk}{Rasmus Mosbech Jensen - 20105109}\\
+        \href{mailto:soren1@hotmail.com}{Søren Krogh Sørensen - 20105661}\\
+       } 
+ 
+\maketitle
+\hrule
+
+\begin{center}
+    {\huge Simple-SignOn}
+\end{center}
+\begin{center}
+   \includegraphics{SimpleSignonLogo300}
+\end{center}
+
+\newpage
+
+%include everything
+\input{opgave} 
+
+% Setup bibtex
+% \newpage
+% \bibliography{FVTITDAT2012,OTHERS}
+
+% that's all folks
+\end{document}
+
