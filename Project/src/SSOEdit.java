@@ -138,14 +138,6 @@ public class SSOEdit implements EventSystem.EventListener
         buttonPanel.add(accept);
         buttonPanel.add(cancel);
 
-        autoConBox.addActionListener(new ActionListener()
-        {
-                public void actionPerformed(ActionEvent e) 
-                {
-                    service.set_autoconnect(autoConBox.isSelected());
-                }
-        });
-        
         //Add events when clicking buttons
         cancel.addActionListener(new ActionListener()
             {
@@ -167,9 +159,12 @@ public class SSOEdit implements EventSystem.EventListener
                     
                     if (password.equals(repeated))
                     {
+                        // Hide ourselves
                         hideGUI();
+                        // Fire the event
                         Object[] array = new Object[] {service, username, password, autocon};
                         eventSystem.trigger_event("EDIT_ACCEPT_EVENT", array);
+                        // Null the service
                         service = null;
                     }
                     else
