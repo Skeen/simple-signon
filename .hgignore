@@ -5,4 +5,5 @@ syntax: glob
 Project/bin/*
 Project/build/*
 Project/doc/*
+Rapport/rapport/build/*
 _SERVER*
