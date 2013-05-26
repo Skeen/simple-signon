@@ -5,17 +5,31 @@ import com.exproxy.processors.HttpMessageProcessor;
 class Transition implements EventSystem.EventListener
 {
     private static Transition singleton = new Transition();
+    public static Transition getSingleton()
+    {
+        return singleton;
+    }
+
     private Transition()
     {
         EventSystem eventSystem = EventSystem.getSingleton();
         eventSystem.addListener(EventSystem.LOGOUT_EVENT, this);
+        eventSystem.addListener(EventSystem.LOGIN_EVENT, this);
     }
     
     public void event(String event, Object payload)
     {
-        if (event.equals(EventSystem.LOGOUT_EVENT))
+        switch(event)
         {
-            logout();
+            case EventSystem.LOGOUT_EVENT:
+                logout();
+                break;
+            case EventSystem.LOGIN_EVENT:
+                String[] strings = (String[]) payload;
+                String username = strings[0];
+                String password = strings[1];
+                login(username, password);
+                break;
         }
     }
     
@@ -91,14 +105,14 @@ class Transition implements EventSystem.EventListener
         }
     }
 
-    public static void login(String username, String password)
+    private static void login(String username, String password)
     {
         SwingUtilities.invokeLater(new LoginScript(username, password));
 
         System.out.println("Connect using; " + username + " : " + password);
     }
 
-    public static void logout()
+    private static void logout()
     {
         SwingUtilities.invokeLater(new LogoutScript());
     }

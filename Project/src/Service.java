@@ -11,6 +11,8 @@ import java.lang.reflect.Constructor;
 
 class Service implements Runnable, EventSystem.EventListener 
 {
+    // The UserService ID
+    private int user_service_id;
     // The Status of the service
     private Status status;
     // The service (if any) that this one depends on
@@ -56,8 +58,9 @@ class Service implements Runnable, EventSystem.EventListener
 
     private boolean connect;
 
-    public Service(Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, Map<String, String> initMap)
+    public Service(int user_service_id, Service dependency, String name, String logo_path, ServiceType service_type, boolean auto_connect, boolean in_use, Map<String, String> initMap)
     {
+        this.user_service_id = user_service_id;
         this.dependency = dependency;
         this.name = name;
         this.logo = Utilities.loadImage(logo_path);
@@ -104,6 +107,11 @@ class Service implements Runnable, EventSystem.EventListener
                         }
                     }).start();
         }
+    }
+
+    public int getUserServiceID()
+    {
+        return user_service_id;
     }
     
     public void event(String event, Object payload)
