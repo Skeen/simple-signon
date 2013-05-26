@@ -12,6 +12,10 @@
 
     <target name="clean" depends="clean-up">
         <delete dir="${build-directory}"/>
+        <delete>
+            <fileset dir="." includes="*.pdf"/>
+            <fileset dir="." includes="*.pdfsync"/>
+        </delete>
     </target>
 
 
