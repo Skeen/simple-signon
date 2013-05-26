@@ -20,7 +20,7 @@
     </target>
 
     <target name="build-pdf" depends="prepare-build">
-        <exec executable="pdflatex.bat">
+        <exec executable="pdflatex">
             <arg value="report.tex"/>
         </exec>
     </target>
