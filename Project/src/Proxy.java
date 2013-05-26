@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 // http://reuse.pagesperso-orange.fr/exproxy/index.html
-public class Proxy implements EventSystem.EventListener
+public class Proxy implements EventSystem.EventListener, Runnable
 {
-    private static String localHost = "127.0.0.1";
-    private static int localPort = 8001;
-    private static int backlog = 100;
-    private static String keystore = "resource/keystore";
-    private static char[] store_password = "storepass".toCharArray();
-    private static char[] key_password = "keypass".toCharArray();
+    private static final String localHost = "127.0.0.1";
+    public static final int localPort = 8001;
+    private static final int backlog = 100;
+    private static final String keystore = "resource/keystore";
+    private static final char[] store_password = "storepass".toCharArray();
+    private static final char[] key_password = "keypass".toCharArray();
 
     // Singleton
     private static Proxy singleton = new Proxy();
@@ -135,11 +135,12 @@ public class Proxy implements EventSystem.EventListener
         try
         {
             // Start the proxy
-            exproxy.start();
+            exproxy.run();
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            CentralErrorStation.proxy_port_taken_error();
         }
     }
 }

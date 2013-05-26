@@ -66,7 +66,7 @@ class MySQLConnection implements EventSystem.EventListener
         {
             e.printStackTrace();
             System.out.println("An error occurred: " + e);
-            System.exit(0);
+            CentralErrorStation.mysql_connection_error();
         }
     }
 

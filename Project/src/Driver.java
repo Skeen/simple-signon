@@ -22,7 +22,7 @@ class Driver
         // Get the proxy
         Proxy proxy = Proxy.getSingleton();
         // Run the proxy
-        proxy.run();
+        new Thread(proxy).start();
 
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's Login GUI.
