@@ -68,6 +68,12 @@ public class SSOEdit implements EventSystem.EventListener
     public void prepareEdit(Service s)
     {
         service = s;
+        // Clear the fields
+        userInput.setText("");
+        passInput.setText("");
+        repeatInput.setText("");
+        // Check the box, with the current autoconnect status
+        autoConBox.setSelected(s.autoconnect());
 
         // Load the values into username and password fields
         Map<String, String> info_map = s.getConfigurationMap();
@@ -81,8 +87,6 @@ public class SSOEdit implements EventSystem.EventListener
             String password = info_map.get("PASSWORD");
             passInput.setText(password);
         }
-        // Also check the box, with the current autoconnect status
-        autoConBox.setSelected(s.autoconnect());
         // Show the GUI
         showGUI();
     }
@@ -133,6 +137,14 @@ public class SSOEdit implements EventSystem.EventListener
         buttonPanel.add(autoConBox);
         buttonPanel.add(accept);
         buttonPanel.add(cancel);
+
+        autoConBox.addActionListener(new ActionListener()
+        {
+                public void actionPerformed(ActionEvent e) 
+                {
+                    service.set_autoconnect(autoConBox.isSelected());
+                }
+        });
         
         //Add events when clicking buttons
         cancel.addActionListener(new ActionListener()
@@ -148,7 +160,6 @@ public class SSOEdit implements EventSystem.EventListener
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    
                     String username = userInput.getText();
                     String password = new String(passInput.getPassword());
                     String repeated = new String(repeatInput.getPassword());
@@ -157,7 +168,7 @@ public class SSOEdit implements EventSystem.EventListener
                     if (password.equals(repeated))
                     {
                         hideGUI();
-                        Object[] array = new Object[] {username, password, autocon};
+                        Object[] array = new Object[] {service, username, password, autocon};
                         eventSystem.trigger_event("EDIT_ACCEPT_EVENT", array);
                         service = null;
                     }
