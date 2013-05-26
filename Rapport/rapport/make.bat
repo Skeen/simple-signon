@@ -6,3 +6,4 @@ del *.bbl
 del *.blg
 del *.log
 del *.aux
+del *.pdf
