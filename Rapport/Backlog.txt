@@ -1,0 +1,34 @@
+BACKLOG
+------------------
+
+- Finde en virksomhed og et projekt			DONE
+
+- Aftale kontaktpersoner				DONE
+
+- Aftale første interview (contextual incinterviews)	DONE
+
+- Udføre første interview				DONE
+
+- Opfølgning på første interview			DONE
+
+- Første prototype (MEGET skrapet!)			DONE/SHOWN 
+
+- Aftale interview af brugere				DONE
+
+- Udføre interview af brugere				DONE
+
+- Opfølgning af interview af brugere			DONE
+
+- Revideret prototype					DONE/SHOWN
+
+- Dagbog						IN PROGRESS
+
+- Aftale et interview med Lars Lisberg			DONE
+
+- 2. møde/interview med Lars				DONE
+
+- Opfølgning på 2. interview af Lars			IN PROGRESS
+
+- Lave 3. Aflevering					WAITING
+
+- 
