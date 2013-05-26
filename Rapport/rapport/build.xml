@@ -1,0 +1,24 @@
+<project name="SSO-Rapport" default="build" basedir=".">
+    <property name="build-directory" value="build"/>
+
+    <target name="clean-up">
+        <!-- Our folder -->
+        <delete file="*.out"/>
+        <delete file="*.log"/>
+        <delete file="*.aux"/>
+    </target>
+
+    <target name="prepare-build">
+        <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="build-pdf" depends="prepare-build">
+        <exec executable="pdflatex">
+            <arg value="report.tex"/>
+        </exec>
+    </target>
+
+    <target name="build" depends="prepare-build, build-pdf">
+        <copy todir="${build-directory}" file="rapport.pdf"/>
+    </target>
+</project>
