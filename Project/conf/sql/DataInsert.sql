@@ -63,7 +63,7 @@ INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `valu
 -- Login URL for elevplan
 INSERT INTO `services`.`service_indirection` (`idservice_indirection`, `service_id`) VALUES ('6', '4');
 INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('6', 'URL', 'https://www.elevplan.dk/SSO_AUTO_LOGIN');
-INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('6', 'PROXY_FILTER_CLASS', 'ElevPlan');
+INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('6', 'PROXY_FILTER_CLASS', 'ElevPlanComposite');
 -- Login Info for elevplan (for Skeen)
 INSERT INTO `services`.`service_indirection` (`idservice_indirection`, `user_service_id`) VALUES ('7', '4');
 INSERT INTO `services`.`key_value` (`service_indirection_id`, `key_entry`, `value_entry`) VALUES ('7', 'USERNAME', 'lanie962');
