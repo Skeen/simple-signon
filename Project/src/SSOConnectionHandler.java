@@ -26,12 +26,19 @@ class SSOConnectionHandler
     {
         Map<String,String> initMap = new HashMap<String,String>();
 
+        String databaseString = MySQLConnection.DATABASE + ".`key_value`";
+        String updateString =   "SELECT key_entry, value_entry FROM " + databaseString +
+                                    " join service_indirection on idservice_indirection = service_indirection_id " +
+                                    " where service_id = ? or user_service_id = ?";
+
         // Get all key-value pairs from the server
         Connection connection = MySQLConnection.getSingleton().getConnection();
-        Statement s = connection.createStatement();
-        ResultSet r = s.executeQuery("SELECT key_entry, value_entry FROM " + MySQLConnection.DATABASE + ".`key_value` " +
-                                     "join service_indirection on idservice_indirection = service_indirection_id " +
-                                     "where service_id = " + service_id + " or user_service_id = " + user_service_id);
+        PreparedStatement statement = connection.prepareStatement(updateString);
+
+        statement.setInt(1, service_id);
+        statement.setInt(2, user_service_id);
+
+        ResultSet r = statement.executeQuery();
 
         while(r.next()) 
         {
@@ -52,13 +59,19 @@ class SSOConnectionHandler
         // Read the services from sql server
         try
         {
+            String databaseString = MySQLConnection.DATABASE + ".`user_service`";
+            String updateString =   "SELECT service_id, user_service_id, service_logo, service_name, service_type_name, auto_connect, in_use " +
+                " FROM " + databaseString +
+                "join service on user_service.service_id = service.idservice " + 
+                "join service_type on service.service_type_id = idservice_type " +
+                "where user_service.username = ?";
+
             Connection connection = MySQLConnection.getSingleton().getConnection();
-            Statement s = connection.createStatement();
-            ResultSet r = s.executeQuery("SELECT service_id, user_service_id, service_logo, service_name, service_type_name, auto_connect, in_use " +
-                    "FROM " + MySQLConnection.DATABASE + ".`user_service` " +
-                    "join service on user_service.service_id = service.idservice " + 
-                    "join service_type on service.service_type_id = idservice_type " +
-                    "where user_service.username = \"" + lookup_username + "\"");
+            PreparedStatement statement = connection.prepareStatement(updateString);
+
+            statement.setString(1, lookup_username);
+
+            ResultSet r = statement.executeQuery();
 
             while(r.next()) 
             {
