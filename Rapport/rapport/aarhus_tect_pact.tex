@@ -1,0 +1,34 @@
+\subsection{PACT analyse af Aarhus Tech}
+
+{\bf People:}
+Systemet er fokuseret på ansatte ved Aarhus tech. Elever er ikke blandt målgruppen for systemet. Vores kontakt person i IT afdelingen fortalte at der ikke er de store problemer med flere logins for elever, det er hovedsageligt for lærerer og ansatte. Dette blev bekræftet af to lærer, som viste at elever kun har få services de skal bruge, og har ens passwords på alle disse. De ansatte har varierende IT kompetence, hvor IT afdelingen har rimeligt styr på det, mens nogle lærer ikke har forstand på computere. Systemet skal derfor kunne benyttes af personer uden megen forstand på computere.
+
+{\bf Activities}
+Det nuværende system indeholder mange logins, hvor brugernavne og passwords kan variere imellem dem, og der ikke deles sessioner. Derfor skal den enkelte bruger ofte logge ind mange gange på en typisk arbejdsdag, måske med forskellige passwords og brugernavne.
+VPN login systemet er ved at blive fjernet, hvorefter brugere skal logge på et specielt wifi net, og have en gyldig certificate for at bruge dette.
+Aktiviteten kan eksempelvis forløbe således (med VPN systemet):
+\begin{itemize}
+\item Brugeren logger ind på sin konto i windows Active Directory.
+\item Brugeren vælger en wifi forbindelse.
+\item Brugeren logger på en forside, hvorefter der er internet adgang.
+\item Brugeren logger på VPN
+\item Brugeren logger på It’s Learning, eller anden service.
+\end{itemize}
+Herefter skal brugeren logge på VPN igen, hvis de flytter bærbaren til et andet lokale.
+
+
+{\bf Context}
+Systemet bruges i en kontekst af undervisning, og administrationen bag den undervisning. De enkelte ansatte kan tilgå nogle services hjemmefra, mens andre services kun kan bruges fra det interne netværk. Login kan foregå i et lokale hvor elever er til stede, og muligvis hvor de kan se det, hvis der evt. er en projektør i brug. Det varierer imellem den enkelte bruger, hvilke services de bruger i en dagligdag. En bærbar som er logget ind, kan muligvis blive  forladt i en pause, før næste time, hvor lærer prøver at huske at låse maskinen, når de ikke er der.
+
+{\bf Technology}
+Der bliver hovedsageligt brugt windows maskiner med internet explorer, men der er også andre browsere og maskiner i brug. Hver ansat har en maskine, som kun de bruger (for det meste), og de kan selv installere software på disse maskiner.
+Nogle services understøtter kun Internet Explorer. Der er blevet udbredt versioner af Internet Explorer som er nyere end IE6, derved er det kun ‘moderne’ browsere som er relevante.  Vores kontakt personer har sagt at mac OSX maskiner ikke er understøttet som sådan, men bruges på eget ansvar af nogle lærer. Lars Lisberg i IT-afdelingen var interesseret i at have kompatibilitet med tablets.
+
+Som tidligere nævnt skal brugeren logge ind på en hel del forskellige services, disse fungere på forskellig vis;
+\begin{itemize}
+\item Active Directory: Når brugeren logger ind på winlogon (den almindelige windows login), sendes passwordet til active directory serveren, der validere inputtet, og køre et loginscript, der sikre at netværksdrev, og lign. bringes til brugbar tilstand.
+\item Wifi forbindelse: Når brugeren logger ind på wifi netværket, tager styresystemet over, og sender rå ip pakker til routeren, der validere de givne informationer (certifikater, adgangskoder, osv. (om nødvendigt)), og herefter giver routeren adgang til netværket.
+\item Intranet forside: Når brugeren åbner sin webbrowser, bliver der vist en intranet login-side. Når brugeren logger ind på intranet forsiden, køres et script der tjekker om hvorvidt brugeren er registreret, og om hvorvidt koden er korrekt.
+\item VPN: Når brugeren logger ind på VPN, kontaktes den lokale VPN server, der validere brugernavn, og kode, hvorefter en sikker VPN forbindelse oprettes.
+WebServices: Når brugeren logger ind på en webservice, sendes brugernavn og password over en sikret HTTPS (eller usikret HTTP) forbindelse, hvorefter serveren sørger for at validere inputtet.
+\end{itemize}
