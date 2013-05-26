@@ -3,22 +3,32 @@
 
     <target name="clean-up">
         <!-- Our folder -->
-        <delete file="*.out"/>
-        <delete file="*.log"/>
-        <delete file="*.aux"/>
+        <delete>
+            <fileset dir="." includes="*.out"/>
+            <fileset dir="." includes="*.log"/>
+            <fileset dir="." includes="*.aux"/>
+        </delete>
     </target>
+
+    <target name="clean" depends="clean-up">
+        <delete dir="${build-directory}"/>
+    </target>
+
 
     <target name="prepare-build">
         <mkdir dir="${build-directory}"/>
     </target>
 
     <target name="build-pdf" depends="prepare-build">
-        <exec executable="pdflatex">
+        <exec executable="pdflatex.bat">
             <arg value="report.tex"/>
         </exec>
     </target>
 
     <target name="build" depends="prepare-build, build-pdf">
-        <copy todir="${build-directory}" file="rapport.pdf"/>
+        <move todir="${build-directory}">
+            <fileset dir="." includes="*.pdf"/>
+        </move>
+        <antcall target="clean-up"/>
     </target>
 </project>
