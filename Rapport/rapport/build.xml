@@ -24,9 +24,10 @@
     </target>
 
     <target name="build" depends="prepare-build, build-pdf">
-        <move todir="${build-directory}">
+        <copy todir="${build-directory}">
             <fileset dir="." includes="*.pdf"/>
-        </move>
+            <fileset dir="." includes="*.pdfsync"/>
+        </copy>
         <antcall target="clean-up"/>
     </target>
 </project>
