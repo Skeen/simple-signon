@@ -31,6 +31,22 @@ class MySQLUpdater implements EventSystem.EventListener
         }
     }
 
+    private void update_edit_info(Service s, String username, String password, boolean autoconnect)
+    {
+        try
+        {
+            Connection connection = MySQLConnection.getSingleton().getConnection();
+            Statement statement = connection.createStatement();
+            //statement.executeUpdate("UPDATE " + MySQLConnection.DATABASE + ".`key_value` set value_entry = " + username + " where key_entry = \"USERNAME\" and service_indirection_id = " + s.getUserServiceID());
+            //statement.executeUpdate("UPDATE " + MySQLConnection.DATABASE + ".`key_value` set value_entry = " + password + " where key_entry = \"PASSWORD\" and service_indirection_id = " + s.getUserServiceID());
+            statement.executeUpdate("UPDATE " + MySQLConnection.DATABASE + ".`user_service` set auto_connect = " + autoconnect + " where user_service_id = " + s.getUserServiceID());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     // Event handling
     public void event(String event, Object payload)
     {
@@ -49,7 +65,8 @@ class MySQLUpdater implements EventSystem.EventListener
                 // * new username
                 // * new password
                 // * new autoconnect status
-                // TODO: Implement this
+                Object[] data = (Object[]) payload;
+                update_edit_info((Service) data[0], (String) data[1], (String) data[2], (boolean) data[3]); 
                 break;
         }
     }

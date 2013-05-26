@@ -247,4 +247,9 @@ class Service implements Runnable, EventSystem.EventListener
     {
         return auto_connect;
     }
+
+    public void set_autoconnect(boolean b)
+    {
+        auto_connect = b;
+    }
 }
