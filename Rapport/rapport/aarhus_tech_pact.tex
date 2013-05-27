@@ -2,17 +2,19 @@
 
 \paragraph
 {\bf People:}
-Systemet er fokuseret på ansatte ved Aarhus tech. Elever er ikke blandt målgruppen for systemet. 
-Vores kontakt person i IT afdelingen fortalte at der ikke er de store problemer med flere logins for elever, det er hovedsageligt for lærerer og ansatte. 
-Dette blev bekræftet af to lærer, som viste at elever kun har få services de skal bruge, og har ens passwords på alle disse. 
+Systemet er fokuseret på ansatte ved Aarhus tech. 
+Elever er ikke blandt målgruppen for systemet. 
+Vores kontakt person i IT afdelingen fortalte at der ikke er de store problemer med logins for elever. 
+Det er hovedsageligt lærerer og ansatte, som har problemer. 
+Dette blev bekræftet af to lærer, som viste at elever kun har få services de skal bruge, og har ens passwords på alle disse services. 
 De ansatte har varierende IT kompetence, hvor IT afdelingen har rimeligt styr på det, mens nogle lærer ikke har forstand på computere. 
 Systemet skal derfor kunne benyttes af personer uden megen forstand på computere.
 
 {\bf Activities:}
-Det nuværende system indeholder mange logins, hvor brugernavne og passwords kan variere imellem dem, og der ikke deles sessioner. 
-Derfor skal den enkelte bruger ofte logge ind mange gange på en typisk arbejdsdag, måske med forskellige passwords og brugernavne.
-VPN login systemet er ved at blive fjernet, hvorefter brugere skal logge på et specielt wifi net, og have en gyldig certificate for at bruge dette.
-Aktiviteten kan eksempelvis forløbe således (med VPN systemet):
+Det nuværende system indeholder mange services, hvor brugernavne og passwords kan variere imellem dem.
+De forskellige services har ikke delte sessioner, dvs. at man skal logge ind seperat for hver service.
+Derfor skal den enkelte bruger ofte logge ind mange gange på en typisk arbejdsdag, og huske flere forskellige passwords og brugernavne.
+Aktiviteten kan eksempelvis forløbe således:
 \begin{itemize}
 \item Brugeren logger ind på sin konto i windows Active Directory.
 \item Brugeren vælger en wifi forbindelse.
@@ -21,13 +23,15 @@ Aktiviteten kan eksempelvis forløbe således (med VPN systemet):
 \item Brugeren logger på It's Learning, eller anden service.
 \end{itemize}
 Herefter skal brugeren logge på VPN igen, hvis de flytter bærbaren til et andet lokale.
+Aarhus Tech er at fjerne VPN login systemet.
+I det nye system skal brugere skal logge på et specielt wifi net for ansatte, og have en gyldig certificate på deres maskine for at bruge dette.
 
 {\bf Context:}
-Systemet bruges i en kontekst af undervisning, og administrationen bag den undervisning. 
+Systemet bruges i en kontekst af undervisning, og administrationen bag denne undervisning. 
 De enkelte ansatte kan tilgå nogle services hjemmefra, mens andre services kun kan bruges fra det interne netværk. 
 Login kan foregå i et lokale hvor elever er til stede, og muligvis hvor de kan se det, hvis der evt. er en projektør i brug. 
 Det varierer imellem den enkelte bruger, hvilke services de bruger i en dagligdag. 
-En bærbar som er logget ind, kan muligvis blive  forladt i en pause, før næste time, hvor lærer prøver at huske at låse maskinen, når de ikke er der.
+En bærbar som er logget ind, kan muligvis blive forladt i en pause, før næste time, hvor lærer prøver at huske at låse maskinen, når de ikke er der.
 
 {\bf Technology:}
 Der bliver hovedsageligt brugt windows maskiner med internet explorer, men der er også andre browsere og maskiner i brug. 
