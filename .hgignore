@@ -1,6 +1,7 @@
 syntax: glob
 *~
 *.class
+*.bak
 *.swp
 *.pdf
 *.pdfsync
