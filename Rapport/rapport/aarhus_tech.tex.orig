@@ -1,0 +1,24 @@
+Aarhus Tech er en selvejende institution, hvis vigtigste opgaver er at udbyde de uddannelser og kurser, som de uddannelsessøgende og erhvervslivet i Østjylland har behov for.
+
+Aarhus Tech har jf. deres hjemmeside \textit{aarhustech.dk}:
+
+\begin{itemize}
+\item 25 erhvervsuddannelser
+\item Fire tekniske gymnasier
+\item To erhvervsakademiuddannelser
+\item En lang række forskellige efteruddannelseskurser
+\item Kurser for ca. 5.500 elever i 8., 9. og 10. klasse
+\item 3.600 årselever, studerende og kursister
+\item Ca. 550 medarbejdere
+\item 400 mio. kr. i årsomsætning (2011)
+\end{itemize}
+
+Som erhvervslivets skole er det Aarhus Tech's mål at gøre viden til erhvervskompetence og sørge for, at de uddannelsessøgende får den bedste undervisning til brug i deres fremtidige karriere og på den måde være med til at sikre, at erhvervslivet får medarbejdere med de rigtige kompetenceprofiler
+
+Aarhus Tech's IT-Teamleder Lars Lisberg kontaktede os og bad os om at designe et single-signon system til skolen.
+
+
+
+\input{aarhus_tech_pact}
+
+\input{aarhus_tech_scenarier}
