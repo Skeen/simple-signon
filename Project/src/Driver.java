@@ -2,9 +2,10 @@ import javax.swing.SwingUtilities;
 
 // TODO: Info til de requestede features;
 //
-// Create shortcut; http://stackoverflow.com/questions/13145942/creating-a-shortcut-file-from-java
+// Create shortcuts; http://stackoverflow.com/questions/13145942/creating-a-shortcut-file-from-java
 // Højre click popup; http://stackoverflow.com/questions/766956/how-do-i-create-a-right-click-context-menu-in-java-swing
 // Lav en fil med computer specifikke informationer (f.eks vindue størrelse).
+// Load billeder fra sql serveren
 
 class Driver
 {
@@ -36,25 +37,3 @@ class Driver
                 });
     }
 }
-
-
-/* SQL Database tables
- * 
- *  uid | user | service
- *  User Id, username, service ID's
- *
- *  sid | dep_id | service_form(cid) | logo_id | service_name
- *  service ID, services depended on, method for service login, logo id, name of service
- * 
- *  sidd | uid | sid
- *  user/service id, user id, service id
- *  
- *  id | sidd | key | value
- *  unique id(or use sidd/key as id), user/service id, key/datatype, value/data
- *
- *  logo_id | logodata | timestamp
- *  logo id, the image as data, timestamp
- *
- *  cid | timestamp | classfile/loginform
- *
- */
