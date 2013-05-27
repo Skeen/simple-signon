@@ -2,6 +2,9 @@ syntax: glob
 *~
 *.class
 *.swp
+*.pdf
+*.pdfsync
+*.orig
 Project/bin/*
 Project/build/*
 Project/doc/*
