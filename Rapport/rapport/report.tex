@@ -7,10 +7,18 @@
 \usepackage{ulem}
 \usepackage{hyperref}
 \usepackage[geometry]{ifsym}
+
+%Deprecated and unstable package, remove if problems arise.
 \usepackage{pdfsync}
 
 \usepackage[danish]{babel}
-\usepackage{t1enc}
+
+%t1end was replaced by fontenc
+\usepackage{fontenc}
+%\usepackage{t1enc}
+
+%Prevents indent of new paragraphs
+\usepackage[parfill]{parskip}
 
 %declare where to look for graphics
 \graphicspath{{gfx/}}
@@ -60,4 +68,3 @@
 
 % that's all folks
 \end{document}
-
