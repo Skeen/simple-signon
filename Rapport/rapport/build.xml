@@ -24,6 +24,7 @@
 
     <target name="build-pdf" depends="prepare-build">
         <exec executable="build.bat"/>
+        <exec executable="build.bat"/>
     </target>
 
     <target name="build" depends="prepare-build, build-pdf">
