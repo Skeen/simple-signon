@@ -1,0 +1,38 @@
+<project name="SSO-Rapport" default="build" basedir=".">
+    <property name="build-directory" value="build"/>
+
+    <target name="clean-up">
+        <!-- Our folder -->
+        <delete>
+            <fileset dir="." includes="*.out"/>
+            <fileset dir="." includes="*.log"/>
+            <fileset dir="." includes="*.aux"/>
+            <fileset dir="." includes="*.toc"/>
+        </delete>
+    </target>
+
+    <target name="clean" depends="clean-up">
+        <delete dir="${build-directory}"/>
+        <delete>
+            <fileset dir="." includes="*.pdf"/>
+            <fileset dir="." includes="*.pdfsync"/>
+        </delete>
+    </target>
+
+    <target name="prepare-build">
+        <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="build-pdf" depends="prepare-build">
+        <exec executable="build.bat"/>
+        <exec executable="build.bat"/>
+    </target>
+
+    <target name="build" depends="prepare-build, build-pdf">
+        <copy todir="${build-directory}">
+            <fileset dir="." includes="*.pdf"/>
+            <fileset dir="." includes="*.pdfsync"/>
+        </copy>
+        <antcall target="clean-up"/>
+    </target>
+</project>
