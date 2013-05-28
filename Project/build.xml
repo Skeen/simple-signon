@@ -112,7 +112,9 @@
 
     <target name="copyResource" depends="prepare">
         <copy todir="${build-directory}\${resource-directory}" >
-            <fileset dir="${resource-directory}"/>
+            <fileset dir="${configuration-directory}">
+                <include name="keystore"/>
+            </fileset>
         </copy>
     </target>
 
@@ -135,7 +137,9 @@
             </manifest>
         </jar>
         <copy todir="${bin-directory}\${resource-directory}" >
-            <fileset dir="${resource-directory}"/>
+            <fileset dir="${configuration-directory}">
+                <include name="keystore"/>
+            </fileset>
         </copy>
     </target>
 
