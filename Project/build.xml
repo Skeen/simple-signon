@@ -136,11 +136,6 @@
                 <attribute name="Main-Class" value="Driver"/>
             </manifest>
         </jar>
-        <copy todir="${bin-directory}\${resource-directory}" >
-            <fileset dir="${configuration-directory}">
-                <include name="keystore"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="run" depends="jar">

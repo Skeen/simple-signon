@@ -999,7 +999,7 @@ public class Handler implements Runnable {
             }
             
             KeyStore ks = KeyStore.getInstance("JKS");
-            File kf = new File(getExproxy().getKeystoreFilename()); 
+            File kf = getExproxy().getKeystoreFile(); 
             ks.load(new FileInputStream(kf), getExproxy().getKeystorePassword());
 
             KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
