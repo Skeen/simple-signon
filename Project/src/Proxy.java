@@ -3,6 +3,12 @@ import com.exproxy.processors.HttpMessageProcessor;
 
 import java.net.InetAddress;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+
+import org.apache.commons.io.IOUtils;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -23,13 +29,38 @@ public class Proxy implements EventSystem.EventListener, Runnable
         return singleton;
     }
 
+    private File create_explicit_keystore_file()
+        throws Exception
+    {
+        // Load the keystore file
+        File f = new File(keystore);
+        // If it does not exists;
+        if(f.exists() == false)
+        {
+            // Make all needed directories
+            File darent_directory = f.getParentFile();
+            darent_directory.mkdirs();
+            // Lets read it out of the jar
+            InputStream is = this.getClass().getResourceAsStream(keystore);
+            // And let's create it, with a FileOutputStream
+            FileOutputStream output_writer = new FileOutputStream(f, false);
+            // And write it
+            IOUtils.copy(is, output_writer);
+            // Then close it, so it's ready to use.
+            output_writer.close();
+        }
+        // return it
+        return f;
+    }
+
     private EXProxy exproxy = null;
     private Proxy()
     {
         try
         {
             InetAddress addr = InetAddress.getByName(localHost);
-            exproxy = new EXProxy(addr, localPort, backlog, keystore, store_password, key_password);
+            File keystore_file = create_explicit_keystore_file();
+            exproxy = new EXProxy(addr, localPort, backlog, keystore_file, store_password, key_password);
         }
         catch(Exception e)
         {
