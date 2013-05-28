@@ -12,6 +12,7 @@ package com.exproxy;
 
 import com.exproxy.impl.Handler;
 import com.exproxy.tools.Logging;
+import java.io.File;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.Inet4Address;
@@ -50,7 +51,7 @@ public class EXProxy extends Thread {
     private final InetAddress ifAddress;
     private final int port;
     private final int backlog;
-    private final String keystoreFilename;
+    private final File keystoreFile;
     private final char[] keystorePassword;
     private final char[] keystoreKeysPassword;
     
@@ -68,15 +69,15 @@ public class EXProxy extends Thread {
      * @param ifAddress InetAddress where to bind the proxy server.
      * @param port TCP/IP port to use both for HTTP and HTTPS proxy.
      * @param backlog The listen backlog length.
-     * @param keystoreFilename path to the keystore file to use
+     * @param keystoreFile The keystore file to use
      * @param keystorePassword password that protect the keystore
      * @param keystoreKeysPassword password that protect the key in the keystore
      */
-    public EXProxy(InetAddress ifAddress, int port, int backlog, String keystoreFilename, char[] keystorePassword, char[] keystoreKeysPassword) {
+    public EXProxy(InetAddress ifAddress, int port, int backlog, File keystoreFile, char[] keystorePassword, char[] keystoreKeysPassword) {
         this.ifAddress = ifAddress;
         this.port = port;
         this.backlog = backlog;
-        this.keystoreFilename = keystoreFilename;
+        this.keystoreFile = keystoreFile;
         this.keystorePassword = keystorePassword;
         this.keystoreKeysPassword = keystoreKeysPassword;
         //pool = Executors.newFixedThreadPool(30);
@@ -85,6 +86,25 @@ public class EXProxy extends Thread {
         requestProcessors  = Collections.synchronizedList(new ArrayList<HttpMessageProcessor>());
         responseProcessors = Collections.synchronizedList(new ArrayList<HttpMessageProcessor>());        
         listeners          = Collections.synchronizedList(new ArrayList<EXProxyListener>());        
+    }
+
+    /**
+     * Creates a new EXProxy with given settings.
+     *
+     * @param ifAddress InetAddress where to bind the proxy server.
+     * @param port TCP/IP port to use both for HTTP and HTTPS proxy.
+     * @param backlog The listen backlog length.
+     * @param keystoreFilename path to the keystore file to use
+     * @param keystorePassword password that protect the keystore
+     * @param keystoreKeysPassword password that protect the key in the keystore
+     */
+    public EXProxy(InetAddress ifAddress, int port, int backlog, String keystoreFilename, char[] keystorePassword, char[] keystoreKeysPassword) {
+        this(ifAddress,
+                port,
+                backlog,
+                new File(keystoreFilename),
+                keystorePassword,
+                keystoreKeysPassword);
     }
     /**
      * Creates a new EXProxy instance with keystore default values.
@@ -246,8 +266,9 @@ public class EXProxy extends Thread {
      * Get keystore path.
      * @return String containing the keystore path
      */
-    public String getKeystoreFilename() {
-        return keystoreFilename;
+    public File getKeystoreFile() 
+    {
+        return keystoreFile;
     }
 
     /**
