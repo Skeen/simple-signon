@@ -1,0 +1,168 @@
+<project name="SSO" default="help" basedir=".">
+    <property name="source-directory" value="src"/>
+    <property name="test-source-directory" value="test"/>
+    <property name="build-directory" value="build"/>
+    <property name="lib-directory" value="lib"/>
+    <property name="bin-directory" value="bin"/>
+    <property name="configuration-directory" value="conf"/>
+    <property name="documentation-directory" value="doc"/>
+    <property name="resource-directory" value="resource"/>
+
+    <property name="build.compiler.pedantic" value="true"/>
+
+    <property name="junitJar" value="${lib-directory}/junit-4.4.jar"/>
+    <property name="doxygenJar" value="${lib-directory}/ant_doxygen.jar"/>
+    <property name="exproxyJar" value="${lib-directory}/exproxy.jar"/>
+
+    <taskdef name="doxygen" classname="org.doxygen.tools.DoxygenTask"
+        classpath="${doxygenJar}" />
+
+    <path id="class-path">
+        <fileset dir="${lib-directory}">
+            <include name="*.jar"/>
+        </fileset>
+         
+        <pathelement location="${build-directory}"/>
+    </path>
+
+    <target name="help">
+        <echo>
+   SSO build management.
+   Targets:
+            build-src: Builds production code.
+            clean:     Removes all bytecode.
+            handin:    Generate a Zip containing the code.
+
+       Documentation (output in ${documentation-directory})
+            javadoc:   Generate JavaDoc 
+            doxygen:   Generate Doxygen Documationation 
+
+       Testing Targets:
+            test:      Run JUnit test cases.
+        </echo>
+    </target>
+
+    <target name="get-server">
+        <get src="http://www.cs.au.dk/~skeen/_SERVER.rar" dest="_SERVER.rar" verbose="on"/>
+    </target>
+
+    <target name="clean-exproxy">
+        <!-- Exproxy folder -->
+        <subant antfile="libsrc/exproxy/build.xml" target="clean" buildpath="."/>
+
+        <!-- Our folder -->
+        <delete dir="${lib-directory}/resource"/>
+        <delete file="${lib-directory}/commons-codec-1.7.jar"/>
+        <delete file="${lib-directory}/commons-collections-3.2.1.jar"/>
+        <delete file="${lib-directory}/commons-httpclient-3.1.jar"/>
+        <delete file="${lib-directory}/commons-logging-1.1.2.jar"/>
+        <delete file="${exproxyJar}"/>
+    </target>
+
+    <target name="get-exproxy-jar" depends="build-exproxy-jar">
+        <copy todir="${lib-directory}" >
+            <fileset dir="libsrc/exproxy/bin"/>
+        </copy>
+        <copy todir="${lib-directory}" >
+            <fileset dir="libsrc/exproxy/lib"/>
+        </copy>
+    </target>
+
+    <target name="build-exproxy-jar">
+        <subant antfile="libsrc/exproxy/build.xml" buildpath="."/>
+    </target>
+
+    <target name="clean-doc">
+        <delete dir="${documentation-directory}"/>
+    </target>
+
+    <target name="clean" depends="clean-exproxy, clean-doc, clean-bin">
+        <delete dir="${build-directory}"/>
+    </target>
+
+    <target name="prepare" depends="get-exproxy-jar">
+        <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="clean-bin">
+        <delete dir="${bin-directory}"/>
+    </target>
+    
+    <target name="prepare-bin">
+        <mkdir dir="${bin-directory}"/>
+    </target>
+
+    <target name="build-src" depends="prepare">
+        <javac srcdir="${source-directory}"
+            destdir="${build-directory}"
+            includeantruntime="true"
+            >
+            <classpath refid="class-path"/>
+        </javac>
+    </target>
+
+    <target name="build-test" depends="build-src">
+        <javac srcdir="${test-source-directory}"
+            destdir="${build-directory}"
+            includeantruntime="true"
+            >
+            <classpath refid="class-path"/>
+        </javac>
+    </target>
+
+    <target name="copyResource" depends="prepare">
+        <copy todir="${build-directory}\${resource-directory}" >
+            <fileset dir="${configuration-directory}">
+                <include name="keystore"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="build-all" depends="build-src,build-test,copyResource"/>
+
+    <target name="prepare-doc">
+        <mkdir dir="${documentation-directory}"/>
+    </target>
+
+    <target name="doxygen" depends="prepare-doc">
+        <doxygen configFilename="${configuration-directory}/doxygen.cfg"/>
+    </target>
+
+    <target name="jar" depends="build-all, prepare-bin">
+        <jar destfile="${bin-directory}/sso.jar"
+            basedir="${build-directory}">
+            <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+            <manifest>
+                <attribute name="Main-Class" value="Driver"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${bin-directory}/sso.jar" fork="true"> 
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+
+    <target name="run-source" depends="build-all">
+        <java classname="Driver" fork="true"> 
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+
+
+    <!-- JUnit testing -->    
+    <!--
+    <target name="test" depends="test-gui">
+    </target>
+    -->
+    <!--
+    <target name="test-gui"  depends="build-all">
+        <java classname="gui.variants.alphaciv.TestAlphaCiv"> 
+            <arg value="hotciv.variants.alphaciv.TestAlphaCiv"/>
+            <classpath refid="class-path"/>
+        </java>
+    </target>
+    -->
+
+</project>

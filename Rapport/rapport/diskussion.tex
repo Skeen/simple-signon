@@ -1,0 +1,151 @@
+%TODO: Diskussion af valgt løsning
+%TODO: Diskussion af problemer der var undervejs.
+%TODO: Diskussion af vores valgte strategi
+%TODO: Vælg et element af diskussion ud, og gå i dybten med denne.
+% Perspektiver elementet forhold til kursusliteratur.
+% (sæt det i forhold til artiklerne fra første 7 uger)
+
+%\textbf{\large De valgte løsninger og hvorfor/alternativer:}
+
+
+%\begin{itemize}
+%\item Brugerstyret vs. Administrationsstyret
+%\item Lokalt program vs. Webservice
+%\item GUI\\
+%\end{itemize}
+
+
+Et af de første spørgsmål vi stødte på i forbindelse med projektet, var hvorvidt systemet skulle være brugerstyret eller administrationsstyret.
+Der kan både argumenteres for og imod brugerstyret frem for administrationsstyret.
+Et af argumenterne imod et brugerstyret system er, at hvis en bruger har mulighed for at lave rod i tingene, så vil brugeren komme til at lave rod i tingene.
+Dette taler så dermed også for et administrationsstyret system, i og med at hvis så alt funktionaliteten ligger ved administratorerne, og brugeren har mindst mulig interaktion med systemet, vil brugeren heller ikke have nær så mange muligheder for at lave rod.
+
+Et andet argument mod brugerstyrede systemer er, at hvis man designer et brugerstyret system, skal man designe til alle de potentielle brugere.
+Dette betyder,at man både skal designe til brugere der har en stor teknologisk forståelse og brugere med lille teknologisk forståelse.
+Hermed bliver man nød til at stille spørgsmålet, om brugerne man designer til, besidder de nødvendige kompetencer til at administrere systemet selv, eller om man det bedste ville være at designe et system der administratorstyret.
+
+At man skal som nævnt ovenfor skal designe til alle brugere der skal benytte systemet, leder også over til et tredje argument for at designe et administrationsstyret system.
+Når der designes til an bred brugergruppe i stedet for til administratorer, kan det tilføje megen kompleksitet til udviklingsprocessen i form af en mere kompleks GUI og flere funktionaliteter.
+
+På den anden side, kan der argumenteres for, at man med et brugerstyret system, som navnet også ligger op til, giver brugeren mulighed for at tilpasse systemet til lige nettop ham eller hende. 
+I vores tilfælde, er der forskel fra bruger til bruger på hvile services de benytter.
+
+I vores tilfælde, er der også et meget vigtigt argument der taler mod et administrationsstyret system og for et brugerstyret system.
+Hvis systemet styres af administratorer, skal brugerne første gang de sætter programmet op, og hver gang de vil tilføje en service ned forbi IT-afdelingen med deres brugernavn og adgangskode for den pågældende service.
+Ud over at det er problematisk at IT-afdelingens direkte skal håndtere brugernes brugernavne og adgangskoder, vil det også give IT-afdelingen meget mere arbejde, hvilket også er et argument for at designe et brugerstyret system frem for et administrationsstyret system.
+
+Da beslutningen skulle tages om hvilken type system vi skulle designe, havde vi dog også disse argumenter i baghovedet.
+Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg, fandt vi dog ud af, at der fra lærerenes og IT-afdelingens side var et udbredt ønske om et brugerstyret system hvor der var mulighed for at tilpasse systemet til den enkelte bruger. 
+
+
+%Argument mod brugerstyret: \\
+%kan brugeren fucke det op vil brugeren fucke de om(de kan kun smadre deres eget). \\
+%Er brugeren i stand til og har kompetance til at administere systemet/mulighederne.\\
+%Kan tilføje kompleksitet i udviklingen blandt andet meget vs. lidt GUI/funktionalitet(skal designe til flere brugere).\\
+
+%Argumenter for brugerstyret:\\
+%Den en enkelte bruger kan tilpasse systemet til dem.\\
+%Hvis der er centralstyring skal alle brugere forbi IT-afdelingen med deres password(alle password skal igennem IT-afdelingen).\\
+%Mindre arbejde til IT-afdelingen.
+
+
+ 
+
+
+\leavevmode \linebreak
+\textbf{\large Problemer undervejs og de valgte løsninger:}
+
+
+\begin{itemize}
+\item Proxy som løsning på cookie-problem \\
+        %TODO: Donnot forgot
+
+\item Fleksibilitet
+\item Sikkerhed \\
+        
+    \begin{itemize}
+    \item Data på MySQL Serveren \\
+        Da MySQL serveren, er en del af vores trusted computing base, behøver vi
+        ikke tænke på dennes sikkerhed. Da denne er uden for vurderingen af
+        vores sikkerhedsdomæne, og sikkerheden af denne er uden for vores
+        problemdomæne.
+
+    \item Key-Value på MySQL Serveren \\
+        I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
+        på MySQL serveren, oprindeligt var planen, at denne data ikke måtte stå
+        i plain tekst, således at eventuelle IT medarbejde ikke ved 'en fejl'
+        kunne komme til at aflæse informationerne.
+
+        Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
+        slutningen af process afsnittet.
+
+        Det er oplagt et alvorligt sikkerhedsproblem, at data'en er ukrypteret,
+        ifht. uønsket aflæsning, ifht. selve sikkerheden af MySQL serven,
+        referes til overstående.
+        
+        At vi kan stole på de IT ansatte, betyder endvidere, at decideret
+        kryptering af database felterne ikke er nødvendig, da disse, hvis de
+        ønskede at lave problemer, alligevel sagtens kunne få adgang til folks
+        bruger kontier, ved at ændre deres domæne kodeord.
+
+        Vi har derfor ikke som sådan, et behov for at kryptere data'en, men
+        derimod et behov for at gøre data'en ulæselig, dette gøres ved hjælp af
+        obfuskation, hvilken obfuskation der skal benyttes, har vi endnu ikke
+        diskuteret, men vi har overvejet nogle i stil af one-pad, eller simpel
+        ROT13 (Caesar cipher)
+
+    \item Proxy \\
+        Vi har som nævnt, i proces afsnittet, valgt at benytte en https
+        man-in-the-middle proxy, som løsningen på vores cookie-program.
+
+        Bruger af https proxy, giver imidlertid anledning, til en række
+        problemer, af sikkerhedsmæssige problemer, isærdeleshed, at https
+        strømmen kan læses ud, i plain tekst, ved proxy'en.
+        
+        Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
+        netbank, hvis den ansatte besøger dette på arbejdscomputeren, som
+        udgangspunkt er dette ikke farligt, men faren kommer hvis userens
+        maskine er blevet compromitteret, f.eks. ved at en nu version af sso
+        programmet er installeret.
+
+        I dette tilfælde, kan sso programmet potentielt sende brugerens bank
+        informationer og lignende til tredjepart, derfor skal sso filen
+        beskyttes mod uautoriseret ændring og/eller overskrivning, således
+        at overstående angreb ikke kunne finde sted.
+
+        For at sikre imod netop dette, kunne man eventuelt benytte Active
+        Directory, med et delt netværksdrev, hvorpå servicen ville være
+        tilgængelig.
+
+        Således ville opdatering af servicen også blive en yderst simpel opgave
+        for it afdelingen.
+    \end{itemize}
+
+\item Problemer med 'dummy'-logins\\
+\end{itemize}
+
+
+sd<sd
+
+
+\leavevmode \linebreak
+\textbf{\large Diskussion af vores valgte strategier:}
+
+
+\begin{itemize}
+\item (Cotextual Interviews med observationer)
+\item Prototyping/prototype\\
+\end{itemize}
+
+sdad
+
+
+\leavevmode \linebreak
+\textbf{\large Gå i dybden med én:}
+
+
+\begin{itemize}
+\item Prototyping/prototype\\
+\end{itemize}
+
+asda

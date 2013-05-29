@@ -1,0 +1,373 @@
+%TODO: løs Tidslinje for vores arbejdsprocess
+%TODO: detaljer for væsentlige steder i tidslinjen.
+
+Vi sendte emails ud til flere skoler, for at prøve at starte et samarbejde.
+Lars Lisberg, IT-teamleder ved Aarhus Tech, skrev tilbage at de var interesserede i et samarbejde.
+
+De havde et ønske om udvikling af et såkaldt Single-Sign-On system, således at
+de mange services som ansatte benytter, kan logge på en gang, centralt, og der
+herefter er adgang til alle services.
+
+Vi aftalte herefter et interview med Lars, for at arrangere termerne hvorpå
+projektet vil fungere, og hvilke krav de stiller for en eventuel løsning.
+
+% TODO: Link
+For at afdække disse spørgsmål, forbredte vi et interview, som kan ses i
+appendixet ('1. Interview d. 20/3-13').
+
+{\bf Interview 1, 20/03}
+med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+Vi valgte at optage dette interview på film, for at kunne bruge det til
+eventuelle senere afleveringer, og for at kunne behandle svarene senere.
+
+Vi startede interviewet med at lave en observation af hvordan den aktuelle
+arbejdsgang fungere, for ligesom at få en generel ide om omfanget af problemet,
+herefter udførte vi vores interview, for at få besvaret vores spørgsmål.
+
+Vi kom frem til, at den primære målgruppe for systemet er de ansatte på Aarhus
+Tech, og i mindre grad eleverne, og vi har derfor besluttet at designe efter
+disses behov (ihvertfalde i første omgang).
+
+Endvidere fremsatte Lars et krav om at systemet, også skulle kunne logge
+brugeren på Wifi, VPN og andre desktop services, hvormed vores idé om at lave en
+browser baseret løsning, blev skudt til jorden, og vi derfor måtte gå ideen om
+at lave desktop application (grundet begrænsninger i browser løsningers
+muligheder for at starte programmer, og ændre computerens konfiguration).
+
+Baseret på dette første interview, og hvad vi fik ud af det, begyndte vi at lave
+designet til en prototype, som skulle kunne opfylde de givne krav.
+
+{\bf Eksamensperiode 20/03 - 20/04}
+Grundet eksamensperiode, har projektet ligget stille, i dette tidsrum, hvilket
+selvfølgelig har været aftalt med Aarhus Tech (som havde fuld forståelse).
+
+{\bf Efter Eksamensperioden}
+Vi mødtes igen d. 21/04 og forstatte arbejdet.
+
+Vi forberedte en meget simpel prototype, som havde til formål at vise funktionalitet og være en kode-base for senere udvikling.
+Denne første prototype var derfor en low-fidelity prototype, da designet med vilje var midltertidigt. 
+Da første interview med Lars Lisberg havde gjordt nogle funktionelle krav tydelige, 
+besluttede vi at sætte mere fokus på koden bag prototypen end på brugergrænsefladen på dette tidspunkt, 
+således at koden kunne genbruges til senere prototyper.
+
+% TODO: Link
+Note; Denne prototype kan ses i appendixet
+
+For at få bekræftet Lars Lisbergs teori om at de mange logins skaber irritationer og problemer hos lærer, kontaktede vi Aarhus tech igen om at få et interview.
+Under interviewet ville vi også gerne se hvordan en lærer benytter de nuværende login system, og have noget feedback på den tidlige prototype, så designet kunne forbedres.
+
+{\bf Interview 2, 23/04}
+med Martin og Martin, to lærer ved Aarhus Tech.
+
+Efter interviewet lavede vi i gruppen en opsamling, hvor vi skrev ned hvordan de spørgsmål, som vi havde forberedt, var blevet svaret på.
+Her fik vi bekræftet af de to lærer, at de mange forskellige logins er et egentligt problem.
+
+Blandt vores feedback, var der et generelt udtryk for at de ønskede en pænere og
+mere brugervenlig brugergrænseflade, og desuden ønskede de at systemet kunne
+blive mere 'brugerstyret' (således at brugerne selv kunne tilpasse hvilke
+servies, der var aktuelle for dem, samt at konfigurere disse, med deres personlige
+brugernavn og password, uden at IT afdelingen skulle indblandes).
+
+Vi kunne altså konkludere, at vores brugergrænseflade skulle redesignes, og
+vores model af hvilken rolle brugeren spiller ifht. administratoren også skulle
+revurderes.
+
+Mht. brugergrænsefladen, havde vi af den ene af lærene fået et
+specifikt forslag til designet, hvor hver service skulle repræseneres ved et
+logo, med et lille pictogram som viser tilstand, efter interviewet gik vi hjem,
+og arbejdede på at designe netop en sådanne brugergrænseflade.
+
+% TODO: Link
+Vores arbejdsproces, kan bl.a. ses i appendixet, hvor vi diskuterede frem
+og tilbage, og til sidst fandt frem til et design, som vi mente ville leve op
+til de to lærers krav, for brugergrænsefladen.
+% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+
+Herefter diskuterede vi administratorens rolle, ifht. brugeren, og hvordan vi
+kunne få gjort det muligt, at brugeren er den eneste, der arbejder med sit eget
+brugernavn og kodeord (for de forskellige services), vi endte med at lave en
+tydelig deling af ansvaret, således at opsætning af generelle parametre for
+services, samt hvilke services en given bruger kan tilgå, klares af
+administratoren, og opsætning af brugernavn og kodeord, samt hvilke services der
+skal vises for brugeren, klares af brugeren selv.
+
+For at få uddannet brugeren i netop dette, ville den ene af lærene Martin, der
+også er teknisk ansvarlig, kunne holde et info-møde, samt eventuelt skrive en
+mindre tutorial til siden, han i forvejen vedligeholder med lignende
+information.
+
+% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+Da vi havde besluttet designet, gik vi igang med revidering af prototypen, der
+skulle indkorpere vores 'status vindue', som lærene havde eftersprugt (den nye
+brugergrænseflade), desuden besluttede vi, at vi nu ønskede at integerere en del
+funktionalitet i prototypen, således at vi faktisk ville komme til at udvikle en
+high-fidelity prototype.
+
+Da vi vurderede at sådanne, ville kunne give os feedback, på lang sigt. Begge
+ændringer var forholdsvis nemme at bygge ind, da vores første prototype allerede
+var designet, til at blive videre udviklet, og genbrugt. - Vi skulle altså blot
+udvide på denne, og ændre brugergrænsefladen.
+
+Vi har for, at realisere vores design, besluttet os, at bruge 'java swing',
+ligesom ved den oprindelige prototype, til at skrive gui. - og for opsætning og
+administration, har vi valgt at bruge en MySQL server, da Lars Lisberg
+informered os om, at det var en af de teknologier, som de allerede havde til
+rådighed.
+
+Vi har besluttet, at funktionaliteten, mht. at oprette forbindelse til Wifi, og
+VPN, nemmest kan implementeres ved at benytte windows programmerne til dette, og
+vi har derfor skrevet kode, der kalder disse programmer. - Dette betyder at
+løsningen kun fungere på windows, imidlertid syntes dette, som et mindre
+problem, da Lars Lisberg, beskrev at deres platform i forvejen er meget
+domineret af windows.
+
+For at tilgå HTML services, som f.eks. de mange cloud services, har vi
+implementeret en løsning i java, vha. 'apache httpclient' biblioteket, som kan
+logge ind, og vi har nu kun udfordringen med, at få overført cookien fra dette
+login, til brugerens browser. For at klare denne opgave, har vi diskuteret flere
+mulige løsninger;
+\begin{itemize}
+\item Automatiseret browser-import af cookies
+\item HTTPS Session Hijacking
+\item HTTPS Proxy (der laver requests på userens vegne).
+\end{itemize}
+Hver af disse har deres fordele og ulemper, hvilket vi har diskuteret,
+opsummeret er vi kommet frem til;
+\begin{itemize}
+\item Automatiseret browser-import af cookies: \\
+        Denne syntes, som den mest oplagte løsning, men vi desværre været nødsaget,
+        til at forkaste denne ide, da der ikke syntes at være nogen måde (API eller
+        lignende), til at løse opgaven. - og da det ikke har været muligt at
+        scripte sig ud af, på en fornuftig måde
+
+        Som alternativ, har vi overvejet direkte injektering af cooies i
+        browseren, dette vil imidlertid af nogle virus programmer, detecteres
+        som virus, og desuden vil denne løsning være specifik for hver browser,
+        og eventuelt for hver browser version. - Hvormed vi har været nødsaget
+        til, at forkaste denne.
+
+\item HTTPS Session Hijacking: \\
+        Denne løsning, fungere ved at overtage brugerens HTTPS session, og så
+        kontrollere den centralt, det der også kaldes man-in-the-middle attack.
+
+        Idéen fungere udmærket, men 'desværre' har det vist sig, at de fleste
+        browsers, igennem certifikat fejl og lignende opdager, og advare om
+        dette angreb.
+
+\item HTTPS Proxy (der laver requests på userens vegne). \\
+        Denne løsning, fungere ved at overtage brugerens HTTPS session, og
+        kontrollere den vha. en proxy server, måden hvorpå, at denne adskiller
+        sig fra HTTPS Session Hijacking, er at denne er frivillig, og dermed er
+        det nemmere at overtage session.
+
+        Problemet med denne løsningsmodel er, at der er behov for en del
+        opsætning, blandt andet skal brugerens browser sættes til at høre alle
+        http/https requests igennem proxien, og der skal desuden installeres
+        certifikater, således at browseren stoler på proxien (og på de requests
+        som proxien laver for browseren).
+
+        Derudover er der en potentiel sikkerhedsrisiko, da proxy serveren kan
+        læse al, hvad der sendes over den sikre https forbindelse, som plain
+        tekst.
+\end{itemize}
+Vi har derfor valgt at vælge den eneste duelige løsnning, nemlig HTTPS Proxy'en,
+som, omend den har en del problemer, syntes at kunne virke til at løse vores
+problemstilling. - Desuden vil proxy server løsningen være browser independent,
+idet den vil svare userens browser, som en hver anden webserver ville gøre det.
+
+Kun opsætningen vil være browser specifik, men da den primære (og eneste)
+officelt understøttede browser for ansatte, er internet explorer, er dette et
+mindre problem. Desuden er antallet af forskellige udbredte browser generelt
+rimeligt reduceret.
+
+Vi begyndte at forberede et interview af Lars, for at finde svar, til nogle af
+de tekniske spørgsmål, der var kommet op, i udviklingen af vores reviderede
+prototype, eksempelvis; Om åbne licenser ville være et problem, information om
+det nye systemer, der står til at skulle udskifte vpn systemet, i en nær
+fremtid, samt bekræftigelse af hvordan systemet skal administreres.
+
+Derudover var vi nødt til at få afklaret hele sikkerhedsproblemet, omkring
+systemet; hvem vi kunne forvente at kunne stole på, hvor stor sikkerhed der er
+nødvendig, hvor ofte domæne kodeordet skiftes, osv.
+
+{\bf Interview 3, 07/05}
+med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+Under dette, tredje interview, blev det klart for os, at vores system (som
+ønsket af lærene), vil kunne integreres med det eksisterende Active Directory
+system, således at SSO systemet, automatisk starter op, og kommer til den aktive
+tilstand, som en del af user logon scriptet.
+På denne måde ville useren altså udelukkende skulle logge ind én gang, nemlig på
+maskinen, og ikke som tidligere tiltænkt, på maskinen, og herefter på SSO login'et.
+Omtalte automatiske login, vil desudere være rimeligt sikkert, da Active
+Directory må antages at være sikkert.
+
+Vi er endvidere blevet opmærksom på, at opsætning af proxy, certifikater og
+lignende, sandsynligvis, ikke vil være noget problem, da dette kan rulles ud
+vha. Active Directory, og da eventuelle problemer vil være rimeligt low-tech, så
+som browser konfigurationer, som den IT ansvarlige og lærene imellem nemt skulle
+kunne løse.
+
+Vi fandt derudover ud af, at vi som udgangspunkt kan stole på IT afdelingen, men
+at vi dog skal sørger for at passwords i databasen ikke kan læses i plaintekst,
+i tilfælde, af at en IT ansvarlig laver queries på databasen.
+
+Mht. administration, syntes Lars godt om fordelingen imellem brugerens og IT
+afdelingens ansvarsområder, idet IT afdelingen på denne måde, slipper for at
+skulle indføre brugernes personlige brugernavn og kodeord. Mht. IT
+administrationsside af administrationen, ville de gerne have simple SQL scripts,
+som de kunne køre fra deres Active Directory triggers.
+
+Mht. licens udtrykte Lars intet problem mht. brugen af open-source licenser, og
+syntes fakisk en smule positiv, idet det ville gøre det nemmere for dem, at
+kunne udlicitere vedligeholdelse af systemet.
+
+%% MARKER Onsdag d. 08/05:½
+
+Efter interviewet med Lars, har vi kigget nærmere på hvordan et proxy
+autokonfigurationsscript ser ud, og vi har udviklet et sådanne, således at denne
+fil, blot kan loades ind i brugernes browser, hvorefter proxien automatisk vil
+blive konfigureret (disse scripts er standariserede, og vil derfor virker på
+kryds af browserne).
+
+Mht. til opsætning af certifikater, har vi eksporteret et *.cert, certifikat,
+som kan installeres ved et simpelt dobbelt klik, og en tur igennem en import
+wizard. - Dette vil fungere for internet explorer, for de andre browsers, må
+browserens specifikke metode for dette.
+
+Mht. prototypen, har vi fortsat implementeringen af vores GUI, og bl.a. fået
+opbygget funktioneliteten bag de forskellige knapper, således at knapperne åbner
+vinduer (dem der forventes gør dette), eller at de kalder de funktioner, som der
+forventes.
+
+Mht. at få vores http services implementeret, har vi kigget på forskellige proxy
+løsninger, nemlig;
+\begin{itemize}
+\item The Grinder
+\item Burp Proxy
+\item Charles Proxy
+\item mitmproxy
+\item mitmproxy (java projektet)
+\item honeyproxy
+\item tlsproxy
+\end{itemize}
+Hver af disse proxier har vi vurderet herunder;
+\begin{itemize}
+\item Mitmproxy \\
+        Denne proxy viste sig at være yderst egnet til vores formål, desværre er denne skrevet i python,
+        og køre kun på unix miljøet. - Hvilket er et problem, da væres primære
+        udviklingsplatform er windows.
+\item Honeyproxy \\
+        Denne proxy, der er en crossplatform version af ‘mitmproxy’ viste sig
+        ellers at være lovende, men frøs desværre for ofte, da den stadig er i et tidligt udvikling stadie.
+\item The Grinder \\
+        The Grinder var vores næste bud, men denne er en TCP proxy, og har
+        derfor ikke det nødvendige abstraktionslag, som vi ønskede, for ikke at
+        skulle bruge store resourcer, på at lave http forbindelse, osv.
+\item Burp- og Charles-Proxy \\
+        Disse proxier er betalingssoftware, som vi af denne grund har valgt ikke
+        at benytte. Charles proxy så ellers lovende ud, hvis projektet havde
+        været betalings software.
+\item Tlsproxy \\
+        Denne proxy, som enlig ikke er en decideret proxy server, men derimod et
+        eksekvebart program bibliotek, syntes at være et lovende bud.
+        Denne er imidlertid skrevet i Google Go, hvilket involvere visse
+        problemer, blandt andet, at væres applikation da ville indvolvere to
+        forskellige programmeringssprog, og desuden havde ingen i gruppen
+        erfaring med Go.
+\end{itemize}
+Vi havde på daværende tidspunkt, to mulige løsninger, enten 1. en central unix
+server, som skulle klare alle proxy forbindelser, denne ville så køre
+'mitmproxy'. 2. At benytte Tlsproxy, og lære go, samtidig introduceret to
+programmeringssprog, ind i projektet.
+
+Vi var dog så heldige, i sidste øjeblik, at falde over et andet alternativ,
+nemlig 'exproxy, der er et java program bibliotek, der kunne løse opgaven.
+Projektet viste sig at være yderst lovende, da vi legede lidt med det, og det
+syntes, at kunne udføre opgaven, desværre blevet projektet dog forladt tilbage i 2005,
+imidlertid er en ny version ved at blive udviklet (Java HTTPS Proxy Library),
+denne har imidlertid ikke SSL support endnu, derfor har vi valgt at benytte ‘exproxy’.
+
+Ved skriftlig henvendelse til udvikleren af exproxy, er det lykkedes at få
+udleveret source-koden, under apache open source licensen, således at denne kan
+modificeres og tilpasses, hvis prototypen kræver dette.
+
+I implementeringen af exproxy, i resten af projektet, har vi valgt at redesigne
+hvordan proxy serveren skal fungere, oprindeligt, var det tiltænkt, at vi ville
+lave en http request på brugerens vegne, og herefter returnere svaret herfra,
+til brugeren, men med det valgte program bibliotek, har det vist sig, at være en
+mulighed simpelthen, blot at ændre på den http request, som brugeren sender,
+således at denne blive lavet om til, en login request på hjemmesiden f.eks.
+Vi havde ellers oprindeligt udviklet data adaptere fra 'apache httpclient', til
+proxy serverens eget format.
+
+Vi har desuden brugt en del tid, på at rydde op i koden, for forbedre den
+eksisterende kode, f.eks. havde vi i den anden prototype, valgt, at benytte 
+et 'JTable' i koden til at vise services i status vinduet, men da dette ikke var
+beregnet til at blive brugt på denne måde besluttede vi at erstatte det med en
+'JList', som bedre passede på den funktion vi ønskede at udføre. F.eks.
+tilpasses denne 'JList' størrelsen automatisk efter programmet vindue, imens
+programmet køre, således at status vinduet kan resizes uden problemer.
+
+Vi kunne ved ændringen fra 'JTable', til 'JList' desuden fjerne næsten 100
+linjer kode, således at koden blev mere vedligeholdig for fremtiden.
+
+Det er vigtigt, at bemærker, at dette udelukkende var en refaktorering, således
+at brugen faktisk ikke opdagede ændringen, idet brugergrænsefladen var næsten
+fuldkommen ens.
+
+Vi valgte derudover, at redesigne hele systemet, til at benytte et centralt
+'Event system', frem for at alle klasses direkte kontraktede dem der skulle
+udføre en given opgave, på denne måde kunne vi decouple de forskellige klasses,
+(færre referencer de forskellige klasses imellem),
+hvilket har resulteret i en langt mere flexibel og dynamisk kodebase, hvor alle
+klasses blot fortælle hvilke events, der er aktuelle for dem, og så reagere, når
+de modtager disse events. - Og de klasses der ønsker at fortælle noget er sket,
+simpelthen blot laver en event, til at fortælle dette, til dem (omend nogle),
+der er interesserede.
+
+Dette eventsystem gjorde os endvidere i stand til, at udvikle de forskellige
+dele af prototypen i parallel, og sågår undlade specifikke dele af prototypen,
+uden nogen problemer. - Eksempelvis, kom SQL updater systemet først efter tredje
+og sidste fremviste prototype.
+
+Desuden frigjorde eventsystemet fra at skulle redigere i de gamle filer, om og
+om igen, når noget skulle tilføjes, f.eks. koden til at håndtere hvad der sker,
+når en knap trykkes. - Dette hjalp os med at undgå at introducere bugs i det
+fungerende kode.
+
+Vi har herefter arrangerede vi vores fjerde interview, for at kunne fremvise
+vores 'endelige' funktionelle prototype, som nu været blevet færdig, vores ønske
+var, at fremvise prototypen og dens funktionalitet frem for brugere.
+
+Vi ønskede desuden at danne os et endeligt indtryk af om prototypen var klar til
+distribution, eller om hvorvidt prototypen burde revideres ydereligere.
+
+{\bf Interview 4, 24/05}
+med Martin, Martin og Karin, to lærer og en uddannelses leder ved Aarhus Tech.
+
+Interviewet gav hovedsageligt positivt feedback, men der kom også noget væsentligt kritisk.
+bl.a. blev det klart at Opdater knappen er forvirrende for nogle brugere.
+Der var også et ønske om at adskille system services (wifi, vpn, osv.) fra de andre services.
+
+{\bf Backlog}
+Grundet denne rapport, og projektetsslutning, er disse ting ikke blevet
+implementeret;
+\begin{itemize}
+\item Kryptering af key-value information, på databasen.
+\item Integerering med Active Directory (login proces)
+\item Integerering med Active Directory Domæne Server (bruger synkronisering)
+\item Fjernelse af 'Opdater' knappen
+\item Ordenlig injection af HTML i proxy svar (vha. jsoup)
+\item Ordenlig implementering af VPN support, og wifi
+\item Status Checking af webservices
+\item Mulighed for disconnection af webservices
+\item Mulighed for autogenerede short-cuts på skrivebordet
+\item Understøttelse af højre-click context menu (på status vinduet)
+\item Vedholdne computer specifikke configurationer, f.eks. vindue størrelse
+\item Ydereligere refactorering og oprydning af source koden
+\end{itemize}
+
+% TODO: Gør opmærksom på, at vi skal have skrevet, at vi ændrede program sproget
+% fra engelsk, til dansk
