@@ -152,38 +152,67 @@ opsummeret er vi kommet frem til;
         kontrollere den centralt, det der også kaldes man-in-the-middle attack.
 
         Idéen fungere udmærket, men 'desværre' har det vist sig, at de fleste
-        browsers, igennem certifikat fejl og lignende advare om dette.
+        browsers, igennem certifikat fejl og lignende opdager, og advare om
+        dette angreb.
+
+\item HTTPS Proxy (der laver requests på userens vegne). \\
+        Denne løsning, fungere ved at overtage brugerens HTTPS session, og
+        kontrollere den vha. en proxy server, måden hvorpå, at denne adskiller
+        sig fra HTTPS Session Hijacking, er at denne er frivillig, og dermed er
+        det nemmere at overtage session.
+
+        Problemet med denne løsningsmodel er, at der er behov for en del
+        opsætning, blandt andet skal brugerens browser sættes til at høre alle
+        http/https requests igennem proxien, og der skal desuden installeres
+        certifikater, således at browseren stoler på proxien (og på de requests
+        som proxien laver for browseren).
+
+        Derudover er der en potentiel sikkerhedsrisiko, da proxy serveren kan
+        læse al, hvad der sendes over den sikre https forbindelse, som plain
+        tekst.
+\end{itemize}
+Vi har derfor valgt at vælge den eneste duelige løsnning, nemlig HTTPS Proxy'en,
+som, omend den har en del problemer, syntes at kunne virke til at løse vores
+problemstilling. - Desuden vil proxy server løsningen være browser independent,
+idet den vil svare userens browser, som en hver anden webserver ville gøre det.
+
+Kun opsætningen vil være browser specifik, men da den primære (og eneste)
+officelt understøttede browser for ansatte, er internet explorer, er dette et
+mindre problem. Desuden er antallet af forskellige udbredte browser generelt
+rimeligt reduceret.
+
+%% MARKER Tirsdag d. 07/05:
+
+Vi begyndte at forberede et interview af Lars, for at finde svar, til nogle af
+de tekniske spørgsmål, der var kommet op, i udviklingen af vores reviderede
+prototype, eksempelvis; Om åbne licenser ville være et problem, information om
+det nye systemer, der står til at skulle udskifte vpn systemet, i en nær
+fremtid, samt bekræftigelse af hvordan systemet skal administreres.
+
+Derudover var vi nødt til at få afklaret hele sikkerhedsproblemet, omkring
+systemet; hvem vi kunne forvente at kunne stole på, hvor stor sikkerhed der er
+nødvendig, hvor ofte domæne kodeordet skiftes, osv.
+
+{\bf Interview 3, 07/05}
+med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+
 
 <comment>
-Vi har valgt at forkaste denne ide, da den er specifik for hver browser, og eventuelt for hver browser version.
-Denne synes at være et muligt bud
-Denne synes også at være et muligt bud.
-Vi har valgt at forkaste denne ide, da den som udgangspunkt fungere som proxy serveren, blot spare vi konfigurationen, og må istedet betale ved at skulle bryde sessionen op (ingen problem for HTTP, men HTTPS er en anden historie).
-Vi har herefter arbejdet videre med de to duelige løsninger, og er kommet frem til følgende;
-Det har ikke været muligt at automatisere import af cookies, og derfor har vi været nødsaget til at forkaste denne løsningsmodel.
-Proxy serveren, er mulig, omend noget mere indviklet, da vi skal følge diverse www RFCs, imidlertid sikre standarderne at metoden altid vil fungere uanset hvilken browser / operativsystem, der benyttes.  
 Efter mødet med Lars, er vi desuden kommet frem til, at den eventuelle konfiguration det vil kræve at sætte proxyen op, ikke er noget problem. - Desuden har vi studeret hvordan proxyen kan auto konfigurere sig selv, vha. en konfigurationsfil, vi vil lade følge med vores SSO løsning.
 Således skal useren blot hente vores løsning, og sætte browseren til at bruge auto konfigurationsfilen, og herefter vil alt fungere automatisk.
 
 Samtidig har Søren og Rasmus mødtes, og arbejdet lidt på GUI koden, samt diskuteret i hvilken retning GUI’en skal udvikle sig.
-<comment>
-
-%% MARKER Tirsdag d. 07/05:
 
 
 
-Under det andet interview blev det nævnt at Aarhus Tech er i gang med at udskifte deres nuværende VPN system, og erstatte det med et seperat wifi netværk for ansatte. 
-Dette krævede en yderligere forklaring, da vi ikke blev fortalt noget om det under første interview, og vores prototype var udviklet til brug med VPN systemet.
-Også vigtigt var at vi havde fundet forskellige måde at lave et login via et java program og overføre disse til brugerens browser, men alle de løsning giver sikkerheds problemer. 
 Derfor var det nødvendigt at vi fik undersøgt hos brugeren hvilket sikkerhedsproblem er det bedste kompromi i forhold til de systemer der er i forvejen.
 Opbevaringen af brugerens informationer var også et spørgsmål, vi havde forestillet os at opbevare disse i en SQL database, som IT afdelingen så skulle vedligeholde.
 For at vedligeholde denne database, skal der bruges SQL queures, enten direkte, eller igennem administrative værktøjer, 
 så vi ville gerne undersøge hvilken løsning der bedst passede til IT-afdelingen og bekræfte om det egentlige er dem der skal vedligeholde det.
 Yderligere havde vi også nogle praktiske spørgsmål, vi var nød til at vide om det er i orden at vi brugte en Open Source licens på Simple-SignOn.
+<comment>
 
-
-{\bf Interview 3, 07/05}
-med Lars Lisberg, IT-teamleder ved Aarhus Tech.
 
 Under trejde interview blev det klart at vi kunne bruge et af deres eksisterende systemer, Active Directory,
 til også at logge ind i Simple-SignOn, således at brugeren kun skal logge ind i deres maskine.
