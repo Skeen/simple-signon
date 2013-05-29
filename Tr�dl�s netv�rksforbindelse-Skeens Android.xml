@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+	<name>Skeens Android</name>
+	<SSIDConfig>
+		<SSID>
+			<hex>536B65656E7320416E64726F6964</hex>
+			<name>Skeens Android</name>
+		</SSID>
+	</SSIDConfig>
+	<connectionType>ESS</connectionType>
+	<connectionMode>auto</connectionMode>
+	<MSM>
+		<security>
+			<authEncryption>
+				<authentication>WPA2PSK</authentication>
+				<encryption>AES</encryption>
+				<useOneX>false</useOneX>
+			</authEncryption>
+			<sharedKey>
+				<keyType>passPhrase</keyType>
+				<protected>true</protected>
+				<keyMaterial>01000000D08C9DDF0115D1118C7A00C04FC297EB01000000C00CBC7B231E5C49B9603AAD383A906D000000000200000000001066000000010000200000008A9DD061ABBEC3EFC9013CC66F8B327C8756446AC0A80CDDEFF07EB4C0A4E156000000000E8000000002000020000000821FE4403A75118330881CB48F7ADB4EC574A3B0790959382DDE83C8622150A310000000874D144A680E28626D3B96D3DD6254C840000000E6CD24657CC8E63EC876CC33671D32EBD6D883176441312D7075B5043A39B43A2E1220637298322D71EA9D3A4C5FDCDCBBA31290E7D3BE16D7A8590313583B36</keyMaterial>
+			</sharedKey>
+		</security>
+	</MSM>
+</WLANProfile>
