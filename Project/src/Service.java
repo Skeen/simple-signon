@@ -127,13 +127,26 @@ class Service implements Runnable, EventSystem.EventListener
         switch(event)
         {
             case EventSystem.REMOVE_EVENT:
-                disconnect();
+                // Only the clicked service, trigger the events effect
+                if(payload == this)
+                {
+                    disconnect();
+                }
                 break;
             case EventSystem.RECONNECT_EVENT:
-                reconnect();
+                // Only the clicked service, trigger the events effect
+                if(payload == this)
+                {
+                    reconnect();
+                }
                 break;
             case EventSystem.EDIT_ACCEPT_EVENT:
-                edit((Object[]) payload);
+                Object[] payload_array = (Object[]) payload;
+                // Only the clicked service, trigger the events effect
+                if(payload_array[0] == this)
+                {
+                    edit(payload_array);
+                }
                 break;
             case EventSystem.SERVICE_ACTIVATE:
                 // Only the clicked service, trigger the events effect

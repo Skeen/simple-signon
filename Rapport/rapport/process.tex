@@ -299,22 +299,40 @@ lave en http request på brugerens vegne, og herefter returnere svaret herfra,
 til brugeren, men med det valgte program bibliotek, har det vist sig, at være en
 mulighed simpelthen, blot at ændre på den http request, som brugeren sender,
 således at denne blive lavet om til, en login request på hjemmesiden f.eks.
+Vi havde ellers oprindeligt udviklet data adaptere fra 'apache httpclient', til
+proxy serverens eget format.
 
-I dag har Emil leget med ‘exproxy’, for at finde ud af om hvordan dette fungere, resultaterne er yderst lovende, da det er nemt at ændre HTTPRequests og HTTPResponses, imidlertid bruger program biblioteket sine egne datastrukturer for disse, i stedet for standard strukturerne, derfor bliver det nødvendigt at udvikle en række af adapters, der kan binde disse sammen med de standard strukturerne. Arbejdet med at udvikle disse er påbegyndt.
+Vi har desuden brugt en del tid, på at rydde op i koden, for forbedre den
+eksisterende kode, f.eks. havde vi i den anden prototype, valgt, at benytte 
+et 'JTable' i koden til at vise services i status vinduet, men da dette ikke var
+beregnet til at blive brugt på denne måde besluttede vi at erstatte det med en
+'JList', som bedre passede på den funktion vi ønskede at udføre. F.eks.
+tilpasses denne 'JList' størrelsen automatisk efter programmet vindue, imens
+programmet køre, således at status vinduet kan resizes uden problemer.
+
+Vi kunne ved ændringen fra 'JTable', til 'JList' desuden fjerne næsten 100
+linjer kode, således at koden blev mere vedligeholdig for fremtiden.
+
+Det er vigtigt, at bemærker, at dette udelukkende var en refaktorering, således
+at brugen faktisk ikke opdagede ændringen, idet brugergrænsefladen var næsten
+fuldkommen ens.
+
+Vi valgte derudover, at redesigne hele systemet, til at benytte et centralt
+'Event system', frem for at alle klasses direkte kontraktede dem der skulle
+udføre en given opgave, på denne måde kunne vi decouple de forskellige klasses,
+hvilket har resulteret i en langt mere flexibel og dynamisk kodebase, hvor alle
+klasses blot fortælle hvilke events, der er aktuelle for dem, og så reagere, når
+de modtager disse events.
 
 
+% TODO: Gør opmærksom på, at vi skal have skrevet, at vi ændrede program sproget
+% fra engelsk, til dansk
 <todo>
 Backlog;
+Kryptering af key-value information, på databasen.
 Integerering med Active Directory
 Integerering med Active Directory Domæne Server
 </todo>
-
-Største delen af tiden før det sidste interview blev brugt på at forbedre den eksisterende kode, og lave det manglende funktionalitet som vi havde tid til.
-I den anden prototype havde vi benyttet et 'JTable' i koden til at vise services i status vinduet, 
-men da dette ikke var beregnet til at blive brugt på denne måde besluttede vi at erstatte det med en 'JList', hvilket førte til den tredje prototype.
-Denne 'JList' tillader at man kan ændre størrelsen af programmets vindue imens det kører.
-Det tillod desuden at cirka 100 linjer kode kunne fjernes, og det senere ville være nemmere at ændre koden.
-Dog var det ikke meningen at ændre designet, anden of tredje prototype er begge forsøg på at implementere den brugergrænseflade vi kom frem til tidligere.
 
 Vi lavede også for eksempel et 'Event system' i koden, så de forskellige java klasser kan lave et event når der skal gøres noget som de ikke selv skal håndtere.
 Dette gjordte at klasserne fik færre referencer til hinanden,
