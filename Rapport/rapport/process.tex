@@ -181,8 +181,6 @@ officelt understøttede browser for ansatte, er internet explorer, er dette et
 mindre problem. Desuden er antallet af forskellige udbredte browser generelt
 rimeligt reduceret.
 
-%% MARKER Tirsdag d. 07/05:
-
 Vi begyndte at forberede et interview af Lars, for at finde svar, til nogle af
 de tekniske spørgsmål, der var kommet op, i udviklingen af vores reviderede
 prototype, eksempelvis; Om åbne licenser ville være et problem, information om
@@ -196,29 +194,120 @@ nødvendig, hvor ofte domæne kodeordet skiftes, osv.
 {\bf Interview 3, 07/05}
 med Lars Lisberg, IT-teamleder ved Aarhus Tech.
 
+Under dette, tredje interview, blev det klart for os, at vores system (som
+ønsket af lærene), vil kunne integreres med det eksisterende Active Directory
+system, således at SSO systemet, automatisk starter op, og kommer til den aktive
+tilstand, som en del af user logon scriptet.
+På denne måde ville useren altså udelukkende skulle logge ind én gang, nemlig på
+maskinen, og ikke som tidligere tiltænkt, på maskinen, og herefter på SSO login'et.
+Omtalte automatiske login, vil desudere være rimeligt sikkert, da Active
+Directory må antages at være sikkert.
+
+Vi er endvidere blevet opmærksom på, at opsætning af proxy, certifikater og
+lignende, sandsynligvis, ikke vil være noget problem, da dette kan rulles ud
+vha. Active Directory, og da eventuelle problemer vil være rimeligt low-tech, så
+som browser konfigurationer, som den IT ansvarlige og lærene imellem nemt skulle
+kunne løse.
+
+Vi fandt derudover ud af, at vi som udgangspunkt kan stole på IT afdelingen, men
+at vi dog skal sørger for at passwords i databasen ikke kan læses i plaintekst,
+i tilfælde, af at en IT ansvarlig laver queries på databasen.
+
+Mht. administration, syntes Lars godt om fordelingen imellem brugerens og IT
+afdelingens ansvarsområder, idet IT afdelingen på denne måde, slipper for at
+skulle indføre brugernes personlige brugernavn og kodeord. Mht. IT
+administrationsside af administrationen, ville de gerne have simple SQL scripts,
+som de kunne køre fra deres Active Directory triggers.
+
+Mht. licens udtrykte Lars intet problem mht. brugen af open-source licenser, og
+syntes fakisk en smule positiv, idet det ville gøre det nemmere for dem, at
+kunne udlicitere vedligeholdelse af systemet.
+
+%% MARKER Onsdag d. 08/05:½
+
+Efter interviewet med Lars, har vi kigget nærmere på hvordan et proxy
+autokonfigurationsscript ser ud, og vi har udviklet et sådanne, således at denne
+fil, blot kan loades ind i brugernes browser, hvorefter proxien automatisk vil
+blive konfigureret (disse scripts er standariserede, og vil derfor virker på
+kryds af browserne).
+
+Mht. til opsætning af certifikater, har vi eksporteret et *.cert, certifikat,
+som kan installeres ved et simpelt dobbelt klik, og en tur igennem en import
+wizard. - Dette vil fungere for internet explorer, for de andre browsers, må
+browserens specifikke metode for dette.
+
+Mht. prototypen, har vi fortsat implementeringen af vores GUI, og bl.a. fået
+opbygget funktioneliteten bag de forskellige knapper, således at knapperne åbner
+vinduer (dem der forventes gør dette), eller at de kalder de funktioner, som der
+forventes.
+
+Mht. at få vores http services implementeret, har vi kigget på forskellige proxy
+løsninger, nemlig;
+\begin{itemize}
+\item The Grinder
+\item Burp Proxy
+\item Charles Proxy
+\item mitmproxy
+\item mitmproxy (java projektet)
+\item honeyproxy
+\item tlsproxy
+\end{itemize}
+Hver af disse proxier har vi vurderet herunder;
+\begin{itemize}
+\item Mitmproxy \\
+        Denne proxy viste sig at være yderst egnet til vores formål, desværre er denne skrevet i python,
+        og køre kun på unix miljøet. - Hvilket er et problem, da væres primære
+        udviklingsplatform er windows.
+\item Honeyproxy \\
+        Denne proxy, der er en crossplatform version af ‘mitmproxy’ viste sig
+        ellers at være lovende, men frøs desværre for ofte, da den stadig er i et tidligt udvikling stadie.
+\item The Grinder \\
+        The Grinder var vores næste bud, men denne er en TCP proxy, og har
+        derfor ikke det nødvendige abstraktionslag, som vi ønskede, for ikke at
+        skulle bruge store resourcer, på at lave http forbindelse, osv.
+\item Burp- og Charles-Proxy \\
+        Disse proxier er betalingssoftware, som vi af denne grund har valgt ikke
+        at benytte. Charles proxy så ellers lovende ud, hvis projektet havde
+        været betalings software.
+\item Tlsproxy \\
+        Denne proxy, som enlig ikke er en decideret proxy server, men derimod et
+        eksekvebart program bibliotek, syntes at være et lovende bud.
+        Denne er imidlertid skrevet i Google Go, hvilket involvere visse
+        problemer, blandt andet, at væres applikation da ville indvolvere to
+        forskellige programmeringssprog, og desuden havde ingen i gruppen
+        erfaring med Go.
+\end{itemize}
+Vi havde på daværende tidspunkt, to mulige løsninger, enten 1. en central unix
+server, som skulle klare alle proxy forbindelser, denne ville så køre
+'mitmproxy'. 2. At benytte Tlsproxy, og lære go, samtidig introduceret to
+programmeringssprog, ind i projektet.
+
+Vi var dog så heldige, i sidste øjeblik, at falde over et andet alternativ,
+nemlig 'exproxy, der er et java program bibliotek, der kunne løse opgaven.
+Projektet viste sig at være yderst lovende, da vi legede lidt med det, og det
+syntes, at kunne udføre opgaven, desværre blevet projektet dog forladt tilbage i 2005,
+imidlertid er en ny version ved at blive udviklet (Java HTTPS Proxy Library),
+denne har imidlertid ikke SSL support endnu, derfor har vi valgt at benytte ‘exproxy’.
+
+Ved skriftlig henvendelse til udvikleren af exproxy, er det lykkedes at få
+udleveret source-koden, under apache open source licensen, således at denne kan
+modificeres og tilpasses, hvis prototypen kræver dette.
+
+I implementeringen af exproxy, i resten af projektet, har vi valgt at redesigne
+hvordan proxy serveren skal fungere, oprindeligt, var det tiltænkt, at vi ville
+lave en http request på brugerens vegne, og herefter returnere svaret herfra,
+til brugeren, men med det valgte program bibliotek, har det vist sig, at være en
+mulighed simpelthen, blot at ændre på den http request, som brugeren sender,
+således at denne blive lavet om til, en login request på hjemmesiden f.eks.
+
+I dag har Emil leget med ‘exproxy’, for at finde ud af om hvordan dette fungere, resultaterne er yderst lovende, da det er nemt at ændre HTTPRequests og HTTPResponses, imidlertid bruger program biblioteket sine egne datastrukturer for disse, i stedet for standard strukturerne, derfor bliver det nødvendigt at udvikle en række af adapters, der kan binde disse sammen med de standard strukturerne. Arbejdet med at udvikle disse er påbegyndt.
 
 
-<comment>
-Efter mødet med Lars, er vi desuden kommet frem til, at den eventuelle konfiguration det vil kræve at sætte proxyen op, ikke er noget problem. - Desuden har vi studeret hvordan proxyen kan auto konfigurere sig selv, vha. en konfigurationsfil, vi vil lade følge med vores SSO løsning.
-Således skal useren blot hente vores løsning, og sætte browseren til at bruge auto konfigurationsfilen, og herefter vil alt fungere automatisk.
-
-Samtidig har Søren og Rasmus mødtes, og arbejdet lidt på GUI koden, samt diskuteret i hvilken retning GUI’en skal udvikle sig.
-
-
-
-Derfor var det nødvendigt at vi fik undersøgt hos brugeren hvilket sikkerhedsproblem er det bedste kompromi i forhold til de systemer der er i forvejen.
-Opbevaringen af brugerens informationer var også et spørgsmål, vi havde forestillet os at opbevare disse i en SQL database, som IT afdelingen så skulle vedligeholde.
-For at vedligeholde denne database, skal der bruges SQL queures, enten direkte, eller igennem administrative værktøjer, 
-så vi ville gerne undersøge hvilken løsning der bedst passede til IT-afdelingen og bekræfte om det egentlige er dem der skal vedligeholde det.
-Yderligere havde vi også nogle praktiske spørgsmål, vi var nød til at vide om det er i orden at vi brugte en Open Source licens på Simple-SignOn.
-<comment>
-
-
-Under trejde interview blev det klart at vi kunne bruge et af deres eksisterende systemer, Active Directory,
-til også at logge ind i Simple-SignOn, således at brugeren kun skal logge ind i deres maskine.
-Dette ville også være den bedste løsning med hensyn til sikkerhed, da Active Directory er meget sikkert i sig selv.
-Desværre var der ikke nok tid til gøre brug af dette på en god måde, og vi måtte derfor gøre brug af det næst bedste.
-Med hensyn til den SQL database vi havde planlagt, blev det klart at de i IT-afdelingen gerne ville styre det igennem scripts, da de bruger scripts til at håndtere deres andre systemer.
+<todo>
+Backlog;
+Integerering med Active Directory
+Integerering med Active Directory Domæne Server
+</todo>
 
 Største delen af tiden før det sidste interview blev brugt på at forbedre den eksisterende kode, og lave det manglende funktionalitet som vi havde tid til.
 I den anden prototype havde vi benyttet et 'JTable' i koden til at vise services i status vinduet, 
