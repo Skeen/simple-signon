@@ -5,7 +5,6 @@ import javax.swing.SwingUtilities;
 // Create shortcuts; http://stackoverflow.com/questions/13145942/creating-a-shortcut-file-from-java
 // Højre click popup; http://stackoverflow.com/questions/766956/how-do-i-create-a-right-click-context-menu-in-java-swing
 // Lav en fil med computer specifikke informationer (f.eks vindue størrelse).
-// Load billeder fra sql serveren
 
 class Driver
 {
