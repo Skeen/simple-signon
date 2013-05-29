@@ -320,32 +320,54 @@ fuldkommen ens.
 Vi valgte derudover, at redesigne hele systemet, til at benytte et centralt
 'Event system', frem for at alle klasses direkte kontraktede dem der skulle
 udføre en given opgave, på denne måde kunne vi decouple de forskellige klasses,
+(færre referencer de forskellige klasses imellem),
 hvilket har resulteret i en langt mere flexibel og dynamisk kodebase, hvor alle
 klasses blot fortælle hvilke events, der er aktuelle for dem, og så reagere, når
-de modtager disse events.
+de modtager disse events. - Og de klasses der ønsker at fortælle noget er sket,
+simpelthen blot laver en event, til at fortælle dette, til dem (omend nogle),
+der er interesserede.
 
+Dette eventsystem gjorde os endvidere i stand til, at udvikle de forskellige
+dele af prototypen i parallel, og sågår undlade specifikke dele af prototypen,
+uden nogen problemer. - Eksempelvis, kom SQL updater systemet først efter tredje
+og sidste fremviste prototype.
 
-% TODO: Gør opmærksom på, at vi skal have skrevet, at vi ændrede program sproget
-% fra engelsk, til dansk
-<todo>
-Backlog;
-Kryptering af key-value information, på databasen.
-Integerering med Active Directory
-Integerering med Active Directory Domæne Server
-</todo>
+Desuden frigjorde eventsystemet fra at skulle redigere i de gamle filer, om og
+om igen, når noget skulle tilføjes, f.eks. koden til at håndtere hvad der sker,
+når en knap trykkes. - Dette hjalp os med at undgå at introducere bugs i det
+fungerende kode.
 
-Vi lavede også for eksempel et 'Event system' i koden, så de forskellige java klasser kan lave et event når der skal gøres noget som de ikke selv skal håndtere.
-Dette gjordte at klasserne fik færre referencer til hinanden,
-og derfor blev det meget nemmere at færdiggøre de enkelte dele af system, så vi ikke skulle tilbage og rette i de samme filer igen og igen.
+Vi har herefter arrangerede vi vores fjerde interview, for at kunne fremvise
+vores 'endelige' funktionelle prototype, som nu været blevet færdig, vores ønske
+var, at fremvise prototypen og dens funktionalitet frem for brugere.
 
-For at få noget feedback på den 'endelige' prototype, bedte vi om et fjerde interview, hvor vi ville vise prototypen og dens funktionalitet frem for brugere.
-Ideen var at vi ville forklare hvordan Simple-SignOn skal bruges, og se hvordan brugeren reagere på det, og desuden spørge efter kritisk eller ideer til forbedring.
+Vi ønskede desuden at danne os et endeligt indtryk af om prototypen var klar til
+distribution, eller om hvorvidt prototypen burde revideres ydereligere.
 
 {\bf Interview 4, 24/05}
 med Martin, Martin og Karin, to lærer og en uddannelses leder ved Aarhus Tech.
 
-Interviewet gav hovedsageligt positivt feedback, men der kom også noget væsentligt kritisk. bl.a. blev det klart at Opdater knappen er forvirrende for nogle brugere.
+Interviewet gav hovedsageligt positivt feedback, men der kom også noget væsentligt kritisk.
+bl.a. blev det klart at Opdater knappen er forvirrende for nogle brugere.
 Der var også et ønske om at adskille system services (wifi, vpn, osv.) fra de andre services.
 
-På grund af denne større rapport, har vi ikke haft tid til at implementere det nye feedback, 
-og har ikke lavet en iteration til bl.a. at fjerne Opdater knappen fra designet.
+{\bf Backlog}
+Grundet denne rapport, og projektetsslutning, er disse ting ikke blevet
+implementeret;
+\begin{itemize}
+\item Kryptering af key-value information, på databasen.
+\item Integerering med Active Directory (login proces)
+\item Integerering med Active Directory Domæne Server (bruger synkronisering)
+\item Fjernelse af 'Opdater' knappen
+\item Ordenlig injection af HTML i proxy svar (vha. jsoup)
+\item Ordenlig implementering af VPN support, og wifi
+\item Status Checking af webservices
+\item Mulighed for disconnection af webservices
+\item Mulighed for autogenerede short-cuts på skrivebordet
+\item Understøttelse af højre-click context menu (på status vinduet)
+\item Vedholdne computer specifikke configurationer, f.eks. vindue størrelse
+\item Ydereligere refactorering og oprydning af source koden
+\end{itemize}
+
+% TODO: Gør opmærksom på, at vi skal have skrevet, at vi ændrede program sproget
+% fra engelsk, til dansk
