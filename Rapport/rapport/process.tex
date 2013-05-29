@@ -79,7 +79,7 @@ logo, med et lille pictogram som viser tilstand, efter interviewet gik vi hjem,
 og arbejdede på at designe netop en sådanne brugergrænseflade.
 
 % TODO: Link
-Vores arbejdsproces, kan bl.a. ses i appendixet (LINK), hvor vi diskuterede frem
+Vores arbejdsproces, kan bl.a. ses i appendixet, hvor vi diskuterede frem
 og tilbage, og til sidst fandt frem til et design, som vi mente ville leve op
 til de to lærers krav, for brugergrænsefladen.
 % TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
@@ -176,7 +176,11 @@ Under det andet interview blev det nævnt at Aarhus Tech er i gang med at udskift
 Dette krævede en yderligere forklaring, da vi ikke blev fortalt noget om det under første interview, og vores prototype var udviklet til brug med VPN systemet.
 Også vigtigt var at vi havde fundet forskellige måde at lave et login via et java program og overføre disse til brugerens browser, men alle de løsning giver sikkerheds problemer. 
 Derfor var det nødvendigt at vi fik undersøgt hos brugeren hvilket sikkerhedsproblem er det bedste kompromi i forhold til de systemer der er i forvejen.
+Opbevaringen af brugerens informationer var også et spørgsmål, vi havde forestillet os at opbevare disse i en SQL database, som IT afdelingen så skulle vedligeholde.
+For at vedligeholde denne database, skal der bruges SQL queures, enten direkte, eller igennem administrative værktøjer, 
+så vi ville gerne undersøge hvilken løsning der bedst passede til IT-afdelingen og bekræfte om det egentlige er dem der skal vedligeholde det.
 Yderligere havde vi også nogle praktiske spørgsmål, vi var nød til at vide om det er i orden at vi brugte en Open Source licens på Simple-SignOn.
+
 
 {\bf Interview 3, 07/05}
 med Lars Lisberg, IT-teamleder ved Aarhus Tech.
@@ -185,12 +189,18 @@ Under trejde interview blev det klart at vi kunne bruge et af deres eksisterende
 til også at logge ind i Simple-SignOn, således at brugeren kun skal logge ind i deres maskine.
 Dette ville også være den bedste løsning med hensyn til sikkerhed, da Active Directory er meget sikkert i sig selv.
 Desværre var der ikke nok tid til gøre brug af dette på en god måde, og vi måtte derfor gøre brug af det næst bedste.
+Med hensyn til den SQL database vi havde planlagt, blev det klart at de i IT-afdelingen gerne ville styre det igennem scripts, da de bruger scripts til at håndtere deres andre systemer.
 
-Største delen af tiden før næste interview blev brugt på at forbedre den eksisterende kode, og lave det manglende funktionalitet som vi havde tid til.
-Vi lavede for eksempel et 'Event system' i koden, så de forskellige java klasser kan lave et event når der skal gøres noget som de ikke selv skal håndtere.
-Dette gjordte at klasserne fik færre referencer til hinanden, og derfor blev det meget nemmere at færdiggøre de enkelte dele af system; 
-I stedet for at SSOWindow klassen skal sørge for at der sker noget, når Opdater knappen bliver trykket, så laver den i stedet et Opdate event, 
-og derefter er det en anden klasse, som skal gøre noget med det event.
+Største delen af tiden før det sidste interview blev brugt på at forbedre den eksisterende kode, og lave det manglende funktionalitet som vi havde tid til.
+I den anden prototype havde vi benyttet et 'JTable' i koden til at vise services i status vinduet, 
+men da dette ikke var beregnet til at blive brugt på denne måde besluttede vi at erstatte det med en 'JList', hvilket førte til den tredje prototype.
+Denne 'JList' tillader at man kan ændre størrelsen af programmets vindue imens det kører.
+Det tillod desuden at cirka 100 linjer kode kunne fjernes, og det senere ville være nemmere at ændre koden.
+Dog var det ikke meningen at ændre designet, anden of tredje prototype er begge forsøg på at implementere den brugergrænseflade vi kom frem til tidligere.
+
+Vi lavede også for eksempel et 'Event system' i koden, så de forskellige java klasser kan lave et event når der skal gøres noget som de ikke selv skal håndtere.
+Dette gjordte at klasserne fik færre referencer til hinanden,
+og derfor blev det meget nemmere at færdiggøre de enkelte dele af system, så vi ikke skulle tilbage og rette i de samme filer igen og igen.
 
 For at få noget feedback på den 'endelige' prototype, bedte vi om et fjerde interview, hvor vi ville vise prototypen og dens funktionalitet frem for brugere.
 Ideen var at vi ville forklare hvordan Simple-SignOn skal bruges, og se hvordan brugeren reagere på det, og desuden spørge efter kritisk eller ideer til forbedring.
