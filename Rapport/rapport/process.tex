@@ -1,0 +1,205 @@
+%TODO: løs Tidslinje for vores arbejdsprocess
+%TODO: detaljer for væsentlige steder i tidslinjen.
+
+Vi sendte emails ud til flere skoler, for at prøve at starte et samarbejde.
+Lars Lisberg, IT-teamleder ved Aarhus Tech, skrev tilbage at de var interesserede i et samarbejde.
+
+De havde et ønske om udvikling af et såkaldt Single-Sign-On system, således at
+de mange services som ansatte benytter, kan logge på en gang, centralt, og der
+herefter er adgang til alle services.
+
+Vi aftalte herefter et interview med Lars, for at arrangere termerne hvorpå
+projektet vil fungere, og hvilke krav de stiller for en eventuel løsning.
+
+% TODO: Link
+For at afdække disse spørgsmål, forbredte vi et interview, som kan ses i
+appendixet ('1. Interview d. 20/3-13').
+
+{\bf Interview 1, 20/03}
+med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+Vi valgte at optage dette interview på film, for at kunne bruge det til
+eventuelle senere afleveringer, og for at kunne behandle svarene senere.
+
+Vi startede interviewet med at lave en observation af hvordan den aktuelle
+arbejdsgang fungere, for ligesom at få en generel ide om omfanget af problemet,
+herefter udførte vi vores interview, for at få besvaret vores spørgsmål.
+
+Vi kom frem til, at den primære målgruppe for systemet er de ansatte på Aarhus
+Tech, og i mindre grad eleverne, og vi har derfor besluttet at designe efter
+disses behov (ihvertfalde i første omgang).
+
+Endvidere fremsatte Lars et krav om at systemet, også skulle kunne logge
+brugeren på Wifi, VPN og andre desktop services, hvormed vores idé om at lave en
+browser baseret løsning, blev skudt til jorden, og vi derfor måtte gå ideen om
+at lave desktop application (grundet begrænsninger i browser løsningers
+muligheder for at starte programmer, og ændre computerens konfiguration).
+
+Baseret på dette første interview, og hvad vi fik ud af det, begyndte vi at lave
+designet til en prototype, som skulle kunne opfylde de givne krav.
+
+{\bf Eksamensperiode 20/03 - 20/04}
+Grundet eksamensperiode, har projektet ligget stille, i dette tidsrum, hvilket
+selvfølgelig har været aftalt med Aarhus Tech (som havde fuld forståelse).
+
+{\bf Efter Eksamensperioden}
+Vi mødtes igen d. 21/04 og forstatte arbejdet.
+
+Vi forberedte en meget simpel prototype, som havde til formål at vise funktionalitet og være en kode-base for senere udvikling.
+Denne første prototype var derfor en low-fidelity prototype, da designet med vilje var midltertidigt. 
+Da første interview med Lars Lisberg havde gjordt nogle funktionelle krav tydelige, 
+besluttede vi at sætte mere fokus på koden bag prototypen end på brugergrænsefladen på dette tidspunkt, 
+således at koden kunne genbruges til senere prototyper.
+
+% TODO: Link
+Note; Denne prototype kan ses i appendixet
+
+For at få bekræftet Lars Lisbergs teori om at de mange logins skaber irritationer og problemer hos lærer, kontaktede vi Aarhus tech igen om at få et interview.
+Under interviewet ville vi også gerne se hvordan en lærer benytter de nuværende login system, og have noget feedback på den tidlige prototype, så designet kunne forbedres.
+
+{\bf Interview 2, 23/04}
+med Martin og Martin, to lærer ved Aarhus Tech.
+
+Efter interviewet lavede vi i gruppen en opsamling, hvor vi skrev ned hvordan de spørgsmål, som vi havde forberedt, var blevet svaret på.
+Her fik vi bekræftet af de to lærer, at de mange forskellige logins er et egentligt problem.
+
+Blandt vores feedback, var der et generelt udtryk for at de ønskede en pænere og
+mere brugervenlig brugergrænseflade, og desuden ønskede de at systemet kunne
+blive mere 'brugerstyret' (således at brugerne selv kunne tilpasse hvilke
+servies, der var aktuelle for dem, samt at konfigurere disse, med deres personlige
+brugernavn og password, uden at IT afdelingen skulle indblandes).
+
+Vi kunne altså konkludere, at vores brugergrænseflade skulle redesignes, og
+vores model af hvilken rolle brugeren spiller ifht. administratoren også skulle
+revurderes.
+
+Mht. brugergrænsefladen, havde vi af den ene af lærene fået et
+specifikt forslag til designet, hvor hver service skulle repræseneres ved et
+logo, med et lille pictogram som viser tilstand, efter interviewet gik vi hjem,
+og arbejdede på at designe netop en sådanne brugergrænseflade.
+
+% TODO: Link
+Vores arbejdsproces, kan bl.a. ses i appendixet (LINK), hvor vi diskuterede frem
+og tilbage, og til sidst fandt frem til et design, som vi mente ville leve op
+til de to lærers krav, for brugergrænsefladen.
+% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+
+Herefter diskuterede vi administratorens rolle, ifht. brugeren, og hvordan vi
+kunne få gjort det muligt, at brugeren er den eneste, der arbejder med sit eget
+brugernavn og kodeord (for de forskellige services), vi endte med at lave en
+tydelig deling af ansvaret, således at opsætning af generelle parametre for
+services, samt hvilke services en given bruger kan tilgå, klares af
+administratoren, og opsætning af brugernavn og kodeord, samt hvilke services der
+skal vises for brugeren, klares af brugeren selv.
+
+For at få uddannet brugeren i netop dette, ville den ene af lærene Martin, der
+også er teknisk ansvarlig, kunne holde et info-møde, samt eventuelt skrive en
+mindre tutorial til siden, han i forvejen vedligeholder med lignende
+information.
+
+% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+Da vi havde besluttet designet, gik vi igang med revidering af prototypen, der
+skulle indkorpere vores 'status vindue', som lærene havde eftersprugt (den nye
+brugergrænseflade), desuden besluttede vi, at vi nu ønskede at integerere en del
+funktionalitet i prototypen, således at vi faktisk ville komme til at udvikle en
+high-fidelity prototype.
+
+Da vi vurderede at sådanne, ville kunne give os feedback, på lang sigt. Begge
+ændringer var forholdsvis nemme at bygge ind, da vores første prototype allerede
+var designet, til at blive videre udviklet, og genbrugt. - Vi skulle altså blot
+udvide på denne, og ændre brugergrænsefladen.
+
+Vi har for, at realisere vores design, besluttet os, at bruge 'java swing',
+ligesom ved den oprindelige prototype, til at skrive gui. - og for opsætning og
+administration, har vi valgt at bruge en MySQL server, da Lars Lisberg
+informered os om, at det var en af de teknologier, som de allerede havde til
+rådighed.
+
+Vi har besluttet, at funktionaliteten, mht. at oprette forbindelse til Wifi, og
+VPN, nemmest kan implementeres ved at benytte windows programmerne til dette, og
+vi har derfor skrevet kode, der kalder disse programmer. - Dette betyder at
+løsningen kun fungere på windows, imidlertid syntes dette, som et mindre
+problem, da Lars Lisberg, beskrev at deres platform i forvejen er meget
+domineret af windows.
+
+For at tilgå HTML services, som f.eks. de mange cloud services, har vi
+implementeret en løsning i java, vha. 'apache httpclient' biblioteket, som kan
+logge ind, og vi har nu kun udfordringen med, at få overført cookien fra dette
+login, til brugerens browser. For at klare denne opgave, har vi diskuteret flere
+mulige løsninger;
+\begin{itemize}
+\item Automatiseret browser-import af cookies
+\item HTTPS Session Hijacking
+\item HTTPS Proxy (der laver requests på userens vegne).
+\end{itemize}
+Hver af disse har deres fordele og ulemper, hvilket vi har diskuteret,
+opsummeret er vi kommet frem til;
+\begin{itemize}
+\item Automatiseret browser-import af cookies: \\
+        Denne syntes, som den mest oplagte løsning, men vi desværre været nødsaget,
+        til at forkaste denne ide, da der ikke syntes at være nogen måde (API eller
+        lignende), til at løse opgaven. - og da det ikke har været muligt at
+        scripte sig ud af, på en fornuftig måde
+
+        Som alternativ, har vi overvejet direkte injektering af cooies i
+        browseren, dette vil imidlertid af nogle virus programmer, detecteres
+        som virus, og desuden vil denne løsning være specifik for hver browser,
+        og eventuelt for hver browser version. - Hvormed vi har været nødsaget
+        til, at forkaste denne.
+
+\item HTTPS Session Hijacking: \\
+        Denne løsning, fungere ved at overtage brugerens HTTPS session, og så
+        kontrollere den centralt, det der også kaldes man-in-the-middle attack.
+
+        Idéen fungere udmærket, men 'desværre' har det vist sig, at de fleste
+        browsers, igennem certifikat fejl og lignende advare om dette.
+
+<comment>
+Vi har valgt at forkaste denne ide, da den er specifik for hver browser, og eventuelt for hver browser version.
+Denne synes at være et muligt bud
+Denne synes også at være et muligt bud.
+Vi har valgt at forkaste denne ide, da den som udgangspunkt fungere som proxy serveren, blot spare vi konfigurationen, og må istedet betale ved at skulle bryde sessionen op (ingen problem for HTTP, men HTTPS er en anden historie).
+Vi har herefter arbejdet videre med de to duelige løsninger, og er kommet frem til følgende;
+Det har ikke været muligt at automatisere import af cookies, og derfor har vi været nødsaget til at forkaste denne løsningsmodel.
+Proxy serveren, er mulig, omend noget mere indviklet, da vi skal følge diverse www RFCs, imidlertid sikre standarderne at metoden altid vil fungere uanset hvilken browser / operativsystem, der benyttes.  
+Efter mødet med Lars, er vi desuden kommet frem til, at den eventuelle konfiguration det vil kræve at sætte proxyen op, ikke er noget problem. - Desuden har vi studeret hvordan proxyen kan auto konfigurere sig selv, vha. en konfigurationsfil, vi vil lade følge med vores SSO løsning.
+Således skal useren blot hente vores løsning, og sætte browseren til at bruge auto konfigurationsfilen, og herefter vil alt fungere automatisk.
+
+Samtidig har Søren og Rasmus mødtes, og arbejdet lidt på GUI koden, samt diskuteret i hvilken retning GUI’en skal udvikle sig.
+<comment>
+
+%% MARKER Tirsdag d. 07/05:
+
+
+
+Under det andet interview blev det nævnt at Aarhus Tech er i gang med at udskifte deres nuværende VPN system, og erstatte det med et seperat wifi netværk for ansatte. 
+Dette krævede en yderligere forklaring, da vi ikke blev fortalt noget om det under første interview, og vores prototype var udviklet til brug med VPN systemet.
+Også vigtigt var at vi havde fundet forskellige måde at lave et login via et java program og overføre disse til brugerens browser, men alle de løsning giver sikkerheds problemer. 
+Derfor var det nødvendigt at vi fik undersøgt hos brugeren hvilket sikkerhedsproblem er det bedste kompromi i forhold til de systemer der er i forvejen.
+Yderligere havde vi også nogle praktiske spørgsmål, vi var nød til at vide om det er i orden at vi brugte en Open Source licens på Simple-SignOn.
+
+{\bf Interview 3, 07/05}
+med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+Under trejde interview blev det klart at vi kunne bruge et af deres eksisterende systemer, Active Directory,
+til også at logge ind i Simple-SignOn, således at brugeren kun skal logge ind i deres maskine.
+Dette ville også være den bedste løsning med hensyn til sikkerhed, da Active Directory er meget sikkert i sig selv.
+Desværre var der ikke nok tid til gøre brug af dette på en god måde, og vi måtte derfor gøre brug af det næst bedste.
+
+Største delen af tiden før næste interview blev brugt på at forbedre den eksisterende kode, og lave det manglende funktionalitet som vi havde tid til.
+Vi lavede for eksempel et 'Event system' i koden, så de forskellige java klasser kan lave et event når der skal gøres noget som de ikke selv skal håndtere.
+Dette gjordte at klasserne fik færre referencer til hinanden, og derfor blev det meget nemmere at færdiggøre de enkelte dele af system; 
+I stedet for at SSOWindow klassen skal sørge for at der sker noget, når Opdater knappen bliver trykket, så laver den i stedet et Opdate event, 
+og derefter er det en anden klasse, som skal gøre noget med det event.
+
+For at få noget feedback på den 'endelige' prototype, bedte vi om et fjerde interview, hvor vi ville vise prototypen og dens funktionalitet frem for brugere.
+Ideen var at vi ville forklare hvordan Simple-SignOn skal bruges, og se hvordan brugeren reagere på det, og desuden spørge efter kritisk eller ideer til forbedring.
+
+{\bf Interview 4, 24/05}
+med Martin, Martin og Karin, to lærer og en uddannelses leder ved Aarhus Tech.
+
+Interviewet gav hovedsageligt positivt feedback, men der kom også noget væsentligt kritisk. bl.a. blev det klart at Opdater knappen er forvirrende for nogle brugere.
+Der var også et ønske om at adskille system services (wifi, vpn, osv.) fra de andre services.
+
+På grund af denne større rapport, har vi ikke haft tid til at implementere det nye feedback, 
+og har ikke lavet en iteration til bl.a. at fjerne Opdater knappen fra designet.
