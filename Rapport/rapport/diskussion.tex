@@ -57,9 +57,70 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
 
 
 \begin{itemize}
-\item Proxy som løsning på cookie-problem
+\item Proxy som løsning på cookie-problem \\
+        %TODO: Donnot forgot
+
 \item Fleksibilitet
-\item Sikkerhed
+\item Sikkerhed \\
+        
+    \begin{itemize}
+    \item Data på MySQL Serveren \\
+        Da MySQL serveren, er en del af vores trusted computing base, behøver vi
+        ikke tænke på dennes sikkerhed. Da denne er uden for vurderingen af
+        vores sikkerhedsdomæne, og sikkerheden af denne er uden for vores
+        problemdomæne.
+
+    \item Key-Value på MySQL Serveren \\
+        I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
+        på MySQL serveren, oprindeligt var planen, at denne data ikke måtte stå
+        i plain tekst, således at eventuelle IT medarbejde ikke ved 'en fejl'
+        kunne komme til at aflæse informationerne.
+
+        Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
+        slutningen af process afsnittet.
+
+        Det er oplagt et alvorligt sikkerhedsproblem, at data'en er ukrypteret,
+        ifht. uønsket aflæsning, ifht. selve sikkerheden af MySQL serven,
+        referes til overstående.
+        
+        At vi kan stole på de IT ansatte, betyder endvidere, at decideret
+        kryptering af database felterne ikke er nødvendig, da disse, hvis de
+        ønskede at lave problemer, alligevel sagtens kunne få adgang til folks
+        bruger kontier, ved at ændre deres domæne kodeord.
+
+        Vi har derfor ikke som sådan, et behov for at kryptere data'en, men
+        derimod et behov for at gøre data'en ulæselig, dette gøres ved hjælp af
+        obfuskation, hvilken obfuskation der skal benyttes, har vi endnu ikke
+        diskuteret, men vi har overvejet nogle i stil af one-pad, eller simpel
+        ROT13 (Caesar cipher)
+
+    \item Proxy \\
+        Vi har som nævnt, i proces afsnittet, valgt at benytte en https
+        man-in-the-middle proxy, som løsningen på vores cookie-program.
+
+        Bruger af https proxy, giver imidlertid anledning, til en række
+        problemer, af sikkerhedsmæssige problemer, isærdeleshed, at https
+        strømmen kan læses ud, i plain tekst, ved proxy'en.
+        
+        Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
+        netbank, hvis den ansatte besøger dette på arbejdscomputeren, som
+        udgangspunkt er dette ikke farligt, men faren kommer hvis userens
+        maskine er blevet compromitteret, f.eks. ved at en nu version af sso
+        programmet er installeret.
+
+        I dette tilfælde, kan sso programmet potentielt sende brugerens bank
+        informationer og lignende til tredjepart, derfor skal sso filen
+        beskyttes mod uautoriseret ændring og/eller overskrivning, således
+        at overstående angreb ikke kunne finde sted.
+
+        For at sikre imod netop dette, kunne man eventuelt benytte Active
+        Directory, med et delt netværksdrev, hvorpå servicen ville være
+        tilgængelig.
+
+        Således ville opdatering af servicen også blive en yderst simpel opgave
+        for it afdelingen.
+    \end{itemize}
+
 \item Problemer med 'dummy'-logins\\
 \end{itemize}
 
