@@ -1,0 +1,173 @@
+% Brugt i samarbejde med brugere
+
+{\bf Low-fidelity prototyping}
+
+Den første prototype vi udviklede var lavet i et forsøg, på at dække de ting som
+Lars Lisberg fortalte os om i det første interview.  Da vi på tidspunktet ikke
+havde mere end en persons mening og synspunkt på problemstillingen, havde vi
+ikke en forventning om at denne var fyldesgørende, og vi valgte derfor at lave
+en low-fidelity prototype, fordi vi forventede at vores løsning til problemet
+ville ændre sig efter interview med flere brugere.
+
+Vi var forsigtige med at vi ikke designede mere end vi havde fået ønsket af
+Lars, idet vi udelukkende havde en persons holdning til problemstillingen, den
+første prototype fik vi lavet færdig på få timer.  Denne prototype var lavet i
+Java, og dens kode blev grundlaget for senere iterationer.
+
+Da vi fremviste prototypen ved første interview, var brugerne (de to lærer,
+        Martin og Martin), positivt stemte, men gjorde os opmærksom på mange
+problemer, og forslag til ændringer af prototypen.
+
+Vi har også internt i gruppen benyttet os af low-fidelity prototyper, idet vi i
+stor grad har brugt tegninger på tavlen, som en del i beslutnings processen
+omkring designet til high-fidelity prototypen.
+
+\begin{figure}[ht] \centering \includegraphics[height=
+150px]{Program-Design.png} \caption{Se appendix side \pageref{designbrain} for
+    fulde billede} \end{figure}
+
+Dette har hjulpet os med hurtigt, at kunne diskutere forskellige ideer og
+koncepter, bl.a. hvordan brugergrænse fladen skulle se ud, og for at skabe
+overensstemmelse i gruppen med, hvordan designet skulle ende med at se ud.  Når
+vi så havde besluttet os på et design, i low-fidelity, kunne vi så implementere
+det i vores high-fidelity, og derefter diskutere designet fuldkomment, og
+eventuelt lave flere af disse iterationer, indtil vi følte vi havde behov for
+bruger input igen.
+
+{\bf High-fidelity prototyping}
+
+% De var interaktive programmer, med faket funktionalitet
+Efter vores andet interview, med Martin og Martin (to lærere på Aarhus Tech),
+      valgte vi at videre udvikle en high-fidelity prototype baseret på det kode
+      vi havde fra low-fidelity prototypen.  idet vi vurdere at en high-fidelity
+      prototype ville give os bedre feedback længere ind i projektudviklingen,
+      end flere low-fidelity prototyper.  Dette gav mening for os da vi nu havde
+      fået synspunkter fra forskellige brugere, og dette lod os lave et mere
+      veldefineret design.
+
+Den nye prototype kunne derefter indeholde de ting der viste sig at være
+nødvendige.  Som et specifikt eksempel, lagde vi mærke til at den ene lære
+(under andet interview) per instinkt klikkede {Enter}, for at ville logge ind
+efter at have skrevet sit brugernavn og password.  Da der ikke skete noget, gik
+det lidt i stå.  På denne måde fandt vi tavs viden, som tillod en væsentlig
+forbedring i vores prototype, og kunne benyttes til at udvikle prototypen i den
+retning, som brugerne benyttede den.
+
+Vi fik desuden meget feedback, på brugergrænse fladen, som blev beskrevet som
+'for teknisk', og med for meget (for brugeren) ligegyldig information, dette
+førte os til at bede brugeren om, at komme med deres vision for prototypens
+brugergrænse flade, hvilket vi så kunne implementere til den anden prototype.
+
+På denne måde, igennem en iterativ fremgangsmåde, lavede vi flere iterationer af
+prototypen, som hver gang kom nærmere brugerens ønsker og behov.
+
+Vi har i alle de senere prototyper, lavet high-fidelity, hvor mere og mere
+funktionalitet er blevet tilføjet, samtidig med at GUI'et er kommet tættere og
+tættere på det brugeren ønskede.
+
+{\bf Iterativt design}
+
+% Er også et krav i projekt beskrivelsen at prototype er udviklet over flere
+% iterationer
+Som nævnt ovenfor, har vi arbejdet iterativt med brugeren, således at deres
+feedback har direkte affødt ændringer i vores high-fidelity prototype, igennem
+flere iterationer, den iterative udvikling kan da også ses i proces afsnittet,
+      og desuden i \hyperref[1Prototype]{appendixet}.
+
+Ud over vores direkte iterative design med brugerinddragelse, har vi også
+skrevet koden vha. en iterativ arbejdsform.  Vi har lavet mange små iterationer,
+        således at hver feature er blevet testet mange gange, under selve
+        udviklingen.
+
+{\bf Contextual interview}
+
+% Is this contextual interview?
+
+Vores primære bruger kontakt har været i gennem interviews, som vi har benyttet
+til at diskutere problemstillinger, at afprøve prototyper, at få feedback på den
+aktuelle prototype. 
+
+Det har fungeret utroligt godt for os, at benytte kontekstuelle designs på denne
+måde, idet vi har kunnet integrere brugeren, som en essentiel del af
+udviklingsprocessen, og idet, at der har været meget kort fra os, som udviklere,
+    til brugeren, og dennes behov og holdninger.
+
+Netop, at der har været så kort imellem os (såvel fysisk, som logisk), har også
+gjort det muligt for os, at interviewe brugeren igen, ligeså snart der var
+spørgsmål i udviklingen, som vi ikke selv havde mulighed for at vurdere, eller
+afgøre.
+
+Som supplement til dette, har vi også haft aktiv email korrespondance, når det
+drejede sig om mindre beslutninger, eller opklarende spørgsmål, hvor et
+decideret interview, ville have været 'overkill'.
+
+% Internt brugt i gruppen
+{\bf User Experience Design}
+
+Meget vigtigt for designet, er at der skabes færre gener for brugere i forhold
+til deres nuværende.  Derfor har vi under udviklingen lagt vægt på at vores
+løsning laver så få irritationer hos brugeren som muligt, og derved skabe en
+forbedret oplevelse i forhold til det eksisterende system.  Dette inkluderer
+både de problemer der uundgåeligt opstår når nye brugere skal lære programmet
+for første gang, hvor meget der skal til for at bruge det når det er sat op, og
+hvor meget opmærksomhed programmet kræver.
+
+Vi har i processen valgt, at designe efter, at brugeren skulle føle instant
+familiaritet med produktet, altså, vi ønskede at brugeren skulle føle at
+produktet var lige til at gå til.
+
+Vi har blandt andet opnået dette, ved at designe vores produkt, i stil med
+hvordan andre programmer som personalet allerede bruger, er designet.  Derudover
+har vi valgt at sætte et stor fokus på at anvende piktogrammer og ikoner, som
+allerede har en fast betydning for brugeren, på denne måde behøver vi ikke
+forklare brugeren noget eksplicit, da piktogrammet implicit forklare det for
+dem.
+
+Et oplagt eksempel, er tilstands-symbolet, der skifter fra et rødt-kryds (ved
+        fejl tilstand), til et orange/gult tandhjul (ved forbindelses- /
+            arbejds- tilstand), og endelig til et grønt flueben (ved forbunden /
+                oprettet tilstand).
+
+Derudover har vi fokuseret på at have en rene og simple brugerflade, hvor kun
+det allermest nødvendige præsenteres til brugeren, og hvor der ikke findes
+uendeligt lange og komplicerede konfigurationsmenuer.
+
+Endelig har vi forsøgt at få vores prototyper til at 'passe' ind, i Windows
+grænsefladen, og hvordan denne normaltvis fungere, f.eks. kan programmet
+minimeres til et Windows tray icon, således at det er gemt af vejen, og kun
+komme frem, når der er behov for det, ligesom brugeren ville forvente det, af
+ethvert andet Windows service program.
+
+{\bf Scenarie}
+
+% Brugte scenarier da vi diskutterede design
+Vi har i udviklingsprocessen, brugt scenarie, både i form af use-cases (hvilket
+        der kan læses om \hyperref[UseCase]{herunder}), men også i form af
+stories, der fortæller en mindre historie om den kontekst hvor produktet bliver
+brugt, og hvordan det bliver brugt (hvilket der kan læses om i afsnittet
+        \hyperref[Scenarier]{'Scenarier af prototype'}).
+
+Vi har derudover internt arbejdet med abstrakte konceptuelle scenarier, som
+overordnet set beskriver brugs-situationen, og brugs-mønstre for vores produkt.
+
+{\bf Use Case} \label{UseCase}
+
+% Use case er en beskrivelse af en interaktion i mellem en Actor (bruger) og
+% systemet.
+Vi har i vores udviklingsproces, haft fokus på use-cases, således at vi for
+enhver feature i systemet altid, har haft en idé, om hvordan den specifikke
+feature, ville komme i brug, og hvem, der ville bruge den. 
+
+Dette har hjulpet, til at sikre, at alle programmets features, og funktioner
+faktisk har en aktuel brugssituation tilknyttet, og dermed er relevant for det
+endelige produkt.
+
+Og på samme måde, har det ladet os eliminere dele af user-interfacet, som har
+vist sig at være ubrugelige, idet, der ikke har været nogle use-case tilknyttet,
+     og da det ikke har været muligt, at komme på et use-case.
+
+Det oplagte eksempel, fra vores udvikling proces, er 'Opdater' knappen, som
+brugeren aldrig vil have en grund til at klikke på, og derfor bør fjernes fra
+produktet, i den næste iteration (den som ville komme, efter rapportens
+        aflevering). - Eftersom knappen hermed ikke har nogen duelig
+specifikation
