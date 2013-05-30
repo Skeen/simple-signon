@@ -8,6 +8,8 @@
             <fileset dir="." includes="*.log"/>
             <fileset dir="." includes="*.aux"/>
             <fileset dir="." includes="*.toc"/>
+            <fileset dir="." includes="*.bbl"/>
+            <fileset dir="." includes="*.blg"/>
         </delete>
     </target>
 
@@ -24,8 +26,10 @@
     </target>
 
     <target name="build-pdf" depends="prepare-build">
-        <exec executable="build.bat"/>
-        <exec executable="build.bat"/>
+        <exec executable="build_pdflatex.bat"/>
+        <exec executable="build_bibtex.bat"/>
+        <exec executable="build_pdflatex.bat"/>
+        <exec executable="build_pdflatex.bat"/>
     </target>
 
     <target name="build" depends="prepare-build, build-pdf">
