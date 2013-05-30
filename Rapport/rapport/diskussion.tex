@@ -52,71 +52,126 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
 
 
 \begin{itemize}
-\item Proxy som løsning på cookie-problem \\
-        %TODO: Donnot forgot
-
-\item Fleksibilitet
 \item Sikkerhed \\
+        Et af vores primære problemer undervejs, har været spørgsmålet om
+        sikkerhed, og de forskellige sikkerhedsrisici, som forskellige aspecter
+        af produktet har haft.
+
+        En lang række af disse problemstillinger, har været baseret på
+        trade-offs imellem sikkerhed og flexibilitet.
         
     \begin{itemize}
     \item Data på MySQL Serveren \\
-        Da MySQL serveren, er en del af vores trusted computing base, behøver vi
-        ikke tænke på dennes sikkerhed. Da denne er uden for vurderingen af
-        vores sikkerhedsdomæne, og sikkerheden af denne er uden for vores
-        problemdomæne.
+        Der er et potentielt sikkerhedsproblem, ved at opbevare data på en MySQL
+        Server, ifht. lokalt på en egen maskine.
+
+        På den ene side, hvis data opbevares på en MySQL server, ligger alle users
+        information, samlet, hvilket giver et single-point-of-failure. Samt øger
+        fleksibilitet.
+
+        At have et single-point-of-failure, betyder også, at kun et enkelt
+        punkt, skal holdes sikkert, og omvendt, skal kun et enkelt punkt brydes
+        op, for at skade systemet.
+
+        Hvis man opbevare data'en hos brugeren istedet, taber man flexibilitet,
+        da data'en kun er tilgængelig på en enkelt maskine, imidlertid er
+        sikkerhedsproblemet nu distributeret, således at angriberen skal
+        nedlægge hver eneste pc, på netværket, for at nedlægge systemet.
+        
+        Vi har i vores produkt, valgt at benytte en MySQL server, dels fordi vi
+        ønskede flexibilitet, og dels fordi Aarhus Tech's MySQL Servere er en
+        del af vores trusted computing base, altså de services vi kan forvente
+        at være sikre, og troværdige. Derfor har vi ikke behøvet at vurdere
+        sikkerheden af MySQL serveren, da dette er uden for vores problemdomæne.
 
     \item Key-Value på MySQL Serveren \\
         I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
-        på MySQL serveren, oprindeligt var planen, at denne data ikke måtte stå
-        i plain tekst, således at eventuelle IT medarbejde ikke ved 'en fejl'
-        kunne komme til at aflæse informationerne.
+        på MySQL serveren, der er fordele og ulemper ved dette.
+       
+        På den ene side, gør dette læsning af data utroligt simpelt, og ligetil.
+
+        På den anden side, gør det, det muligt, ved en fejl, at aflæse bruger
+        informationer, hvis man inspicere databasens data. - F.eks. hvis en IT
+        ansvarlig skal tjekke noget andet.
+       
+        Aarhus Tech ønskede ikke, at det var muligt at lave disse fejlagtige
+        uønskede data aflæsninger, og derfor måtte bruger information ikke ligge
+        i plain-tekst på MySQL serven.
+
+        Imidlertid vurderes sikkerheden af plain-tekst data felter på MySQL
+        serveren som udemærket, jf. overstående, hvorfor vi også har beslutet at
+        decideret kryptering af database felterne ikke er nødvendig, men at
+        obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
 
         Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
         slutningen af process afsnittet.
-
-        Det er oplagt et alvorligt sikkerhedsproblem, at data'en er ukrypteret,
-        ifht. uønsket aflæsning, ifht. selve sikkerheden af MySQL serven,
-        referes til overstående.
-        
-        At vi kan stole på de IT ansatte, betyder endvidere, at decideret
-        kryptering af database felterne ikke er nødvendig, da disse, hvis de
-        ønskede at lave problemer, alligevel sagtens kunne få adgang til folks
-        bruger kontier, ved at ændre deres domæne kodeord.
-
-        Vi har derfor ikke som sådan, et behov for at kryptere data'en, men
-        derimod et behov for at gøre data'en ulæselig, dette gøres ved hjælp af
-        obfuskation, hvilken obfuskation der skal benyttes, har vi endnu ikke
-        diskuteret, men vi har overvejet nogle i stil af one-pad, eller simpel
-        ROT13 (Caesar cipher)
 
     \item Proxy \\
         Vi har som nævnt, i proces afsnittet, valgt at benytte en https
         man-in-the-middle proxy, som løsningen på vores cookie-program.
 
-        Bruger af https proxy, giver imidlertid anledning, til en række
-        problemer, af sikkerhedsmæssige problemer, isærdeleshed, at https
+        Brugen af en https proxy, giver imidlertid anledning, til en række
+        problemer, af sikkerhedsmæssige karakter, isærdeleshed, at https
         strømmen kan læses ud, i plain tekst, ved proxy'en.
         
         Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
-        netbank, hvis den ansatte besøger dette på arbejdscomputeren, som
-        udgangspunkt er dette ikke farligt, men faren kommer hvis userens
-        maskine er blevet compromitteret, f.eks. ved at en nu version af sso
-        programmet er installeret.
+        netbank, hvis den ansatte besøger dette på arbejdscomputeren.
+       
+        På den ene side, kan man argumentere for at brugen af https proxy'en var
+        nødvendig for produktet, og vi derfor ikke har haft noget valg. Samtidig
+        må det noteres, at hvis brugens maskine er kompromitteret, vil netbank
+        (som eksempel), også sagtens kunne brydes op, vha. eventuelt keyloggers.
 
-        I dette tilfælde, kan sso programmet potentielt sende brugerens bank
-        informationer og lignende til tredjepart, derfor skal sso filen
-        beskyttes mod uautoriseret ændring og/eller overskrivning, således
-        at overstående angreb ikke kunne finde sted.
+        Imidlertid må det siges, at den eneste måde, at kompromittere
+        programmet, og påvirke https proxyen derigennem, er ved at overtage
+        jvm'en, eller ved at udgive en ny version af Single-SignOn programmet.
 
-        For at sikre imod netop dette, kunne man eventuelt benytte Active
+        Førstnævnte kan vi ikke gøre noget ved, og skulle generelt set blive
+        opdaget af virus programmer, sidstnævnte kan vi forsøge, at undgå, ved
+        at beskytte Single-SignOn programmet, imod uautoriseret ændring og/eller
+        overskrivning, således at kun officielle version kan benyttes.
+
+        Dette kan eventuelt implementeres i form af certifikat signering af
+        programmet, og ved at tjekke dette certifikat ved før kørsel af
+        programmet. Alternativt, kunne man eventuelt benytte Active
         Directory, med et delt netværksdrev, hvorpå servicen ville være
         tilgængelig.
 
         Således ville opdatering af servicen også blive en yderst simpel opgave
         for it afdelingen.
-    \end{itemize}
 
-\item Problemer med 'dummy'-logins\\
+    \item Flexibilitet, ifht. understøttelse af nye services \\
+        Det er sandsynligt, at nogle services vil flyde ud af systemet, og nye
+        vil komme til, derfor har vi været nødt til at overveje, hvor nemt det
+        er at tilføje nye services til systemet, samt hvilke sikkerhedsmæssige
+        problemer dette kan føre med.
+
+        Vi har primært haft to bud, på hvordan denne flexibiltet kunne tilføjes
+        til programmet;
+        \begin{itemize}
+        \item Opdatering af programmet, når nye services skal tilføjes
+        \item Automatisk nedhentning af eksvekverbar kode fra MySQL serven
+        \end{itemize}
+
+        Den primære forskel imellem disse, er at først nævnte kræve en
+        fuldkommen opdatering af programmet, og at sidstnævnte kan ske dynamisk.
+
+        På den ene side, kan man argumentere for, at fuldkommen opdatering af
+        programmet kan ske automatisk, således at IT afdelingen ikke står med
+        denne opgave, på den anden side kunne dette også gøre vha. Active
+        Directory nævnt ovenfor.
+
+        På den anden side, kan man argumentere for at automatisk nedhentning af
+        eksverbare kode, ikke er noget større problem, da MySQL serveren, og IT
+        afdelingen er en del af vores trusted computing base.
+
+        Det skal noteres at begge disse løsninge også kunne beskyttes, vha.
+        signering, hvormed vi har valgt, at konkludere at løsningerne er lige
+        gode.
+
+        Vi har ved rapportens aflevering, endnu ikke besluttet at gå udelukkende
+        med en af de to løsninger.
+    \end{itemize}
 \end{itemize}
 
 
