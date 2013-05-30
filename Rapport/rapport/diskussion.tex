@@ -26,7 +26,7 @@ Dette betyder,at man både skal designe til brugere der har en stor teknologisk f
 På den anden side, kan der argumenteres for, at man med et brugerstyret system, som navnet også ligger op til, giver brugeren mulighed for at tilpasse systemet til lige nettop ham eller hende. 
 I vores tilfælde, er der forskel fra bruger til bruger på hvile services de benytter.
 
-I vores tilfælde, er der også et meget vigtigt argument der taler mod et administrationsstyret system og for et brugerstyret system.
+I vores tilfælde, er der også et meget vigtigt argument der taler mod et administrationsstyret system.
 Hvis systemet styres af administratorer, skal brugerne hver gang de vil tilføje en service ned forbi IT-afdelingen med deres brugernavn og adgangskode for den pågældende service.
 Ud over at det er problematisk at IT-afdelingen direkte skal håndtere brugernes brugernavne og adgangskoder, vil det også give IT-afdelingen meget mere arbejde.
 
@@ -48,139 +48,65 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
 
 
 \leavevmode \linebreak
-\textbf{\large Problemer undervejs og de valgte løsninger:}
+\textbf{\large Problemer undervejs og de valgte løsninger:}\\
+Data på MySQL Serveren \\
+Da MySQL serveren, er en del af vores trusted computing base, behøver vi
+ikke tænke på dennes sikkerhed. Da denne er uden for vurderingen af
+vores sikkerhedsdomæne, og sikkerheden af denne er uden for vores
+problemdomæne.\\
 
+Key-Value på MySQL Serveren \\
+I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
+på MySQL serveren, oprindeligt var planen, at denne data ikke måtte stå
+i plain tekst, således at eventuelle IT medarbejde ikke ved 'en fejl'
+kunne komme til at aflæse informationerne.
 
-\begin{itemize}
-\item Sikkerhed \\
-        Et af vores primære problemer undervejs, har været spørgsmålet om
-        sikkerhed, og de forskellige sikkerhedsrisici, som forskellige aspecter
-        af produktet har haft.
+Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
+slutningen af process afsnittet.
 
-        En lang række af disse problemstillinger, har været baseret på
-        trade-offs imellem sikkerhed og flexibilitet.
+Det er oplagt et alvorligt sikkerhedsproblem, at data'en er ukrypteret,
+ifht. uønsket aflæsning, ifht. selve sikkerheden af MySQL serven,
+referes til overstående.
         
-    \begin{itemize}
-    \item Data på MySQL Serveren \\
-        Der er et potentielt sikkerhedsproblem, ved at opbevare data på en MySQL
-        Server, ifht. lokalt på en egen maskine.
+At vi kan stole på de IT ansatte, betyder endvidere, at decideret
+kryptering af database felterne ikke er nødvendig, da disse, hvis de
+ønskede at lave problemer, alligevel sagtens kunne få adgang til folks
+bruger kontier, ved at ændre deres domæne kodeord.
 
-        På den ene side, hvis data opbevares på en MySQL server, ligger alle users
-        information, samlet, hvilket giver et single-point-of-failure. Samt øger
-        fleksibilitet.
+Vi har derfor ikke som sådan, et behov for at kryptere data'en, men
+derimod et behov for at gøre data'en ulæselig, dette gøres ved hjælp af
+obfuskation, hvilken obfuskation der skal benyttes, har vi endnu ikke
+diskuteret, men vi har overvejet nogle i stil af one-pad, eller simpel
+ROT13 (Caesar cipher)
 
-        At have et single-point-of-failure, betyder også, at kun et enkelt
-        punkt, skal holdes sikkert, og omvendt, skal kun et enkelt punkt brydes
-        op, for at skade systemet.
+Proxy \\
+Vi har som nævnt, i proces afsnittet, valgt at benytte en https
+man-in-the-middle proxy, som løsningen på vores cookie-program.
 
-        Hvis man opbevare data'en hos brugeren istedet, taber man flexibilitet,
-        da data'en kun er tilgængelig på en enkelt maskine, imidlertid er
-        sikkerhedsproblemet nu distributeret, således at angriberen skal
-        nedlægge hver eneste pc, på netværket, for at nedlægge systemet.
+Bruger af https proxy, giver imidlertid anledning, til en række
+problemer, af sikkerhedsmæssige problemer, isærdeleshed, at https
+strømmen kan læses ud, i plain tekst, ved proxy'en.
         
-        Vi har i vores produkt, valgt at benytte en MySQL server, dels fordi vi
-        ønskede flexibilitet, og dels fordi Aarhus Tech's MySQL Servere er en
-        del af vores trusted computing base, altså de services vi kan forvente
-        at være sikre, og troværdige. Derfor har vi ikke behøvet at vurdere
-        sikkerheden af MySQL serveren, da dette er uden for vores problemdomæne.
+Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
+netbank, hvis den ansatte besøger dette på arbejdscomputeren, som
+udgangspunkt er dette ikke farligt, men faren kommer hvis userens
+maskine er blevet compromitteret, f.eks. ved at en nu version af sso
+programmet er installeret.
 
-    \item Key-Value på MySQL Serveren \\
-        I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
-        på MySQL serveren, der er fordele og ulemper ved dette.
-       
-        På den ene side, gør dette læsning af data utroligt simpelt, og ligetil.
+I dette tilfælde, kan sso programmet potentielt sende brugerens bank
+informationer og lignende til tredjepart, derfor skal sso filen
+beskyttes mod uautoriseret ændring og/eller overskrivning, således
+at overstående angreb ikke kunne finde sted.
 
-        På den anden side, gør det, det muligt, ved en fejl, at aflæse bruger
-        informationer, hvis man inspicere databasens data. - F.eks. hvis en IT
-        ansvarlig skal tjekke noget andet.
-       
-        Aarhus Tech ønskede ikke, at det var muligt at lave disse fejlagtige
-        uønskede data aflæsninger, og derfor måtte bruger information ikke ligge
-        i plain-tekst på MySQL serven.
+For at sikre imod netop dette, kunne man eventuelt benytte Active
+Directory, med et delt netværksdrev, hvorpå servicen ville være
+tilgængelig.
 
-        Imidlertid vurderes sikkerheden af plain-tekst data felter på MySQL
-        serveren som udemærket, jf. overstående, hvorfor vi også har beslutet at
-        decideret kryptering af database felterne ikke er nødvendig, men at
-        obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
-
-        Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
-        slutningen af process afsnittet.
-
-    \item Proxy \\
-        Vi har som nævnt, i proces afsnittet, valgt at benytte en https
-        man-in-the-middle proxy, som løsningen på vores cookie-program.
-
-        Brugen af en https proxy, giver imidlertid anledning, til en række
-        problemer, af sikkerhedsmæssige karakter, isærdeleshed, at https
-        strømmen kan læses ud, i plain tekst, ved proxy'en.
-        
-        Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
-        netbank, hvis den ansatte besøger dette på arbejdscomputeren.
-       
-        På den ene side, kan man argumentere for at brugen af https proxy'en var
-        nødvendig for produktet, og vi derfor ikke har haft noget valg. Samtidig
-        må det noteres, at hvis brugens maskine er kompromitteret, vil netbank
-        (som eksempel), også sagtens kunne brydes op, vha. eventuelt keyloggers.
-
-        Imidlertid må det siges, at den eneste måde, at kompromittere
-        programmet, og påvirke https proxyen derigennem, er ved at overtage
-        jvm'en, eller ved at udgive en ny version af Single-SignOn programmet.
-
-        Førstnævnte kan vi ikke gøre noget ved, og skulle generelt set blive
-        opdaget af virus programmer, sidstnævnte kan vi forsøge, at undgå, ved
-        at beskytte Single-SignOn programmet, imod uautoriseret ændring og/eller
-        overskrivning, således at kun officielle version kan benyttes.
-
-        Dette kan eventuelt implementeres i form af certifikat signering af
-        programmet, og ved at tjekke dette certifikat ved før kørsel af
-        programmet. Alternativt, kunne man eventuelt benytte Active
-        Directory, med et delt netværksdrev, hvorpå servicen ville være
-        tilgængelig.
-
-        Således ville opdatering af servicen også blive en yderst simpel opgave
-        for it afdelingen.
-
-    \item Flexibilitet, ifht. understøttelse af nye services \\
-        Det er sandsynligt, at nogle services vil flyde ud af systemet, og nye
-        vil komme til, derfor har vi været nødt til at overveje, hvor nemt det
-        er at tilføje nye services til systemet, samt hvilke sikkerhedsmæssige
-        problemer dette kan føre med.
-
-        Vi har primært haft to bud, på hvordan denne flexibiltet kunne tilføjes
-        til programmet;
-        \begin{itemize}
-        \item Opdatering af programmet, når nye services skal tilføjes
-        \item Automatisk nedhentning af eksvekverbar kode fra MySQL serven
-        \end{itemize}
-
-        Den primære forskel imellem disse, er at først nævnte kræve en
-        fuldkommen opdatering af programmet, og at sidstnævnte kan ske dynamisk.
-
-        På den ene side, kan man argumentere for, at fuldkommen opdatering af
-        programmet kan ske automatisk, således at IT afdelingen ikke står med
-        denne opgave, på den anden side kunne dette også gøre vha. Active
-        Directory nævnt ovenfor.
-
-        På den anden side, kan man argumentere for at automatisk nedhentning af
-        eksverbare kode, ikke er noget større problem, da MySQL serveren, og IT
-        afdelingen er en del af vores trusted computing base.
-
-        Det skal noteres at begge disse løsninge også kunne beskyttes, vha.
-        signering, hvormed vi har valgt, at konkludere at løsningerne er lige
-        gode.
-
-        Vi har ved rapportens aflevering, endnu ikke besluttet at gå udelukkende
-        med en af de to løsninger.
-    \end{itemize}
-\end{itemize}
-
-
-sd<sd
-
+Således ville opdatering af servicen også blive en yderst simpel opgave
+for it afdelingen.
 
 \leavevmode \linebreak
-\textbf{\large Diskussion af vores valgte strategier:}
-
+\textbf{\large Diskussion af vores valgte strategier:}\\
 
 
 Vores processtrategi gennem projektets forløb har været, at vi arbejdede iterativt med contextuelle interviews og henholdsvis observeringer og præsentation af prototyper.
@@ -189,6 +115,7 @@ I vores første iteration, lavede vi som nævnt ovenfor observationer af, hvordan 
 Vi observerede brugerne ved at bede dem om at logge på en eller flere af de services som de benyttede i deres daglige arbejde,og bad dem forklare hvad de gjorde undervejs.
 Der kan argumenteres for, at vi ved at følge brugerne rundt på arbejdspladsen og herigennem observere hvordan de benyttede systemet, ville havde resulteret i en mere virkelighedstro demonstration af hvordan brugerne benytter det nuværende system.
 I og med at de problematikker vi kiggede på udgjorde så relativt en lille del af medarbejdernes dagligdag, mente vi, at tiden var givet bedre ud ved at lave fokuserede observationer.
+
 
 Først kan det diskuteres om hvorvidt vi i projektet har gennemløbet iterationer nok.
 Der er ingen tvivl fra vores siden om, at vi har fået meget nyttig information fra hvert af vores iterationer.
