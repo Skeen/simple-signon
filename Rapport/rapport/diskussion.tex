@@ -83,8 +83,8 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         derfor måtte bruger information ikke ligge i plain-tekst på MySQL
         serven.  Imidlertid vurderes sikkerheden af plain-tekst data felter på
         MySQL serveren som udemærket, jf. overstående, hvorfor vi også har
-        besluttet at decideret kryptering af database felterne ikke er
-nødvendig, men at obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
+besluttet at decideret kryptering af database felterne ikke er nødvendig, men at
+obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
 
        \textit{ Note; Implementeringen af dette, er skrevet i bagloggen, som
            findes i slutningen af proces afsnittet.}
@@ -164,20 +164,20 @@ iterationer, har været passende i forhold til den tidsramme vi har arbejdet
 indenfor.  Ideen med projektet har heller ikke været, at ved ved slutningen af
 kurset skulle have et færdigt produkt, men blot en funktionel prototype.  I et
 eventuelt videre udviklingsforløb,med et færdigt produkt som mål, ville vi her
-også gennemløbe op til flere yderligere iterationer.\\
+også gennemløbe op til flere yderligere iterationer.\citep[]{Stolterman2008} \\
 
 
 Hvis man kigger på delen af vores processtrategi der er prototyping, kan det
 diskuteres hvorvidt vi har benyttet vores prototyper hensigtsmæssigt.  Vores
 brug af prototyper som metode og hvorvidt vi har benyttet denne metode
-rigtigt,kan diskuteres ud fra to hovedpunkter.  Først kan det diskuteres om
+rigtigt, kan diskuteres ud fra to hovedpunkter.  Først kan det diskuteres om
 hvorvidt vi har kreeret fornuftige prototyper, der der i en præsentation for
 brugerne ville sætte fokus på de specifikke dele af designet som vi ønskede a
 indsamle viden om, og om hvorvidt vores fokus har været for bredt med henhold
 til de informationer vi ønskede at indsamle.  Dernæst kan det diskuteres om vi
 har benyttet en hensigtsmæssig strategi i præsentationen af vores prototyper
 overfor brugerne.  Disse diskussioner, kan man passende perspektivere op imod
-Y.-K. Lim et al artiklen.
+Y.-K. Lim et al artiklen \citep[s.3,10]{Benyon2010Designing}.
 
 Når man kigger på,hvordan vi udviklede vores prototyper, kan der argumenteres
 for, at vi i udviklingsprocessen skulle havde benyttet os mere af low-fidelity
@@ -192,21 +192,22 @@ stå med en alt for stor kode-m‘ssig arbejdsbyrde.  Dog kan der argumenteres for,
 
 
 Som det bliver nævnt i artiklen af Y.-K- Lim et al. er en af de primære styrker
-ved en prototype nemlig, at den ikke virker som et færdigt produkt.  En
-prototype der ikke virker som et færdigt produkt, lægger mere op til at brugeren
-kan kommer komme med forslag til ændringer.  Yderligere nævnes det også i
-artiklen, at valget af materiale benyttet til at fremstille prototypen har
-direkte betydning for hvordan brugeren opfatter prototype, når de skal evaluere
-design koncepter.  Havde vi benyttet os mere af low-fidelity prototyper, og
-måske lavet disse i papirform, ville brugeren opfatte prototypen som et udkast
-til et designforslag mere end et færdigt produkt.  Dette gives der i artiklen
-også et eksempel på.  Det viste sig i en case de analyserede, hvor de fremviste
-to prototyper af et hus, en på blueprint form og en modeleret i 3D software, at
-brugerne der blev præcenteret for blueprint prototype opfattede denne som et
-designudkast, hvorimod brugerne der blev præcenteret for 3D-modelleringen
-opfattede prototypen som et relativt færdigt produkt, og derfor kom langt færre
-forslag til ændringer.  Denne effekt kunne det tænkes at vi i vores valg om at
-skifte til high-fidelity prototyper også er blevet ramt af.\\
+ved en prototype nemlig, at den ikke virker som et færdigt produkt
+\citep[s.7,17,18]{Benyon2010Designing}. En prototype der ikke virker som et
+færdigt produkt, lægger mere op til at brugeren kan kommer komme med forslag til
+ændringer.  Yderligere nævnes det også i artiklen, at valget af materiale
+benyttet til at fremstille prototypen har direkte betydning for hvordan brugeren
+opfatter prototype, når de skal evaluere design koncepter.  Havde vi benyttet os
+mere af low-fidelity prototyper, og måske lavet disse i papirform, ville
+brugeren opfatte prototypen som et udkast til et designforslag mere end et
+færdigt produkt.  Dette gives der i artiklen også et eksempel på.  Det viste sig
+i en case de analyserede, hvor de fremviste to prototyper af et hus, en på
+blueprint form og en modeleret i 3D software, at brugerne der blev præcenteret
+for blueprint prototype opfattede denne som et designudkast, hvorimod brugerne
+der blev præcenteret for 3D-modelleringen opfattede prototypen som et relativt
+færdigt produkt, og derfor kom langt færre forslag til ændringer.  Denne effekt
+kunne det tænkes at vi i vores valg om at skifte til high-fidelity prototyper
+også er blevet ramt af.\\
 
 
 Hvis man kigger på den måde hvorpå vi præsenterede brugerne for vores
@@ -214,28 +215,29 @@ prototyper, kan man argumenterer for, at det ideelle havde været at lave en
 situationstest, hvor brugerne blev sat til at benytte sig af systemet i deres
 daglige arbejde, hvorefter de kunne komme med kommentarer og forbedringsforslag.
 Som det beskrives i artiklen af Y.-K. Lim et al. er sådanne situationstests ofte
-ikke mulige, da prototyperne sjældent er fuldt funktionelle.  Dette var også
-tilfældet for vores prototyper.  Vi valgte i stedet at foretage laboratorium
-tests, hvor brugerne i et kontrolleret miljø bliv præsenteret for prototyperne.
-Vi valgte i vores præsentation af vores prototyper, at føre brugeren igennem de
-forskellige funktioner i prototypen.  Der kan argumenteres for, at vi ikke
-benyttede den optimale metode til at få brugerne til at gennemgå prototyperne, i
-og med at vi ved at guide dem, afskar dem muligheden for selv at udforske
-systemet, og derigennem opdage hvorvidt prototypen virkede intuitiv og reagerede
-som de forventede.\\
+ikke mulige, da prototyperne sjældent er fuldt funktionelle
+\citep[s.4]{Benyon2010Designing}.  Dette var også tilfældet for vores
+prototyper.  Vi valgte i stedet at foretage laboratorium tests, hvor brugerne i
+et kontrolleret miljø bliv præsenteret for prototyperne.  Vi valgte i vores
+præsentation af vores prototyper, at føre brugeren igennem de forskellige
+funktioner i prototypen.  Der kan argumenteres for, at vi ikke benyttede den
+optimale metode til at få brugerne til at gennemgå prototyperne, i og med at vi
+ved at guide dem, afskar dem muligheden for selv at udforske systemet, og
+derigennem opdage hvorvidt prototypen virkede intuitiv og reagerede som de
+forventede.\\
 
 
 Til slut kunne man argumenterer for, at vi måske har behandlet brugernes
 feedback med for lidt omtanke, når det kom til at implementere forslag.  Som det
 også nævnes i Y.-K. Lim et al. artiklen, så er brugere ikke eksperter i design,
-     hvilket resulterer i,at man som designer af systemet skal forstå brugernes
-     behov og hvad der tilføjer værdi for dem frem for direkte at tilføje deres
-     designideer til produktet.  Selv om der kan argumenteres for, at vi nogle
-     steder har tilføjet brugernes designideer uden at vurdere, hvorvidt det
-     virkelig braget brugerne værdi, er der dog også eksempler på at vi netop
-     har gjort os disse overvejelser på nogle punkter.  Et ønske for brugerne
-     var fx at systemet skulle laves som en Web applikation.  Dette endte vi dog
-     ikke op med, da det stred mod et større ønske om at systemet også
-     automatisk skulle logge på VPN, og da det ikke er muligt at benytte en
-     web-app uden først at være på VPN, tog vi en beslutning om at brugerne
-     havde brug for et program der lå lokalt.   
+     \citep[s.5]{Benyon2010Designing} hvilket resulterer i, at man som designer
+     af systemet skal forstå brugernes behov og hvad der tilføjer værdi for dem
+     frem for direkte at tilføje deres designideer til produktet.  Selv om der
+     kan argumenteres for, at vi nogle steder har tilføjet brugernes designideer
+     uden at vurdere, hvorvidt det virkelig braget brugerne værdi, er der dog
+     også eksempler på at vi netop har gjort os disse overvejelser på nogle
+     punkter.  Et ønske for brugerne var fx at systemet skulle laves som en Web
+     applikation.  Dette endte vi dog ikke op med, da det stred mod et større
+     ønske om at systemet også automatisk skulle logge på VPN, og da det ikke er
+     muligt at benytte en web-app uden først at være på VPN, tog vi en
+     beslutning om at brugerne havde brug for et program der lå lokalt.   
