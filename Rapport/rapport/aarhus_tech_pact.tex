@@ -4,20 +4,20 @@
 {\bf People:}
 Systemet er fokuseret på ansatte ved Aarhus Tech. Elever er ikke en del af målgruppen for systemet. 
 Vores primære kontaktperson ved Aarhus Tech IT-Teamleder Lars Lisberg fortalte, at elever ikke har problemer med flere logins, men at det hovedsageligt er for de ansatte(lærerer, administration, mm.), at dette er et problem.
-Dette blev bekræftet af to lærer der fortalte, at elever kun har få services de skal bruge, og at de har ens passwords på alle disse.
+Dette blev bekræftet af to lærer der fortalte, at elever kun har få services de skal bruge, og at de har ens kodeord på alle disse.
 De ansatte har varierende IT kompetencer, der variere fra IT afdelingen, hvis medarbejdere vedligeholder, opdaterer, vejleder, mm. til lærer med meget få tekniske kompetencer.
 Systemet skal derfor kunne benyttes af personer uden megen teknisk erfaring.
 
 {\bf Activities:}
-Det nuværende system indeholder mange services, hvor brugernavne og passwords kan variere fra system til system.
+Det nuværende system indeholder mange services, hvor brugernavne og kodeord kan variere fra system til system.
 Systemet, som det ser ud i dag, benytter desuden heller ikke delte sessioner, hvilket vil sige, at man skal logge ind separat for hver service.
-Dette medfører, at brugeren ofte skal logge ind mange gange i løbet af en typisk arbejdsdag og ofte med flere forskellige passwords og brugernavne.
+Dette medfører, at brugeren ofte skal logge ind mange gange i løbet af en typisk arbejdsdag og ofte med flere forskellige kodeord og brugernavne.
 Skolens VPN login system er ved at blive fjernet og erstattet af et specielt wifi net, som brugerne i stedet skal logge på.
 For at virke, kræver dette wifi net dog, at brugeren hare et gyldigt certifikat installeret.
 Login processen kan eksempelvis forløbe således (med VPN systemet):
 
 \begin{itemize}
-\item Brugeren logger ind på sin konto i windows Active Directory.
+\item Brugeren logger ind på sin konto i Windows Active Directory.
 \item Brugeren vælger en wifi forbindelse.
 \item Brugeren logger på en forside, hvorefter der er internet adgang.
 \item Brugeren logger på VPN
@@ -51,7 +51,7 @@ Lars Lisberg var interesseret i, at systemet have kompatibilitet med tablets og 
 Som tidligere nævnt skal brugeren logge ind på en hel del forskellige services, disse fungerer på forskellig vis;
 
 \begin{itemize}
-\item Active Directory: Når brugeren logger ind på winlogon (den almindelige Windows login), sendes passwordet til Active Directory serveren.
+\item Active Directory: Når brugeren logger ind på winlogon (den almindelige Windows login), sendes kodeordet til Active Directory serveren.
 Serveren validere inputtet, og køre et loginscript, der sikre at netværksdrev, og lign er tilgængeligt.
 Brugerens maskine bringes til brugbar tilstand.
 

@@ -55,22 +55,22 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         af produktet har haft.
 
         En lang række af disse problemstillinger, har været baseret på
-        trade-offs imellem sikkerhed og flexibilitet.
+        trade-offs imellem sikkerhed og fleksibilitet
         
         Der er et potentielt sikkerhedsproblem, ved at opbevare data på en MySQL
         Server, ifht. lokalt på en egen maskine. 
-        På den ene side, hvis data opbevares på en MySQL server, ligger alle users
+        På den ene side, hvis data opbevares på en MySQL server, ligger alle brugernes
         information, samlet, hvilket giver et single-point-of-failure. Samt øger
         fleksibilitet. 
         At have et single-point-of-failure, betyder også, at kun et enkelt
         punkt, skal holdes sikkert, og omvendt, skal kun et enkelt punkt brydes
         op, for at skade systemet. 
-        Hvis man opbevare data'en hos brugeren istedet, taber man flexibilitet,
-        da data'en kun er tilgængelig på en enkelt maskine, imidlertid er
-        sikkerhedsproblemet nu distributeret, således at angriberen skal
+        Hvis man opbevare dataene hos brugeren i stedet, taber man fleksibilitet,
+        da dataene kun er tilgængelig på en enkelt maskine, imidlertid er
+        sikkerhedsproblemet nu distribueret, således at angriberen skal
         nedlægge hver eneste pc, på netværket, for at nedlægge systemet.         
         Vi har i vores produkt, valgt at benytte en MySQL server, dels fordi vi
-        ønskede flexibilitet, og dels fordi Aarhus Tech's MySQL Servere er en
+        ønskede fleksibilitet, og dels fordi Aarhus Tech's MySQL Servere er en
         del af vores trusted computing base, altså de services vi kan forvente
         at være sikre, og troværdige.
 
@@ -84,18 +84,18 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         uønskede data aflæsninger, og derfor måtte bruger information ikke ligge
         i plain-tekst på MySQL serven.
         Imidlertid vurderes sikkerheden af plain-tekst data felter på MySQL
-        serveren som udemærket, jf. overstående, hvorfor vi også har beslutet at
+        serveren som udemærket, jf. overstående, hvorfor vi også har besluttet at
         decideret kryptering af database felterne ikke er nødvendig, men at
         obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
 
-       \textit{ Note; Impementeringen af dette, er skrevet i bagloggen, som findes i 
-        slutningen af process afsnittet.}
+       \textit{ Note; Implementeringen af dette, er skrevet i bagloggen, som findes i 
+        slutningen af proces afsnittet.}
 
         Vi har som nævnt, i proces afsnittet, valgt at benytte en https
         man-in-the-middle proxy, som løsningen på vores cookie-program.
         Brugen af en https proxy, giver imidlertid anledning, til en række
         problemer, af sikkerhedsmæssige karakter, isærdeleshed, at https
-        strømmen kan læses ud, i plain tekst, ved proxy'en.
+        strømmen kan læses ud, i plain-tekst, ved proxy'en.
         Dette gælder ikke kun for arbejdsrelaterede data, men også for f.eks.
         netbank, hvis den ansatte besøger dette på arbejdscomputeren.
         På den ene side, kan man argumentere for at brugen af https proxy'en var
@@ -104,7 +104,7 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         (som eksempel), også sagtens kunne brydes op, vha. eventuelt keyloggers.
         Imidlertid må det siges, at den eneste måde, at kompromittere
         programmet, og påvirke https proxyen derigennem, er ved at overtage
-        jvm'en, eller ved at udgive en ny version af Single-SignOn programmet.
+        JVM'en, eller ved at udgive en ny version af Single-SignOn programmet.
         Førstnævnte kan vi ikke gøre noget ved, og skulle generelt set blive
         opdaget af virus programmer, sidstnævnte kan vi forsøge, at undgå, ved
         at beskytte Single-SignOn programmet, imod uautoriseret ændring og/eller
@@ -114,25 +114,25 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         programmet. Alternativt, kunne man eventuelt benytte Active
         Directory, med et delt netværksdrev, hvorpå servicen ville være
         tilgængelig.
-    	Når det kommer til flexibilitet med henhold til understøttelse af nye services,
+    	Når det kommer til fleksibilitet med henhold til understøttelse af nye services,
         er det sandsynligt, at nogle services vil blive fjernet fra systemet, og nye
         vil komme til, derfor har vi været nødt til at overveje, hvor nemt det
         er at tilføje nye services til systemet, samt hvilke sikkerhedsmæssige
         problemer dette kan føre med.
-        Vi har primært haft to bud, på hvordan denne flexibiltet kunne tilføjes
+        Vi har primært haft to bud, på hvordan denne fleksibilitet kunne tilføjes
         til programmet;
         Én måde ville være, at opdatering af programmet, når nye services skal tilføjes.
-        En anden ville være automatisk nedhentning af eksvekverbar kode fra MySQL serven.
+        En anden ville være automatisk download af eksekverbar kode fra MySQL serven.
         Den primære forskel imellem disse, er at først nævnte kræve en
         fuldkommen opdatering af programmet, og at sidstnævnte kan ske dynamisk.
         På den ene side, kan man argumentere for, at fuldkommen opdatering af
         programmet kan ske automatisk, således at IT afdelingen ikke står med
         denne opgave, på den anden side kunne dette også gøre vha. Active
         Directory.
-        På den anden side, kan man argumentere for at automatisk nedhentning af
-        eksverbare kode, ikke er noget større problem, da MySQL serveren, og IT
+        På den anden side, kan man argumentere for at automatisk download af
+        eksekverbar kode, ikke er noget større problem, da MySQL serveren, og IT
         afdelingen er en del af vores trusted computing base.
-        Det skal noteres at begge disse løsninge også kunne beskyttes, vha.
+        Det skal noteres at begge disse løsninger også kunne beskyttes, vha.
         signering.
         Vi har ved rapportens aflevering, endnu ikke besluttet at gå udelukkende
         med en af de to løsninger.
@@ -144,7 +144,7 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
 
 
 
-Vores processtrategi gennem projektets forløb har været, at vi arbejdede iterativt med contextuelle interviews og henholdsvis observeringer og præsentation af prototyper.
+Vores processtrategi gennem projektets forløb har været, at vi arbejdede iterativt med kontekstuelle interviews og henholdsvis observeringer og præsentation af prototyper.
 
 I vores første iteration, lavede vi som nævnt ovenfor observationer af, hvordan brugerne benyttede systemet som det er i dag, og derigennem fik vi nogle ideer til hvor problematikkerne lå, og hvordan vi kunne løse disse.
 Vi observerede brugerne ved at bede dem om at logge på en eller flere af de services som de benyttede i deres daglige arbejde,og bad dem forklare hvad de gjorde undervejs.
@@ -166,17 +166,17 @@ Dernæst kan det diskuteres om vi har benyttet en hensigtsmæssig strategi i præse
 Disse diskussioner, kan man passende perspektivere op imod Y.-K. Lim et al artiklen.
 
 Når man kigger på,hvordan vi udviklede vores prototyper, kan der argumenteres for, at vi i udviklingsprocessen skulle havde benyttet os mere af low-fidelity prototyper, i stedet for, som vi gjorde, relativt hurtigt at gå over til high-fidelity prototyper.
-Grunden til vores valg af prototyper var, at vi på den ene side godt kunne havde fortsat med simple low-fi prototyper, men at vi vurderede, at det ville resultere i, at vi til slut i kursets forløb ville stå med en alt for stor kodemæssig arbejdsbyrde.
-Dog kan der argumenteres for, at vi gennem vores valg om relativt hurtigt at skifte til high-fi prototyper, afskar os selv muligheden for en masse nyttige og brugbare feedback fra brugerne.\\
+Grunden til vores valg af prototyper var, at vi på den ene side godt kunne havde fortsat med simple low-fidelity prototyper, men at vi vurderede, at det ville resultere i, at vi til slut i kursets forløb ville stå med en alt for stor kode-m‘ssig arbejdsbyrde.
+Dog kan der argumenteres for, at vi gennem vores valg om relativt hurtigt at skifte til high-fidelity prototyper, afskar os selv muligheden for en masse nyttige og brugbare feedback fra brugerne.\\
 
 
 Som det bliver nævnt i artiklen af Y.-K- Lim et al. er en af de primære styrker ved en prototype nemlig, at den ikke virker som et færdigt produkt.
 En prototype der ikke virker som et færdigt produkt, lægger mere op til at brugeren kan kommer komme med forslag til ændringer.
 Yderligere nævnes det også i artiklen, at valget af materiale benyttet til at fremstille prototypen har direkte betydning for hvordan brugeren opfatter prototype, når de skal evaluere design koncepter.
-Havde vi benyttet os mere af low-fi prototyper, og måske lavet disse i papirform, ville brugeren opfatte prototypen som et udkast til et designforslag mere end et færdigt produkt.
+Havde vi benyttet os mere af low-fidelity prototyper, og måske lavet disse i papirform, ville brugeren opfatte prototypen som et udkast til et designforslag mere end et færdigt produkt.
 Dette gives der i artiklen også et eksempel på.
 Det viste sig i en case de analyserede, hvor de fremviste to prototyper af et hus, en på blueprint form og en modeleret i 3D software, at brugerne der blev præcenteret for blueprint prototype opfattede denne som et designudkast, hvorimod brugerne der blev præcenteret for 3D-modelleringen opfattede prototypen som et relativt færdigt produkt, og derfor kom langt færre forslag til ændringer.
-Denne effekt kunne det tænkes at vi i vores valg om at skifte til high-fi prototyper også er blevet ramt af.\\
+Denne effekt kunne det tænkes at vi i vores valg om at skifte til high-fidelity prototyper også er blevet ramt af.\\
 
 
 Hvis man kigger på den måde hvorpå vi præsenterede brugerne for vores prototyper, kan man argumenterer for, at det ideelle havde været at lave en situationstest, hvor brugerne blev sat til at benytte sig af systemet i deres daglige arbejde, hvorefter de kunne komme med kommentarer og forbedringsforslag.
