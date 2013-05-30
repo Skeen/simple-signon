@@ -1,0 +1,258 @@
+Vi sendte emails ud til flere skoler, for at prøve at starte et samarbejde.
+Lars Lisberg, IT-teamleder ved Aarhus Tech, skrev tilbage at de var interesserede i et samarbejde.
+De havde et ønske om udvikling af et såkaldt Single-Sign-On system, således at
+de mange services som ansatte benytter, kan logge på en gang, centralt, og der
+herefter er adgang til alle services.
+Vi aftalte herefter et interview med Lars, for at arrangere termerne hvorpå
+projektet vil fungere, og hvilke krav de stiller for en eventuel løsning.
+% TODO: Link
+For at afdække disse spørgsmål, forbredte vi et interview, som kan ses i
+appendixet ('1. Interview d. 20/3-13').
+%{\bf Interview 1, 20/03}
+%med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+Vi valgte at optage dette interview på film, for at kunne bruge det til
+eventuelle senere afleveringer, og for at kunne behandle svarene senere.
+Vi startede interviewet med at lave en observation af hvordan den aktuelle
+arbejdsgang fungere, for at få en generel ide om omfanget af problemet,
+herefter udførte vi vores interview, for at få besvaret vores spørgsmål.
+Vi kom frem til, at den primære målgruppe for systemet er de ansatte på Aarhus
+Tech, og i mindre grad eleverne, og vi har derfor i første omgang besluttet primært at designe efter
+medarbejdernes behov.
+Baseret på dette første interview, og de informationer vi fik, begyndte vi at designe
+en low-fidelity prototype, som havde til formål at formidle vores umiddelbare forslag til en løsning.\\
+
+%TODO : indset billeder af de to stadier i 1. prototype ved siden af hinanden og inkluder figurnavne
+
+Som det ses på billederne ovenfor, var første prototype meget skrabet.
+Den bestod af et loginvindue(som ses på figur???) %TODO 
+hvor brugeren skulle indtaste brugernavn og adgangskode for derefter at blive sent videre.
+Herefter ville brugeren se et vindue(figur???) %TODO 
+der indeholdte en liste over de forskellige services og information om hvorvidt denne service havde forbindelse eller ej.
+
+
+For at få bekræftet Lars Lisbergs teori om at de mange logins skaber irritationer og problemer hos medarbejderne, kontaktede vi Aarhus Tech igen og bad om at få et interview.
+Denne gang med to lærere.
+Under interviewet ville vi også gerne se hvordan en lærer benytter de nuværende system, og præsentere dem for den vores første prototype. 
+Her sigtede vi efter at få feedback der kunne hjælpe til med at forbedre designet.\\
+
+
+%{\bf Interview 2, 23/04}
+%med Martin og Martin, to lærer ved Aarhus Tech.
+Efter interviewet lavede vi i gruppen en opsamling, hvor vi skrev ned hvordan de spørgsmål, som vi havde forberedt, var blevet besvaret.
+Her fik vi bekræftet af de to lærer, at de mange forskellige logins er et egentligt problem.
+
+I det feedback vi fik, var der et generelt ønskede om en pænere og
+mere brugervenlig brugergrænseflade.
+Desuden ønskede de at systemet kunne blive mere brugerstyret, således at brugerne selv kunne tilpasse, hvilke
+servies der var aktuelle for dem, samt at konfigurere disse, med deres personlige brugernavn og password, uden at IT afdelingen skulle indblandes.
+Vi kunne altså konkludere, at vores brugergrænseflade skulle redesignes, og vores model af hvilken rolle brugeren spiller ifht. administratoren også skulle
+revurderes.
+Med henhold til brugergrænsefladen, havde vi af den ene af lærerne fået et
+specifikt forslag til designet, hvor hver service skulle repræseneres ved et
+logo, med et lille pictogram som skulle vise servicens tilstand. 
+% TODO: Link
+Vi diskuterede i gruppen, hvordan vi skulle redesigne brugergrænsefladen.
+Vi brainstormede ved at tegne udkast til et design på en tavle.
+Et billede af tavlen findes i appendixet(\textit{Figur????}) %TODO 
+, og nedenfor ses de dele af billedet der viser vores to primære ideer.
+
+%TODO : Sæt de to billeder('web_design' og 'program_design') ind ved siden af hinanden med figurnavn under hvert af billederne.
+
+Som det ses på figur??? %TODO 
+bestod en af vores ideer af en horisontal menubar, hvor ikonerne for de forskellige services var linet op efter hunanden.
+I dette design ville hvert ikon have et pictogram nede i højre hjørne der angav dennes status.
+Dette design forkastede vi dog, da det mere mindede om et design til en web applikation, og vi tænkte, at dette muligvis ville forivre brugerne. 
+Ydermere havde vi problemer med at placere funktionsknapperne i programvinduet.
+I stedt gik vi, som det ses i figur??? %TODO
+over til et mere klassisk look.
+Dette design består af et tilnærmelsesvist rektangulært programvindue hvori ikonerne for de forskellige services er linet op i en matrix.
+I bunden af vinduet finder man funktionsknapperne.
+Da dette var et mere traditionelt look, og ville komme til at ligne programmer som brugerne havde brugt før, ville det intuitivt set være nemmere for brugerne at finde rundt i.
+Vi tog dette grunddesign og arbejde videre med det.
+
+%TODO Indsæt her billedet IMG_3176 med figurnavn under
+
+Som det kan ses på figur?? %TODO
+ovenfor, tegnede vi en meget basic sekvensmodel, der viser hvordan en bruger logger ind for derefter at komme til et statusvindue med ikoner for de forskellige services, og funktionsknapper i bunden.
+Loginvinduet valgte vi at beholde fra den første prototype, da den på en overskuelig måde klarede loginprocessen.
+Funktionsknapperne i statusvinduet bestod af en add-knap der tilføjer services til statusvinduet.
+remove-knappen fjerner services fra statusvinduet.
+Ydermere er der en re-connect-knap, en password-knap der ville sætte password og brugernavn for en service, en refrech knap der opdatere status for de individuelle services og en logout-knp.
+Ved at trykke på logout-knappen, vil brugeren blive sendt tilbage til loginvinduet.
+Dette design blev grundlaget for vores redesign af GUI'en 
+
+
+Herefter diskuterede vi administratorens rolle, ifht. brugeren, og hvordan vi
+kunne få gjort det muligt, at brugeren er den eneste, der arbejder med sit eget
+brugernavn og kodeord. 
+Vi endte med at lave en tydelig deling af ansvaret, således at opsætning af generelle parametre for
+services, samt hvilke services en given bruger kan tilgå, klares af administratoren. 
+Opsætning af brugernavn og kodeord, samt hvilke services der skal vises for brugeren, klares af brugeren selv.
+For at få uddannet brugeren i netop dette, ville den ene af lærene Martin, der
+også er teknisk ansvarlig, kunne holde et info-møde, samt eventuelt skrive en
+mindre tutorial.
+
+% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+Da vi havde besluttet designet, gik vi i gang med revidering af prototypen, der
+skulle indkortere vores 'status vindue', som lærerne havde efterspurgt, desuden besluttede vi, at vi nu ønskede at integrere en del
+funktionalitet i denne prototypen.
+Dermed gik vi fra en low-fidelity prototype og til at udvikle en high-fidelity prototype.
+Dette gjorde vi, da vi vurderede at sådan en prototype, ville kunne give os bedre feedback, på lang sigt. 
+Ligesom vi gjorde i den første prototype, har vi, til at realisere vores design, besluttet os for at benytte 'Java swing' til at skrive GUI. 
+For opsætning og administration, har vi valgt at bruge en MySQL server, da Lars Lisberg
+informerede os om, at det var en teknologier, som de allerede havde til
+rådighed.
+
+Vi besluttede, at funktionaliteten, mht. at oprette forbindelse til Wifi, og
+VPN, nemmest implementeres ved at benytte Windows programmerne til dette, og
+vi har derfor skrevet kode, der kalder disse programmer.
+Dette betyder, at løsningen kun fungere på Windows. 
+At systemet til at starte med kun vil fungere på Windows er udmærket, da medarbejderne af Aarhus Tech får udleveret arbejdscomputere der alle kører Windows.
+Enkelte medarbejdere benytter egne computere, og disse kører styresystemer efter brugerens ønsker.
+Set i lyset af den tidsramme vi arbejder indefor, blev vi med Lars enige om, at vi i første omgang skulle fokusere på Windows.
+
+For at muliggøre, at man kan tilgå HTML services, som fx de mange cloud services medarbejderne benytter, har vi
+implementeret en løsning i Java vha. 'apache httpclient' biblioteket.
+Denne kan logge ind, og vi har dermed kun udfordringen med, at få overført cookien fra dette
+login, til brugerens browser.
+For at klare denne opgave, har vi diskuteret flere mulige løsninger;
+\begin{itemize}
+\item Automatiseret browser-import af cookies
+\item HTTPS Session Hijacking
+\item HTTPS Proxy (der laver requests på brugerens vegne).
+\end{itemize}
+Hver af disse har deres fordele og ulemper, som vi har diskuteret.
+Vi valgte at benytte os af HTTPS Proxy'en, som, omend den har en del problemer, syntes at kunne løse vores
+problemstilling.
+Desuden vil løsningen med en proxy-server være browser uafhængig,
+idet den vil svarer brugerens browser, som en hver anden webserver ville gøre det.
+Kun opsætningen vil være browser specifik, men da den primære browser for de ansatte, er internet explorer, er dette et
+mindre problem. 
+
+Vi begyndte herefter at forberede et interview af Lars, for at finde svar, til nogle af
+de tekniske spørgsmål, der var kommet op, i udviklingen af vores reviderede
+prototype, eksempelvis; Om åbne licenser ville være et problem, information om
+den netværk, der i fremtiden skal udskifte VPN systemet, samt til hvordan systemet skal administreres.
+Derudover var vi nødt til at få afklaret hele sikkerhedsproblemet, omkring
+systemet; hvem vi kan forvente at kunne stole på, hvor stor sikkerhed der er
+nødvendig, hvor ofte domæne kodeordet skiftes, osv.
+%{\bf Interview 3, 07/05}
+%med Lars Lisberg, IT-teamleder ved Aarhus Tech.
+
+Under dette, tredje interview, blev det klart for os, at vores system, som
+ønsket af lærene, ville kunne integreres med det eksisterende Active Directory
+system, således at single-sign-on systemet, automatisk starter op, og kommer til den aktive
+tilstand, som en del af Windows login proces.
+På denne måde ville brugeren kun skulle logge ind på sin Windows bruger og ikke som tidligere tiltænkt, logge på maskinen, og herefter på logge på single-sign-on systemet.
+Det automatiske login, vil desuden være sikkert, da Active Directory må antages at være sikkert.
+Vi er endvidere blevet opmærksom på, at opsætning af proxy, certifikater og
+lignende, ikke vil være noget problem, da dette kan rulles ud vha. Active Directory, og da eventuelle problemer vil være rimeligt low-tech, som den IT ansvarlige og lærerne imellem nemt skulle kunne løse.
+Under interviewet, fandt vi derudover ud af, at vi som udgangspunkt kan stole på IT afdelingen, men
+at vi dog skal sørger for, at kodeord i databasen ikke kan læses i plain-tekst.
+Mht. administration, syntes Lars godt om fordelingen imellem brugerens og IT
+afdelingens ansvarsområder, idet IT afdelingen på denne måde, slipper for at
+skulle indføre brugernes personlige brugernavn og kodeord. Mht. IT
+administrationsside af administrationen, ville de gerne have simple SQL scripts,
+som de kunne køre fra deres Active Directory triggers.
+Vi blev dog sammen med Lars enige om, at vi mens kurset varede primært skulle fokusere på brugerdelen af systemet, og at vi kunne arbejde videre med administrationsdelen i et eventuelt videre forløb efter kurset var afsluttet
+Mht. licens udtrykte Lars intet problem med brugen af open-source licenser, tværtimod mente han, at det ville gøre det nemmere for dem, at
+kunne udlicitere vedligeholdelse af systemet.
+%% MARKER Onsdag d. 08/05:½
+
+Efter interviewet med Lars, har vi kigget nærmere på hvordan et proxy
+autokonfigurationsscript ser ud, og vi har udviklet et sådanne der blot kan
+loades ind i brugernes browser, hvorefter proxy'en automatisk vil
+blive konfigureret.
+Disse scripts er standardiserede, og vil derfor virker på alle af browserne.
+Når det kommer til opsætning af certifikater, har vi eksporteret et certifikat,
+som kan installeres ved et simpelt dobbelt klik, og en tur igennem en import
+wizard.
+Dette vil fungere for Internet Explorer, men metoden for at loade certifikater er browserspecifik, og man er derfor nød til manuelt at loade certifikatet, hvis man ønsker at benytte en anden browser.
+I arbejdet med prototypen, har vi fortsat implementeringen af vores GUI.
+Vi har bl.a. fået opbygget funktionalitet bag de forskellige knapper, således at knapperne åbner de forventede
+vinduer, eller at de kalder de forventede funktioner.
+
+Mht. at implementere vores http services, har vi kigget på forskellige proxy
+løsninger;
+\begin{itemize}
+\item The Grinder
+\item Burp Proxy
+\item Charles Proxy
+\item mitmproxy
+\item mitmproxy (Java projektet)
+\item honeyproxy
+\item tlsproxy
+\end{itemize}
+Hver af disse proxy'er har vi vurderet og vi stod mellem to mulige løsninger.
+Enten skulle vi benytte en central UNIX server, som skulle klare alle proxy forbindelser, denne ville så køre 'mitmproxy'.
+Ellers skulle vi benytte Tlsproxy, og lære go og samtidig tilføje to
+programmeringssprog til projektet.
+Vi var dog så heldige, i sidste øjeblik, at falde over et andet alternativ,
+i form af 'exproxy, der er et Java program bibliotek, der kunne løse opgaven.
+Ved skriftlig henvendelse til udvikleren af exproxy, er det lykkedes at få
+udleveret source-koden, under apache open-source licensen, således at denne kan
+modificeres og tilpasses, hvis prototypen kræver dette.
+I implementeringen af exproxy, i resten af projektet, har vi valgt at redesigne
+hvordan proxy serveren skal fungere.
+Oprindeligt, var det tiltænkt, at vi ville lave en http request på brugerens vegne, og herefter returnere svaret herfra,
+til brugeren.
+Med det valgte program bibliotek, har det vist sig, at det er en mulighed simpelthen, blot at ændre på den http request, som brugeren sender,
+således at denne blive lavet om til en login request.
+
+%Vi har desuden brugt en del tid, på at rydde op i koden, for forbedre den
+%eksisterende kode, f.eks. havde vi i den anden prototype, valgt, at benytte 
+%et 'JTable' i koden til at vise services i status vinduet, men da dette ikke var
+%beregnet til at blive brugt på denne måde besluttede vi at erstatte det med en
+%'JList', som bedre passede på den funktion vi ønskede at udføre. F.eks.
+%tilpasses denne 'JList' størrelsen automatisk efter programmet vindue, imens
+%programmet køre, således at status vinduet kan resizes uden problemer.
+
+%Vi kunne ved ændringen fra 'JTable', til 'JList' desuden fjerne næsten 100
+%linjer kode, således at koden blev mere vedligeholdig for fremtiden.
+
+%Det er vigtigt, at bemærker, at dette udelukkende var en refaktorering, således
+%at brugen faktisk ikke opdagede ændringen, idet brugergrænsefladen var næsten
+%fuldkommen ens.
+
+Vi valgte at redesigne hele systemet, til at benytte et centralt
+'Event system', frem for at alle klasses direkte kontraktede dem der skulle
+udføre en given opgave, på denne måde kunne vi decouple de forskellige klasses,
+(færre referencer de forskellige klasses imellem),
+hvilket har resulteret i en langt mere flexibel og dynamisk kodebase, hvor alle
+klasses blot fortælle hvilke events, der er aktuelle for dem, og så reagere, når
+de modtager disse events. - Og de klasses der ønsker at fortælle noget er sket,
+simpelthen blot laver en event, til at fortælle dette, til dem (omend nogle),
+der er interesserede.
+
+Dette eventsystem gjorde os endvidere i stand til, at udvikle de forskellige
+dele af prototypen i parallel, og sågar undlade specifikke dele af prototypen,
+uden nogen problemer. - Eksempelvis, kom SQL updater systemet først efter tredje
+og sidste fremviste prototype.
+
+%Desuden frigjorde eventsystemet fra at skulle redigere i de gamle filer, om og
+%om igen, når noget skulle tilføjes, f.eks. koden til at håndtere hvad der sker,
+%når en knap trykkes. - Dette hjalp os med at undgå at introducere bugs i det
+%fungerende kode.
+
+Vi har herefter arrangerede vi vores fjerde interview, for at kunne fremvise
+vores 'endelige' funktionelle prototype, som nu været blevet færdig, vores ønske
+var, at fremvise prototypen og dens funktionalitet frem for brugere.
+
+Vi ønskede desuden at danne os et endeligt indtryk af om prototypen var klar til
+distribution, eller om hvorvidt prototypen burde revideres yderligere.
+
+%{\bf Interview 4, 24/05}
+%med Martin, Martin og Karin, to lærer og en uddannelses leder ved Aarhus Tech.
+
+Interviewet gav hovedsageligt positivt feedback, men der kom også noget konstruktiv kritisk.
+Blandt andet, blev det klart, at Opdater knappen er forvirrende for nogle brugere.
+Brugerne kunne ikke forklare os hvad knappen gjorde, og vi havde faktisk også problemer med at forklare det.
+Der var også et ønske om at adskille system services (wifi, vpn, osv.) fra de andre services.
+Yderligere kom der et forslag om at tilføje muligheden for, at brugere kunne oprette ikoner på skrivebordet for hver af de services der er logget på gennem single-sign-on systemet.
+
+Da kurset nu er ved at være færdigt, har vi endnu ikke evalueret eller implementeret de ovenstående forslag til forbedringer.
+Derudover er der en række andre ting der også stadig mangler at blive implementeret inden vi vil have et færdigt produkt.
+Disse punkter kan ses i backloggen som findes i appendixet.
+
+% TODO: Gør opmærksom på, at vi skal have skrevet, at vi ændrede program sproget
+% fra engelsk, til dansk
