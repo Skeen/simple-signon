@@ -21,14 +21,11 @@ medarbejdernes behov.
 Baseret på dette første interview, og de informationer vi fik, begyndte vi at designe
 en low-fidelity prototype, som havde til formål at formidle vores umiddelbare forslag til en løsning.\\
 
-%{\bf Eksamensperiode 20/03 - 20/04}
-%Grundet eksamensperiode, har projektet ligget stille, i dette tidsrum, hvilket
-%selvfølgelig har været aftalt med Aarhus Tech (som havde fuld forståelse).
-%{\bf Efter Eksamensperioden}
-%Vi mødtes igen d. 21/04 og forstatte arbejdet.
+% TODO: indset billeder af de to stadier i 1. prototype ved siden af hinanden og inkluder figurnavne
 
-% TODO: Link
-Note; Denne prototype kan ses i appendixet\\
+Som det ses på billederne ovenfor, var første prototype meget skrabet.
+Den bestod af et loginvindue(som ses på figur???) hvor brugeren skulle indtaste brugernavn og adgangskode for derefter at blive sent videre.
+Herefter ville brugeren se et vindue(figur???) der indeholdte en liste over de forskellige services og information om hvorvidt denne service havde forbindelse eller ej.
 
 
 For at få bekræftet Lars Lisbergs teori om at de mange logins skaber irritationer og problemer hos medarbejderne, kontaktede vi Aarhus Tech igen og bad om at få et interview.
@@ -48,14 +45,36 @@ Desuden ønskede de at systemet kunne blive mere brugerstyret, således at brugern
 servies der var aktuelle for dem, samt at konfigurere disse, med deres personlige brugernavn og password, uden at IT afdelingen skulle indblandes.
 Vi kunne altså konkludere, at vores brugergrænseflade skulle redesignes, og vores model af hvilken rolle brugeren spiller ifht. administratoren også skulle
 revurderes.
-Mht. brugergrænsefladen, havde vi af den ene af lærene fået et
+Med henhold til brugergrænsefladen, havde vi af den ene af lærerne fået et
 specifikt forslag til designet, hvor hver service skulle repræseneres ved et
-logo, med et lille piktogram som skulle vise servicens tilstand. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TODO: Link
-Vores arbejdsproces, kan bl.a. ses i appendixet, hvor vi diskuterede frem
-og tilbage, og til sidst fandt frem til et design, som vi mente ville leve op
-til de to lærers krav, for brugergrænsefladen.
-% TODO: Eventuelt mere fylde, som det ses i logbogen, på side 11+12
+logo, med et lille pictogram som skulle vise servicens tilstand. 
+% TODO: Link
+Vi diskuterede i gruppen, hvordan vi skulle redesigne brugergrænsefladen.
+Vi brainstormede ved at tegne udkast til et design på en tavle.
+Et billede af tavlen findes i appendixet(\textit{Figur????}), og nedenfor ses de dele af billedet der viser vores to primære ideer.
+
+%TODO: Sæt de to billeder ind ved siden af hinanden med figurnavn under hvert af billederne.
+
+Som det ses på figur??? bestod en af vores ideer af en horisontal menubar, hvor ikonerne for de forskellige services var linet op efter hunanden.
+I dette design ville hvert ikon have et pictogram nede i højre hjørne der angav dennes status.
+Dette design forkastede vi dog, da det mere mindede om et design til en web applikation, og vi tænkte, at dette muligvis ville forivre brugerne. 
+Ydermere havde vi problemer med at placere funktionsknapperne i programvinduet.
+I stedt gik vi, som det ses i figur??? over til et mere klassisk look.
+Dette design består af et tilnærmelsesvist rektangulært programvindue hvori ikonerne for de forskellige services er linet op i en matrix.
+I bunden af vinduet finder man funktionsknapperne.
+Da dette var et mere traditionelt look, og ville komme til at ligne programmer som brugerne havde brugt før, ville det intuitivt set være nemmere for brugerne at finde rundt i.
+Vi tog dette grunddesign og arbejde videre med det.
+
+%TODO Indsæt her billedet IMG_3176 med figurnavn under
+
+Som det kan ses på figuren ovenfor, tegnede vi en meget basic sekvensmodel, der viser hvordan en bruger logger ind for derefter at komme til et statusvindue med ikoner for de forskellige services, og funktionsknapper i bunden.
+Loginvinduet valgte vi at beholde fra den første prototype, da den på en overskuelig måde klarede loginprocessen.
+Funktionsknapperne i statusvinduet bestod af en add-knap der tilføjer services til statusvinduet.
+remove-knappen fjerner services fra statusvinduet.
+Ydermere er der en re-connect-knap, en password-knap der ville sætte password og brugernavn for en service, en refrech knap der opdatere status for de individuelle services og en logout-knp.
+Ved at trykke på logout-knappen, vil brugeren blive sendt tilbage til loginvinduet.
+Dette design blev grundlaget for vores redesign af GUI'en 
+
 
 Herefter diskuterede vi administratorens rolle, ifht. brugeren, og hvordan vi
 kunne få gjort det muligt, at brugeren er den eneste, der arbejder med sit eget
@@ -73,7 +92,7 @@ skulle indkortere vores 'status vindue', som lærerne havde efterspurgt, desuden 
 funktionalitet i denne prototypen.
 Dermed gik vi fra en low-fidelity prototype og til at udvikle en high-fidelity prototype.
 Dette gjorde vi, da vi vurderede at sådan en prototype, ville kunne give os bedre feedback, på lang sigt. 
-Ligesom vi gjorde i den første prototype, har vi, til at realisere vores design, besluttet os for at benytte 'Java swing' til at skrive GUI. 
+Ligesom vi gjorde i den første prototype, har vi, til at realisere vores design, besluttet os for at benytte 'java swing' til at skrive GUI. 
 For opsætning og administration, har vi valgt at bruge en MySQL server, da Lars Lisberg
 informerede os om, at det var en teknologier, som de allerede havde til
 rådighed.
@@ -87,19 +106,19 @@ Enkelte medarbejdere benytter egne computere, og disse kører styresystemer efter
 Set i lyset af den tidsramme vi arbejder indefor, blev vi med Lars enige om, at vi i første omgang skulle fokusere på Windows.
 
 For at muliggøre, at man kan tilgå HTML services, som fx de mange cloud services medarbejderne benytter, har vi
-implementeret en løsning i Java vha. 'apache httpclient' biblioteket.
+implementeret en løsning i java vha. 'apache httpclient' biblioteket.
 Denne kan logge ind, og vi har dermed kun udfordringen med, at få overført cookien fra dette
 login, til brugerens browser.
 For at klare denne opgave, har vi diskuteret flere mulige løsninger;
 \begin{itemize}
 \item Automatiseret browser-import af cookies
 \item HTTPS Session Hijacking
-\item HTTPS Proxy (der laver requests på brugerens vegne).
+\item HTTPS Proxy (der laver requests på userens vegne).
 \end{itemize}
 Hver af disse har deres fordele og ulemper, som vi har diskuteret.
 Vi valgte at benytte os af HTTPS Proxy'en, som, omend den har en del problemer, syntes at kunne løse vores
 problemstilling.
-Desuden vil løsningen med en proxy-server være browser uafhængig,
+Desuden vil løsningen med en proxy-server være browser independent,
 idet den vil svarer brugerens browser, som en hver anden webserver ville gøre det.
 Kun opsætningen vil være browser specifik, men da den primære browser for de ansatte, er internet explorer, er dette et
 mindre problem. 
@@ -119,11 +138,11 @@ Under dette, tredje interview, blev det klart for os, at vores system, som
 system, således at single-sign-on systemet, automatisk starter op, og kommer til den aktive
 tilstand, som en del af Windows login proces.
 På denne måde ville brugeren kun skulle logge ind på sin Windows bruger og ikke som tidligere tiltænkt, logge på maskinen, og herefter på logge på single-sign-on systemet.
-Det automatiske login, vil desuden være sikkert, da Active Directory må antages at være sikkert.
+Det automatiske login, vil desudere være sikkert, da ActiveDirectory må antages at være sikkert.
 Vi er endvidere blevet opmærksom på, at opsætning af proxy, certifikater og
 lignende, ikke vil være noget problem, da dette kan rulles ud vha. Active Directory, og da eventuelle problemer vil være rimeligt low-tech, som den IT ansvarlige og lærerne imellem nemt skulle kunne løse.
 Under interviewet, fandt vi derudover ud af, at vi som udgangspunkt kan stole på IT afdelingen, men
-at vi dog skal sørger for, at kodeord i databasen ikke kan læses i plain-tekst.
+at vi dog skal sørger for, at passwords i databasen ikke kan læses i plaintekst.
 Mht. administration, syntes Lars godt om fordelingen imellem brugerens og IT
 afdelingens ansvarsområder, idet IT afdelingen på denne måde, slipper for at
 skulle indføre brugernes personlige brugernavn og kodeord. Mht. IT
@@ -135,7 +154,7 @@ kunne udlicitere vedligeholdelse af systemet.
 %% MARKER Onsdag d. 08/05:½
 
 Efter interviewet med Lars, har vi kigget nærmere på hvordan et proxy
-autokonfigurationsscript ser ud, og vi har udviklet et sådanne der blot kan loades ind i brugernes browser, hvorefter proxy'en automatisk vil
+autokonfigurationsscript ser ud, og vi har udviklet et sådanne der blot kan loades ind i brugernes browser, hvorefter proxien automatisk vil
 blive konfigureret.
 Disse scripts er standardiserede, og vil derfor virker på alle af browserne.
 Når det kommer til opsætning af certifikater, har vi eksporteret et certifikat,
@@ -153,18 +172,18 @@ løsninger;
 \item Burp Proxy
 \item Charles Proxy
 \item mitmproxy
-\item mitmproxy (Java projektet)
+\item mitmproxy (java projektet)
 \item honeyproxy
 \item tlsproxy
 \end{itemize}
-Hver af disse proxy'er har vi vurderet og vi stod mellem to mulige løsninger.
-Enten skulle vi benytte en central UNIX server, som skulle klare alle proxy forbindelser, denne ville så køre 'mitmproxy'.
+Hver af disse proxier har vi vurderet og vi stod mellem to mulige løsninger.
+Enten skulle vi benytte en central unix server, som skulle klare alle proxy forbindelser, denne ville så køre 'mitmproxy'.
 Ellers skulle vi benytte Tlsproxy, og lære go og samtidig tilføje to
 programmeringssprog til projektet.
 Vi var dog så heldige, i sidste øjeblik, at falde over et andet alternativ,
-i form af 'exproxy, der er et Java program bibliotek, der kunne løse opgaven.
+i form af 'exproxy, der er et java program bibliotek, der kunne løse opgaven.
 Ved skriftlig henvendelse til udvikleren af exproxy, er det lykkedes at få
-udleveret source-koden, under apache open-source licensen, således at denne kan
+udleveret source-koden, under apache open source licensen, således at denne kan
 modificeres og tilpasses, hvis prototypen kræver dette.
 I implementeringen af exproxy, i resten af projektet, har vi valgt at redesigne
 hvordan proxy serveren skal fungere.
@@ -189,17 +208,17 @@ således at denne blive lavet om til en login request.
 %fuldkommen ens.
 
 Vi valgte at redesigne hele systemet, til at benytte et centralt
-'Event system', frem for at alle klasses direkte kontaktede dem der skulle
+'Event system', frem for at alle klasses direkte kontraktede dem der skulle
 udføre en given opgave, på denne måde kunne vi decouple de forskellige klasses,
 (færre referencer de forskellige klasses imellem),
-hvilket har resulteret i en langt mere fleksibel og dynamisk kodebase, hvor alle
+hvilket har resulteret i en langt mere flexibel og dynamisk kodebase, hvor alle
 klasses blot fortælle hvilke events, der er aktuelle for dem, og så reagere, når
 de modtager disse events. - Og de klasses der ønsker at fortælle noget er sket,
-simpelthen blot laver en event, til at fortælle dette, til dem (om end nogle),
+simpelthen blot laver en event, til at fortælle dette, til dem (omend nogle),
 der er interesserede.
 
 Dette eventsystem gjorde os endvidere i stand til, at udvikle de forskellige
-dele af prototypen i parallel, og sågar undlade specifikke dele af prototypen,
+dele af prototypen i parallel, og sågår undlade specifikke dele af prototypen,
 uden nogen problemer. - Eksempelvis, kom SQL updater systemet først efter tredje
 og sidste fremviste prototype.
 
