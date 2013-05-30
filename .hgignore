@@ -1,0 +1,13 @@
+syntax: glob
+*~
+*.class
+*.bak
+*.swp
+*.pdf
+*.pdfsync
+*.orig
+Project/bin/*
+Project/build/*
+Project/doc/*
+Rapport/rapport/build/*
+_SERVER*
