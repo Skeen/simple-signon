@@ -1,7 +1,23 @@
-\usepackage[style=verbose-trad2,natbib=true]{biblatex}
+\usepackage[style=authoryear-comp,natbib=true]{biblatex}
 
 %\usepackage{natbib} \citestyle{chicago} % Chicago Manual of Style citations
 %\bibliographystyle{dkchicago}
 \defbibheading{bibliography}{\section*{Bibliography}}
 
 \bibliography{bibliography}
+
+\DeclareBibliographyCategory{articles}
+\DeclareBibliographyCategory{books}
+
+\AtEveryCitekey{%
+    \ifentrytype{article}{%
+        \addtocategory{articles}{\thefield{entrykey}}%
+    }
+    {}
+    \ifentrytype{book}{%
+        \addtocategory{books}{\thefield{entrykey}}%
+    }%
+    {
+    }
+}
+
