@@ -1,35 +1,34 @@
-Et af de første spørgsmål vi stødte på i forbindelse med projektet, var hvorvidt
+Et af de første spørgsmål vi stødte på i forbindelse med projektet, var, hvorvidt
 systemet skulle være brugerstyret eller administrationsstyret.  Der kan både
 argumenteres for og imod brugerstyret frem for administrationsstyret.  Et af
 argumenterne imod et brugerstyret system er, at hvis en bruger har mulighed for
 at lave rod i tingene, så vil brugeren komme til at lave rod i tingene.  Dette
-taler så dermed også for et administrationsstyret system, i og med at hvis så
-alt funktionaliteten ligger ved administratorerne, og brugeren har mindst mulig
+taler så dermed også for et administrationsstyret system, i og med at hvis al funktionaliteten ligger ved administratorerne, og brugeren har mindst mulig
 interaktion med systemet, vil brugeren heller ikke have nær så mange muligheder
 for at lave rod.
 
 Et andet argument mod brugerstyrede systemer er, at hvis man designer et
 brugerstyret system, skal man designe til alle de potentielle brugere.  Dette
-betyder,at man både skal designe til brugere der har en stor teknologisk
+betyder, at man både skal designe til brugere, der har en stor teknologisk
 forståelse og brugere med lille teknologisk forståelse, hvilket øger
 kompleksiteten i udvikling af GUI og funktionaliteter.
 
-På den anden side, kan der argumenteres for, at man med et brugerstyret system,
-   som navnet også ligger op til, giver brugeren mulighed for at tilpasse
-   systemet til lige nettop ham eller hende.  I vores tilfælde, er der forskel
+På den anden side kan der argumenteres for, at man med et brugerstyret system,
+   som navnet også lægger op til, giver brugeren mulighed for at tilpasse
+   systemet til lige netop ham eller hende.  I vores tilfælde, er der forskel
    fra bruger til bruger på hvile services de benytter.
 
-I vores tilfælde, er der også et meget vigtigt argument der taler mod et
+I vores tilfælde er der også et meget vigtigt argument, der taler mod et
 administrationsstyret system og for et brugerstyret system.  Hvis systemet
 styres af administratorer, skal brugerne hver gang de vil tilføje en service ned
 forbi IT-afdelingen med deres brugernavn og adgangskode for den pågældende
-service.  Ud over at det er problematisk at IT-afdelingen direkte skal håndtere
+service.  Ud over at det er problematisk, at IT-afdelingen direkte skal håndtere
 brugernes brugernavne og adgangskoder, vil det også give IT-afdelingen meget
 mere arbejde.
 
-Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
-       fandt vi dog ud af, at der fra lærerenes og IT-afdelingens side var et
-       udbredt ønske om et brugerstyret med mulighed for at tilpasse systemet
+Gennem vores interviews med både lærere og IT-afdelingens Teamleder Lars Lisberg,
+       fandt vi dog ud af, at der fra lærernes og IT-afdelingens side var et
+       udbredt ønske om et brugerstyret system med mulighed for at tilpasse systemet
        tilden enkelte bruger. 
 
 
@@ -51,15 +50,15 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
 \leavevmode \linebreak
 %\textbf{\large Problemer undervejs og de valgte løsninger:}\\
 
-        Et af vores primære problemer undervejs, har været spørgsmålet om
-        sikkerhed, og de forskellige sikkerhedsrisici, som forskellige aspecter
+        Et af vores primære problemer undervejs har været spørgsmålet om
+        sikkerhed, og de forskellige sikkerhedsrisici, som forskellige aspekter
         af produktet har haft.
 
-        En lang række af disse problemstillinger, har været baseret på
+        En lang række af disse problemstillinger har været baseret på
         trade-offs imellem sikkerhed og fleksibilitet
         
-        Der er et potentielt sikkerhedsproblem, ved at opbevare data på en MySQL
-        Server, ifht. lokalt på en egen maskine.  På den ene side, hvis data
+        Der er et potentielt sikkerhedsproblem ved at opbevare data på en MySQL
+        Server, ifht. lokalt på ens egen maskine.  På den ene side, hvis data
         opbevares på en MySQL server, ligger alle brugernes information, samlet,
         hvilket giver et single-point-of-failure. Samt øger fleksibilitet.  At
         have et single-point-of-failure, betyder også, at kun et enkelt punkt,
@@ -67,68 +66,68 @@ Gennem vores interviews med både lærer og IT-afdelingens Teamleder Lars Lisberg,
         at skade systemet.  Hvis man opbevare dataene hos brugeren i stedet,
         taber man fleksibilitet, da dataene kun er tilgængelig på en enkelt
         maskine, imidlertid er sikkerhedsproblemet nu distribueret, således at
-        angriberen skal nedlægge hver eneste pc, på netværket, for at nedlægge
-        systemet.         Vi har i vores produkt, valgt at benytte en MySQL
+        angriberen skal nedlægge hver eneste pc på netværket, for at nedlægge
+        systemet.         Vi har i vores produkt valgt at benytte en MySQL
         server, dels fordi vi ønskede fleksibilitet, og dels fordi Aarhus Tech's
         MySQL Servere er en del af vores trusted computing base, altså de
         services vi kan forvente at være sikre, og troværdige.
 
-        I øjeblikket ligger brugerens informationer ukrypteret, og uobsfuskeret
-        på MySQL serveren, der er fordele og ulemper ved dette.       På den ene
-        side, gør dette læsning af data utroligt simpelt, og ligetil.  På den
-        anden side, gør det, det muligt, ved en fejl, at aflæse bruger
-        informationer, hvis man inspicere databasens data. - F.eks. hvis en IT
+        I øjeblikket ligger brugerens informationer ukrypteret på MySQL serveren, der er fordele og ulemper ved dette.       
+        På den ene
+        side gør dette læsning af data utroligt simpelt, og ligetil.  På den
+        anden side gør det det muligt ved en fejl, at aflæse bruger
+        informationer, hvis man inspicerer databasens data. F.eks. hvis en IT
         ansvarlig skal tjekke noget andet.       Aarhus Tech ønskede ikke, at
         det var muligt at lave disse fejlagtige uønskede data aflæsninger, og
         derfor måtte bruger information ikke ligge i plain-tekst på MySQL
         serven.  Imidlertid vurderes sikkerheden af plain-tekst data felter på
-        MySQL serveren som udemærket, jf. overstående, hvorfor vi også har
+        MySQL serveren som udmærket, jf. overstående, hvorfor vi også har
 besluttet at decideret kryptering af database felterne ikke er nødvendig, men at
 obfuskering er nok. F.eks. ved brug af ROT13 (Caesar cipher)
 
-       \textit{ Note; Implementeringen af dette, er skrevet i bagloggen, som
+       \textit{ Note; Implementeringen af dette er skrevet i backloggen, som
            findes i slutningen af proces afsnittet.}
 
         Vi har som nævnt, i proces afsnittet, valgt at benytte en https
         man-in-the-middle proxy, som løsningen på vores cookie-program.  Brugen
         af en https proxy, giver imidlertid anledning, til en række problemer,
-        af sikkerhedsmæssige karakter, isærdeleshed, at https strømmen kan læses
+        af sikkerhedsmæssige karakter, i særdeleshed, at https strømmen kan læses
         ud, i plain-tekst, ved proxy'en.  Dette gælder ikke kun for
         arbejdsrelaterede data, men også for f.eks.  netbank, hvis den ansatte
-        besøger dette på arbejdscomputeren.  På den ene side, kan man
-        argumentere for at brugen af https proxy'en var nødvendig for produktet,
+        besøger dette på arbejdscomputeren.  På den ene side kan man
+        argumentere for, at brugen af https proxy'en var nødvendig for produktet,
         og vi derfor ikke har haft noget valg. Samtidig må det noteres, at hvis
         brugens maskine er kompromitteret, vil netbank (som eksempel), også
         sagtens kunne brydes op, vha. eventuelt keyloggers.  Imidlertid må det
-        siges, at den eneste måde, at kompromittere programmet, og påvirke https
+        siges, at den eneste måde at kompromittere programmet, og påvirke https
         proxyen derigennem, er ved at overtage JVM'en, eller ved at udgive en ny
         version af Single-SignOn programmet.  Førstnævnte kan vi ikke gøre noget
         ved, og skulle generelt set blive opdaget af virus programmer,
         sidstnævnte kan vi forsøge, at undgå, ved at beskytte Single-SignOn
         programmet, imod uautoriseret ændring og/eller overskrivning, således at
-        kun officielle version kan benyttes.  Dette kan eventuelt implementeres
+        kun den officielle version kan benyttes.  Dette kan eventuelt implementeres
         i form af certifikat signering af programmet, og ved at tjekke dette
-        certifikat ved før kørsel af programmet. Alternativt, kunne man
+        certifikat før kørsel af programmet. Alternativt, kunne man
         eventuelt benytte Active Directory, med et delt netværksdrev, hvorpå
         servicen ville være tilgængelig.  Når det kommer til fleksibilitet med
         henhold til understøttelse af nye services, er det sandsynligt, at nogle
         services vil blive fjernet fra systemet, og nye vil komme til, derfor
         har vi været nødt til at overveje, hvor nemt det er at tilføje nye
         services til systemet, samt hvilke sikkerhedsmæssige problemer dette kan
-        føre med.  Vi har primært haft to bud, på hvordan denne fleksibilitet
+        medføre.  Vi har primært haft to bud på, hvordan denne fleksibilitet
         kunne tilføjes til programmet; Én måde ville være, at opdatering af
         programmet, når nye services skal tilføjes.  En anden ville være
         automatisk download af eksekverbar kode fra MySQL serven.  Den primære
-        forskel imellem disse, er at først nævnte kræve en fuldkommen opdatering
-        af programmet, og at sidstnævnte kan ske dynamisk.  På den ene side, kan
+        forskel imellem disse er at førstnævnte kræver en fuldkommen opdatering
+        af programmet, og at sidstnævnte kan ske dynamisk.  På den ene side kan
         man argumentere for, at fuldkommen opdatering af programmet kan ske
         automatisk, således at IT afdelingen ikke står med denne opgave, på den
         anden side kunne dette også gøre vha. Active Directory.  På den anden
-        side, kan man argumentere for at automatisk download af eksekverbar
-        kode, ikke er noget større problem, da MySQL serveren, og IT afdelingen
-        er en del af vores trusted computing base.  Det skal noteres at begge
+        side kan man argumentere for, at automatisk download af eksekverbar
+        kode ikke er noget større problem, da MySQL serveren, og IT afdelingen
+        er en del af vores trusted computing base.  Det skal noteres, at begge
         disse løsninger også kunne beskyttes, vha.  signering.  Vi har ved
-        rapportens aflevering, endnu ikke besluttet at gå udelukkende med en af
+        rapportens aflevering endnu ikke besluttet at gå udelukkende med en af
         de to løsninger.
 
 
@@ -142,102 +141,102 @@ Vores processtrategi gennem projektets forløb har været, at vi arbejdede
 iterativt med kontekstuelle interviews og henholdsvis observeringer og
 præsentation af prototyper.
 
-I vores første iteration, lavede vi som nævnt ovenfor observationer af, hvordan
-brugerne benyttede systemet som det er i dag, og derigennem fik vi nogle ideer
-til hvor problematikkerne lå, og hvordan vi kunne løse disse.  Vi observerede
-brugerne ved at bede dem om at logge på en eller flere af de services som de
-benyttede i deres daglige arbejde,og bad dem forklare hvad de gjorde undervejs.
+I vores første iteration lavede vi som nævnt ovenfor observationer af, hvordan
+brugerne benyttede systemet, som det er i dag, og derigennem fik vi nogle ideer
+til, hvor problematikkerne lå, og hvordan vi kunne løse disse.  Vi observerede
+brugerne ved at bede dem om at logge på en eller flere af de services, som de
+benyttede i deres daglige arbejde,og bad dem forklare, hvad de gjorde undervejs.
 Der kan argumenteres for, at vi ved at følge brugerne rundt på arbejdspladsen og
-herigennem observere hvordan de benyttede systemet, ville havde resulteret i en
-mere virkelighedstro demonstration af hvordan brugerne benytter det nuværende
-system.  I og med at de problematikker vi kiggede på udgjorde så relativt en
+herigennem observere, hvordan de benyttede systemet, ville havde resulteret i en
+mere virkelighedstro demonstration af, hvordan brugerne benytter det nuværende
+system.  I og med at de problematikker vi kiggede på, udgjorde så relativt en
 lille del af medarbejdernes dagligdag, mente vi, at tiden var givet bedre ud ved
 at lave fokuserede observationer.
 
-Først kan det diskuteres om hvorvidt vi i projektet har gennemløbet iterationer
+Først kan det diskuteres, om vi i projektet har gennemløbet iterationer
 nok.  Der er ingen tvivl fra vores siden om, at vi har fået meget nyttig
-information fra hvert af vores iterationer.  Der kunne dog argumenteres for, at
-vi burde havde gennemløbet nogle flere, iterationer, for derigennem at havde
-fået mere nyttigt feedback og informationer, som kunne havde resulteret i et
+information fra hver af vores iterationer.  Der kunne dog argumenteres for, at
+vi burde havde gennemløbet nogle flere iterationer, for derigennem at have
+fået mere nyttigt feedback og informationer, som kunne have resulteret i et
 endnu bedre produkt.  Vi vil dog argumentere for, at antallet af vores
 iterationer, har været passende i forhold til den tidsramme vi har arbejdet
-indenfor.  Ideen med projektet har heller ikke været, at ved ved slutningen af
+indenfor.  Ideen med projektet har heller ikke været, at vi ved slutningen af
 kurset skulle have et færdigt produkt, men blot en funktionel prototype.  I et
 eventuelt videre udviklingsforløb,med et færdigt produkt som mål, ville vi her
 også gennemløbe op til flere yderligere iterationer. \\
 
 
-Hvis man kigger på delen af vores processtrategi der er prototyping, kan det
-diskuteres hvorvidt vi har benyttet vores prototyper hensigtsmæssigt.  Vores
+Hvis man kigger på den del af vores processtrategi, der er prototyping, kan det
+diskuteres, om vi har benyttet vores prototyper hensigtsmæssigt.  Vores
 brug af prototyper som metode og hvorvidt vi har benyttet denne metode
 rigtigt, kan diskuteres ud fra to hovedpunkter.  Først kan det diskuteres om
-hvorvidt vi har kreeret fornuftige prototyper, der der i en præsentation for
-brugerne ville sætte fokus på de specifikke dele af designet som vi ønskede a
-indsamle viden om, og om hvorvidt vores fokus har været for bredt med henhold
-til de informationer vi ønskede at indsamle.  Dernæst kan det diskuteres om vi
+vi har kreeret fornuftige prototyper, der i en præsentation for
+brugerne ville sætte fokus på de specifikke dele af designet, som vi ønskede at
+indsamle viden om, og om vores fokus har været for bredt med henhold
+til de informationer, vi ønskede at indsamle.  Dernæst kan det diskuteres, om vi
 har benyttet en hensigtsmæssig strategi i præsentationen af vores prototyper
-overfor brugerne.  Disse diskussioner, kan man passende perspektivere op imod
+overfor brugerne.  Disse diskussioner kan man passende perspektivere op imod
 Y.-K. Lim et al artiklen \autocite[s.3,10]{Benyon2010Designing}.
 
 Når man kigger på,hvordan vi udviklede vores prototyper, kan der argumenteres
-for, at vi i udviklingsprocessen skulle havde benyttet os mere af low-fidelity
+for, at vi i udviklingsprocessen skulle have benyttet os mere af Low-Fidelity
 prototyper, i stedet for, som vi gjorde, relativt hurtigt at gå over til
-high-fidelity prototyper.  Grunden til vores valg af prototyper var, at vi på
-den ene side godt kunne havde fortsat med simple low-fidelity prototyper, men at
+High-Fidelity prototyper.  Grunden til vores valg af prototyper var, at vi på
+den ene side godt kunne havde fortsat med simple Low-Fidelity prototyper, men at
 vi vurderede, at det ville resultere i, at vi til slut i kursets forløb ville
-stå med en alt for stor kode-m‘ssig arbejdsbyrde.  Dog kan der argumenteres for,
-    at vi gennem vores valg om relativt hurtigt at skifte til high-fidelity
+stå med en alt for stor kode-mæssig arbejdsbyrde.  Dog kan der argumenteres for,
+    at vi gennem vores valg om relativt hurtigt at skifte til High-Fidelity
     prototyper, afskar os selv muligheden for en masse nyttige og brugbare
     feedback fra brugerne.\\
 
 
 Som det bliver nævnt i artiklen af Y.-K- Lim et al. er en af de primære styrker
 ved en prototype nemlig, at den ikke virker som et færdigt produkt
-\autocite[s.7,17,18]{Benyon2010Designing}. En prototype der ikke virker som et
-færdigt produkt, lægger mere op til at brugeren kan kommer komme med forslag til
+\autocite[s.7,17,18]{Benyon2010Designing}. En prototype, der ikke virker som et
+færdigt produkt, lægger mere op til, at brugeren kan komme med forslag til
 ændringer.  Yderligere nævnes det også i artiklen, at valget af materiale
-benyttet til at fremstille prototypen har direkte betydning for hvordan brugeren
+benyttet til at fremstille prototypen har direkte betydning for, hvordan brugeren
 opfatter prototype, når de skal evaluere design koncepter.  Havde vi benyttet os
-mere af low-fidelity prototyper, og måske lavet disse i papirform, ville
+mere af Low-Fidelity prototyper, og måske lavet disse i papirform, ville
 brugeren opfatte prototypen som et udkast til et designforslag mere end et
 færdigt produkt.  Dette gives der i artiklen også et eksempel på.  Det viste sig
-i en case de analyserede, hvor de fremviste to prototyper af et hus, en på
+i en case, som de analyserede, hvor de fremviste to prototyper af et hus, en på
 blueprint form og en modeleret i 3D software, at brugerne der blev præcenteret
 for blueprint prototype opfattede denne som et designudkast, hvorimod brugerne
 der blev præcenteret for 3D-modelleringen opfattede prototypen som et relativt
-færdigt produkt, og derfor kom langt færre forslag til ændringer.  Denne effekt
-kunne det tænkes at vi i vores valg om at skifte til high-fidelity prototyper
+færdigt produkt, og derfor kom med langt færre forslag til ændringer.  Denne effekt,
+kunne det tænkes, at vi i vores valg om at skifte til High-Fidelity prototyper
 også er blevet ramt af.\\
 
 
-Hvis man kigger på den måde hvorpå vi præsenterede brugerne for vores
-prototyper, kan man argumenterer for, at det ideelle havde været at lave en
+Hvis man kigger på den måde, hvorpå vi præsenterede brugerne for vores
+prototyper, kan man argumentere for, at det ideelle havde været at lave en
 situationstest, hvor brugerne blev sat til at benytte sig af systemet i deres
 daglige arbejde, hvorefter de kunne komme med kommentarer og forbedringsforslag.
 Som det beskrives i artiklen af Y.-K. Lim et al. er sådanne situationstests ofte
 ikke mulige, da prototyperne sjældent er fuldt funktionelle
 \autocite[s.4]{Benyon2010Designing}.  Dette var også tilfældet for vores
-prototyper.  Vi valgte i stedet at foretage laboratorium tests, hvor brugerne i
-et kontrolleret miljø bliv præsenteret for prototyperne.  Vi valgte i vores
-præsentation af vores prototyper, at føre brugeren igennem de forskellige
+prototyper.  Vi valgte i stedet at foretage laboratorietests, hvor brugerne i
+et kontrolleret miljø bliver præsenteret for prototyperne.  Vi valgte i vores
+præsentation af vores prototyper at føre brugeren igennem de forskellige
 funktioner i prototypen.  Der kan argumenteres for, at vi ikke benyttede den
 optimale metode til at få brugerne til at gennemgå prototyperne, i og med at vi
 ved at guide dem, afskar dem muligheden for selv at udforske systemet, og
-derigennem opdage hvorvidt prototypen virkede intuitiv og reagerede som de
+derigennem opdage hvorvidt prototypen virkede intuitiv og reagerede, som de
 forventede.\\
 
 
 Til slut kunne man argumenterer for, at vi måske har behandlet brugernes
-feedback med for lidt omtanke, når det kom til at implementere forslag.  Som det
+feedback med for lidt omtanke, når det gjaldt implementering af forslag.  Som det
 også nævnes i Y.-K. Lim et al. artiklen, så er brugere ikke eksperter i design,
      \autocite[s.5]{Benyon2010Designing} hvilket resulterer i, at man som designer
-     af systemet skal forstå brugernes behov og hvad der tilføjer værdi for dem
-     frem for direkte at tilføje deres designideer til produktet.  Selv om der
-     kan argumenteres for, at vi nogle steder har tilføjet brugernes designideer
-     uden at vurdere, hvorvidt det virkelig braget brugerne værdi, er der dog
-     også eksempler på at vi netop har gjort os disse overvejelser på nogle
-     punkter.  Et ønske for brugerne var fx at systemet skulle laves som en Web
+     af systemet skal forstå brugernes behov og, hvad der tilføjer værdi for dem
+     frem for direkte at tilføje deres design ideer til produktet.  Selv om der
+     kan argumenteres for, at vi nogle steder har tilføjet brugernes design ideer
+     uden at vurdere, hvorvidt det virkelig bragte brugerne værdi, er der dog
+     også eksempler på, at vi netop har gjort os disse overvejelser på nogle
+     punkter.  Et ønske fra brugerne var fx, at systemet skulle laves som en Web
      applikation.  Dette endte vi dog ikke op med, da det stred mod et større
-     ønske om at systemet også automatisk skulle logge på VPN, og da det ikke er
+     ønske om, at systemet også automatisk skulle logge på VPN. Da det ikke er
      muligt at benytte en web-app uden først at være på VPN, tog vi en
-     beslutning om at brugerne havde brug for et program der lå lokalt.   
+     beslutning om, at brugerne havde brug for et program der, lå lokalt.   
