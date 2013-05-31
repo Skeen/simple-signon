@@ -1,0 +1,69 @@
+<project default="jar">
+    <property name="source-directory" value="src"/>
+    <property name="build-directory" value="build"/>
+    <property name="bin-directory" value="bin"/>
+    <property name="lib-directory" value="lib"/>
+    <property name="resource-directory" value="resource"/>
+
+    <property name="codec" value="${lib-directory}/commons-codec-1.7.jar"/>
+    <property name="logging" value="${lib-directory}/commons-logging-1.1.2.jar"/>
+    <property name="httpclient" value="${lib-directory}/commons-httpclient-3.1.jar"/>
+    <property name="collection" value="${lib-directory}/commons-collections-3.2.1.jar"/>
+
+    <path id="class-path">
+        <pathelement location="${build-directory}"/>
+        <pathelement location="${codec}"/>
+        <pathelement location="${logging}"/>
+        <pathelement location="${httpclient}"/>
+        <pathelement location="${collection}"/>
+    </path>
+
+    <target name="prepare_bin">
+        <mkdir dir="${bin-directory}"/>
+    </target>
+
+    <target name="prepare_resource" depends="prepare_bin">
+        <mkdir dir="${bin-directory}\${resource-directory}"/>
+    </target>
+    
+    <target name="prepare_build">
+        <mkdir dir="${build-directory}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build-directory}"/>
+        <delete dir="${bin-directory}"/>
+    </target>
+
+    <target name="compile" depends="prepare_build">
+        <javac srcdir="${source-directory}"
+            destdir="${build-directory}"
+            includeantruntime="true"
+            >
+            <classpath refid="class-path"/>
+        </javac>
+    </target>
+
+    <target name="copyResource" depends="prepare_bin, prepare_resource">
+        <copy todir="${bin-directory}\${resource-directory}" >
+            <fileset dir="${resource-directory}">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile,prepare_bin,copyResource">
+        <jar destfile="${bin-directory}/exproxy.jar"
+            basedir="${build-directory}">
+            <manifest>
+                <attribute name="Main-Class" value="com.exproxy.ControlPanel"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${bin-directory}/exproxy.jar" fork="true"> 
+            <classpath refid="class-path"/>
+            <arg value="br0"/>
+        </java>
+    </target>
+</project>
