@@ -122,7 +122,6 @@ Ved at trykke på logout knappen, vil brugeren blive sendt tilbage til Login vind
 
 Dette design blev grundlaget for vores redesign af GUI'en 
 
-
 Herefter diskuterede vi administratorens rolle, ifht. brugeren, og hvordan vi
 kunne få gjort det muligt, at brugeren er den eneste, der arbejder med sit eget
 brugernavn og kodeord.  Vi endte med at lave en tydelig deling af ansvaret,
@@ -229,6 +228,31 @@ certifikatet, hvis man ønsker at benytte en anden browser.  I arbejdet med
 prototypen har vi fortsat implementeringen af vores GUI.  Vi har bl.a. fået
 opbygget funktionalitet bag de forskellige knapper, således at knapperne åbner
 de forventede vinduer, eller de kalder de forventede funktioner.
+
+Da brugerne under 2. interview bedte om at få større kontrol over hvilke services 
+de har aktive, havde vi designet et 'tilføj' vindue, som nu var færdigt. 
+Ved at tilføje og fjerne services, kan brugeren selv bestemme hvilke services bliver brugt. 
+Dette ses på \autoref{adding}
+Desuden blev rediger vinduet også færdigt, hvor brugeren kan indstille brugernavn og kodeord, samt hvorvidt en service forbinder automatisk.
+Denne ses på \autoref{editing}.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[hb]{0.3\textwidth}
+    \centering
+   	\includegraphics[height=150px]{3.Prototype/Add_Vindue}
+    \caption{Add Vindue}
+    \label{adding}
+    \end{subfigure}
+    \begin{subfigure}[hb]{0.6\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{3.Prototype/Edit_Vindue}
+    \caption{Edit Vindue}
+    \label{editing}
+    \end{subfigure}
+    \caption{}
+    \label{addedit}
+\end{figure}
 
 Mht. at implementere vores http services, har vi kigget på forskellige proxy
 løsninger;
