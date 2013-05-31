@@ -157,12 +157,16 @@ omgang skulle fokusere på Windows.
 
 For at muliggøre, at man kan tilgå HTML services, som fx de mange cloud services
 medarbejderne benytter, har vi implementeret en løsning i Java vha. 'apache
-httpclient' biblioteket.  Denne kan logge ind, og vi har dermed kun udfordringen
-med at få overført cookien fra dette login til brugerens browser.  For at
-klare denne opgave har vi diskuteret flere mulige løsninger; \begin{itemize}
-\item Automatiseret browser-import af cookies \item HTTPS Session Hijacking
-\item HTTPS Proxy (der laver requests på brugerens vegne).  \end{itemize} Hver
-af disse har deres fordele og ulemper, som vi har diskuteret.  Vi valgte at
+httpclient' biblioteket\footnote{\citep[]{httpclient}}. Denne kan logge ind,
+og vi har dermed kun udfordringen med at få overført cookien fra dette login
+til brugerens browser. For at klare denne opgave har vi diskuteret flere
+mulige løsninger;
+\begin{itemize}
+\item Automatiseret browser-import af cookies
+\item HTTPS Session Hijacking
+\item HTTPS Proxy (der laver requests på brugerens vegne).
+\end{itemize}
+Hver af disse har deres fordele og ulemper, som vi har diskuteret.  Vi valgte at
 benytte os af HTTPS Proxy'en, som, omend den har en del problemer, syntes at
 kunne løse vores problemstilling.  Desuden vil løsningen med en proxy-server
 være browser uafhængig, idet den vil svare brugerens browser, som enhver anden
@@ -220,17 +224,26 @@ opbygget funktionalitet bag de forskellige knapper, således at knapperne åbner
 de forventede vinduer, eller de kalder de forventede funktioner.
 
 Mht. at implementere vores http services, har vi kigget på forskellige proxy
-løsninger; \begin{itemize} \item The Grinder \item Burp Proxy \item Charles
-Proxy \item mitmproxy \item mitmproxy (Java projektet) \item honeyproxy \item
-tlsproxy \end{itemize} Hver af disse proxy'er har vi vurderet, og vi stod med et valg mellem 
+løsninger;
+\begin{itemize}
+\item The Grinder
+\item Burp Proxy
+\item Charles Proxy
+\item mitmproxy
+\item mitmproxy (Java projektet)
+\item honeyproxy
+\item tlsproxy
+\end{itemize}
+
+Hver af disse proxy'er har vi vurderet, og vi stod med et valg mellem 
 to mulige løsninger.  Enten skulle vi benytte en central UNIX server, som skulle
 klare alle proxy forbindelser, denne ville så køre 'mitmproxy'.  Ellers skulle
 vi benytte Tlsproxy, og lære go og samtidig tilføje to programmeringssprog til
 projektet.  Vi var dog så heldige, i sidste øjeblik, at falde over et andet
 alternativ, i form af 'exproxy, der er et Java program bibliotek, der kunne løse
-opgaven.  Ved skriftlig henvendelse til udvikleren af exproxy, er det lykkedes
-at få udleveret source-koden, under apache open-source licensen, således at
-denne kan modificeres og tilpasses, hvis prototypen kræver dette.  I
+opgaven\footnote{\citep[]{exproxy}}. Ved skriftlig henvendelse til udvikleren af
+exproxy, er det lykkedes at få udleveret source-koden, under apache open-source licensen,
+således at denne kan modificeres og tilpasses, hvis prototypen kræver dette.  I
 implementeringen af exproxy, i resten af projektet, har vi valgt at redesigne,
 hvordan proxy serveren skal fungere.  Oprindeligt var det tiltænkt, at vi ville
 lave en http request på brugerens vegne, og herefter returnere svaret herfra,
